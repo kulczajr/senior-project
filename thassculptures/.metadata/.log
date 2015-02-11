@@ -1,0 +1,10 @@
+!SESSION 2015-02-10 12:17:47.968 -----------------------------------------------
+eclipse.buildId=4.3.0.I20130605-2000
+java.version=1.7.0_40
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.standard.product -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.standard.product -data C:\Users\roccoma\Desktop\Senior Project\senior-project\thassculptures -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.mylyn.tasks.ui 2 0 2015-02-10 12:17:53.564
+!MESSAGE No search provider was registed. Tasks search is not available.

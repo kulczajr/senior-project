@@ -58,7 +58,48 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 		<!---//End-header---->
 		<!---start-content---->
-		<div class="content">
+
+		<script src="http://maps.googleapis.com/maps/api/js"></script>
+		<script>
+		function initialize() {
+			var mapProp = {
+				center:new google.maps.LatLng(39.465521, -87.413038),
+				zoom:12,
+				mapTypeId:google.maps.MapTypeId.ROADMAP
+			};
+			var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+			var marker=new google.maps.Marker({
+				position:new google.maps.LatLng(39.465521, -87.413038)
+			});
+
+			marker.setMap(map);
+
+			var infowindow = new google.maps.InfoWindow({
+				content:"There's a sculpture here!"
+			});
+
+			infowindow.open(map,marker);
+
+			var marker2=new google.maps.Marker({
+				position:new google.maps.LatLng(39.466316, -87.356046)
+			});
+
+			var infowindow1 = new google.maps.InfoWindow({
+				content:"There's a sculpture here!"
+			});
+
+			marker2.setMap(map);
+			infowindow2.open(map,marker2);
+		}
+		google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+<div id="googleMap" style="width:500px;height:380px;"></div>
+		<!-- <div id="map-canvas">
+			<iframe class="map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?zoom=11&center=39.4667%2C-87.4139&key=AIzaSyB9n84quvo_jDTUT8bjn_3703cJfd6ulAY"></iframe>
+		</div> -->
+
+		<div class="content"> 
 			<div class="wrap">
 			 <div id="main" role="main">
 			      <ul id="tiles">

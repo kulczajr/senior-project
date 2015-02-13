@@ -36,6 +36,10 @@ class MainHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/index.html")
         self.response.write(template.render())
 
+class SculpturesHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/sculptures.html")
+        self.response.write(template.render())
 class SculptureCardHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/single-page.html")
@@ -107,6 +111,7 @@ class AddCommentHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/sculptures.html', SculpturesHandler),
     ('/single-page.html', SculptureCardHandler),
     ('/addSculpture', AddSculptureHandler),
     ('/addArtist', AddArtistHandler),

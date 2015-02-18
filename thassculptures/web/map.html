@@ -1,0 +1,67 @@
+<html>
+<head>
+	<title>Art Spaces Map</title>
+	<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="/static/images/fav-icon-art-space.png" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/css/main.css">
+
+	<div class="header">
+		<div class="wrap">
+			<div class="nav-icon">
+				<a href="#" class="right_bt" id="activator"><span> </span> </a>
+			</div>
+		</div>
+	</div>
+
+	<script src="http://maps.googleapis.com/maps/api/js"></script>
+	<script>
+	function initialize() {
+		var mapProp = {
+			center:new google.maps.LatLng(39.465521, -87.413038),
+			zoom:12,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+		var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+		var marker=new google.maps.Marker({
+			position:new google.maps.LatLng(39.465521, -87.413038)
+		});
+
+		marker.setMap(map);
+
+		var infowindow = new google.maps.InfoWindow({
+			content:"There's a sculpture here!"
+		});
+
+		infowindow.open(map,marker);
+
+		var marker2=new google.maps.Marker({
+			position:new google.maps.LatLng(39.466316, -87.356046)
+		});
+
+		var infowindow2 = new google.maps.InfoWindow({
+			content:"There's a sculpture here!"
+		});
+
+		marker2.setMap(map);
+		infowindow2.open(map,marker2);
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+
+	<div class="content">
+		<div class="wrap">
+			<div id="main" role="main">
+				<h3><span class="label label-default">Map Of Sculptures</span></h3>
+				<div id="googleMap" style="width:500px;height:380px;"></div>
+			</div>
+		</div>
+	</div>
+
+</head>
+<body>
+</body>
+</html>

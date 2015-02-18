@@ -1,0 +1,57 @@
+.top-buffer{
+	margin-top:8px;
+}
+.bottom-buffer{
+	margin-bottom:2px;
+}
+
+.buttonText{
+	font-size:6vmin;
+}
+
+.glyphicon{
+	font-size:24px;
+}
+
+.logo{
+  height:45%;
+}
+.background{
+	    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+	background: url("../../static/images/flame1big.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    opacity: 0.4;
+    }
+
+.btn {
+/*  height:6%;
+*/  -webkit-border-radius: 12;
+  -moz-border-radius: 12;
+  border-radius: 12px;
+  -webkit-box-shadow: 3px 2px 15px #9c9c9c;
+  -moz-box-shadow: 3px 2px 15px #9c9c9c;
+  box-shadow: 3px 2px 15px #9c9c9c;
+  color: #ffffff;
+  border: solid #17305c 3px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+.buttonContainer{
+  margin-left:10%;
+  margin-right:10%;
+}

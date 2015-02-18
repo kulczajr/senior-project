@@ -1,216 +1,76 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title>Terre Haute Art Spaces Sculptures App</title>
-		<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" type="image/x-icon" href="/static/images/fav-icon-art-space.png" />
-		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-		</script>
-		<!----webfonts---->
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
-		<!----//webfonts---->
-		<!-- Global CSS for the page and tiles -->
-  		<link rel="stylesheet" href="/static/css/main.css">
-  		<!-- //Global CSS for the page and tiles -->
-		<!---start-click-drop-down-menu----->
-		<script src="/static/js/jquery.min.js"></script>
-        <!----start-dropdown--->
-         <script type="text/javascript">
-			var $ = jQuery.noConflict();
-				$(function() {
-					$('#activator').click(function(){
-						$('#box').animate({'top':'0px'},500);
-					});
-					$('#boxclose').click(function(){
-					$('#box').animate({'top':'-700px'},500);
-					});
-				});
-				$(document).ready(function(){
-				//Hide (Collapse) the toggle containers on load
-				$(".toggle_container").hide(); 
-				//Switch the "Open" and "Close" state per click then slide up/down (depending on open/close state)
-				$(".trigger").click(function(){
-					$(this).toggleClass("active").next().slideToggle("slow");
-						return false; //Prevent the browser jump to the link anchor
-				});
-									
-			});
-		</script>
-        <!----//End-dropdown--->
-		<!---//End-click-drop-down-menu----->
-	</head>
-	<body>
-		<!---start-wrap---->
-			<!---start-header---->
-			<div class="header">
-				<div class="wrap">
-				<div class="nav-icon">
-					 <a href="#" class="right_bt" id="activator"><span> </span> </a>
-				</div>
-			</div>
-		</div>
-		<!---//End-header---->
-		<!---start-content---->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link href="static/css/bootstrap-theme.css" rel='stylesheet' type='text/css' />
+    <link href="static/css/landingPage.css" rel='stylesheet' type='text/css' />
 
-		<script src="http://maps.googleapis.com/maps/api/js"></script>
-		<script>
-		function initialize() {
-			var mapProp = {
-				center:new google.maps.LatLng(39.465521, -87.413038),
-				zoom:12,
-				mapTypeId:google.maps.MapTypeId.ROADMAP
-			};
-			var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+    <script src="static/js/bootstrap.js"></script>
+    <script src="static/js/jquery.min.js"></script>
 
-			var marker=new google.maps.Marker({
-				position:new google.maps.LatLng(39.465521, -87.413038)
-			});
+    <title>Terre Haute Art Spaces Sculptures App</title>
 
-			marker.setMap(map);
+</head>
 
-			var infowindow = new google.maps.InfoWindow({
-				content:"There's a sculpture here!"
-			});
+<body>
+    <div class="row">
 
-			infowindow.open(map,marker);
+        <div class="col-xs-12">
 
-			var marker2=new google.maps.Marker({
-				position:new google.maps.LatLng(39.466316, -87.356046)
-			});
+            <img src="static/images/artSpacesLogo.jpg" alt="Terre Haute Art Spaces Logo" class="img-responsive logo center-block">
 
-			var infowindow1 = new google.maps.InfoWindow({
-				content:"There's a sculpture here!"
-			});
+        </div>
 
-			marker2.setMap(map);
-			infowindow2.open(map,marker2);
-		}
-		google.maps.event.addDomListener(window, 'load', initialize);
-		</script>
-<div id="googleMap" style="width:500px;height:380px;"></div>
-		<!-- <div id="map-canvas">
-			<iframe class="map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?zoom=11&center=39.4667%2C-87.4139&key=AIzaSyB9n84quvo_jDTUT8bjn_3703cJfd6ulAY"></iframe>
-		</div> -->
+    </div>
+    <div class="buttonContainer">
+    <div class="row">
+        <div class="col-xs-6">
+            <button type="button" onclick="location.href='map.html'" class="btn landingBtn btn-block btn-primary btn-lg">
+                <p class="buttonText">Map</p>
+                <span class="glyphicon glyphicon-map-marker"> </span>
+            </button>
+        </div>
 
-		<div class="content"> 
-			<div class="wrap">
-			 <div id="main" role="main">
-			      <ul id="tiles">
-			        <!-- These are our grid blocks -->
-			        <li onclick="location.href='single-page.html';">
-			        	<img src="/static/images/flame1big.jpg">
-			        	<div class="post-info">
-			        		<div class="post-basic-info">
-				        		<h3><a href="#">Flame of the Millenium</a></h3>
-				        		<span><a href="#"><label> </label>See On Map</a></span>
-			        		</div>
-			        	</div>
-			        </li>
-			        <li onclick="location.href='single-page.html';">
-			        	<img src="/static/images/tree1big.jpg">
-						<div class="post-info">
-			        		<div class="post-basic-info">
-				        		<h3><a href="#">Tree</a></h3>
-				        		<span><a href="#"><label> </label>See On Map</a></span>
-			        		</div>
-			        	</div>
-					</li>
-			        <li onclick="location.href='single-page.html';">
-			        	<img src="/static/images/house1big.jpg">
-			        	<div class="post-info">
-			        		<div class="post-basic-info">
-				        		<h3><a href="#">Composite House for Terre Haute</a></h3>
-				        		<span><a href="#"><label> </label>See On Map</a></span>
-			        		</div>
-			        	</div>
-			        </li>
-			        <li onclick="location.href='single-page.html';">
-			        	<img src="/static/images/swope1big.jpg">
-			        	<div class="post-info">
-			        		<div class="post-basic-info">
-				        		<h3><a href="#">Spirit of Space</a></h3>
-				        		<span><a href="#"><label> </label>See On Map</a></span>
-			        		</div>
-			        	</div>
-			        </li>
-			      </ul>
-			      </div>
-			      </div>
-			      </div>
-			    
-		<!---//End-content---->
-		<!----wookmark-scripts---->
-		  <script src="/static/js/jquery.imagesloaded.js"></script>
-		  <script src="/static/js/jquery.wookmark.js"></script>
-		  <script type="text/javascript">
-		    (function ($){
-		      var $tiles = $('#tiles'),
-		          $handler = $('li', $tiles),
-		          $main = $('#main'),
-		          $window = $(window),
-		          $document = $(document),
-		          options = {
-		            autoResize: true, // This will auto-update the layout when the browser window is resized.
-		            container: $main, // Optional, used for some extra CSS styling
-		            offset: 20, // Optional, the distance between grid items
-		            itemWidth:280 // Optional, the width of a grid item
-		          };
-		      /**
-		       * Reinitializes the wookmark handler after all images have loaded
-		       */
-		      function applyLayout() {
-		        $tiles.imagesLoaded(function() {
-		          // Destroy the old handler
-		          if ($handler.wookmarkInstance) {
-		            $handler.wookmarkInstance.clear();
-		          }
-		
-		          // Create a new layout handler.
-		          $handler = $('li', $tiles);
-		          $handler.wookmark(options);
-		        });
-		      }
-		      /**
-		       * When scrolled all the way to the bottom, add more tiles
-		       */
-		      function onScroll() {
-		        // Check if we're within 100 pixels of the bottom edge of the broser window.
-		        var winHeight = window.innerHeight ? window.innerHeight : $window.height(), // iphone fix
-		            closeToBottom = ($window.scrollTop() + winHeight > $document.height() - 100);
-		
-		        if (closeToBottom) {
-		          // Get the first then items from the grid, clone them, and add them to the bottom of the grid
-		          var $items = $('li', $tiles),
-		              $firstTen = $items.slice(0, 10);
-		          $tiles.append($firstTen.clone());
-		
-		          applyLayout();
-		        }
-		      };
-		
-		      // Call the layout function for the first time
-		      applyLayout();
-		
-		      // Capture scroll event.
-		      $window.bind('scroll.wookmark', onScroll);
-		    })(jQuery);
-		  </script>
-		<!----//wookmark-scripts---->
-		<!----start-footer--->
-		<!-- 
-		<div class="footer">
-			<p>Design by <a href="http://w3layouts.com/">W3layouts</a></p>
-		</div>
-		 -->
-		<!----//End-footer--->
-		<!---//End-wrap---->
-	</body>
+        <div class="col-xs-6">
+            <button type="button" onclick="location.href='sculptures.html'" class="btn btn-block btn-primary btn-lg">
+                <p class="buttonText">Sculptures</p>
+                <span class="glyphicon glyphicon-picture"> </span>
+            </button>
+        </div>
+            </div>
+
+
+    <div class="row top-buffer">
+   
+        <div class="col-xs-6">
+            <button type="button" class="btn btn-block btn-primary btn-lg">
+                <p class="buttonText">Tours</p>
+                <span class="glyphicon glyphicon-road"> </span>
+            </button>
+        </div>
+           
+        <div class="col-xs-6">
+        	<a href="http://www.wabashvalleyartspaces.com/" target="_blank">
+            <button type="button" onclick="google.com" class="btn btn-block btn-primary btn-lg">
+               <p class="buttonText">Website</p>
+                <span class="glyphicon glyphicon-globe"> </span>
+            </button>
+        </a>
+        </div>
+     
+    </div>
+
+    <div class="row top-buffer bottom-buffer">
+      	<div class ="col-xs-6 col-xs-offset-3">
+ 		<button type="button" class="btn btn-block btn-primary btn-lg">
+               <p class="buttonText">Donate</p>
+                <span class="glyphicon glyphicon-credit-card"> </span>
+            </button>
+    	</div>
+    
+    </div>
+
+    <div class="row">
+    </div>
+</div>
+</body>
 </html>
-

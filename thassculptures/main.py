@@ -36,11 +36,22 @@ class MainHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/index.html")
         self.response.write(template.render())
 
+class SculpturesHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/sculptures.html")
+        self.response.write(template.render())
 class SculptureCardHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/single-page.html")
         self.response.write(template.render())
-
+class MapHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/map.html")
+        self.response.write(template.render())
+class ArtistsHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/artists.html")
+        self.response.write(template.render())
 class AddSculptureHandler(webapp2.RequestHandler):
     def post(self):
         #The non-string attributes probably are going to need changing here,
@@ -107,8 +118,11 @@ class AddCommentHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/sculptures.html', SculpturesHandler),
     ('/single-page.html', SculptureCardHandler),
     ('/addSculpture', AddSculptureHandler),
     ('/addArtist', AddArtistHandler),
     ('/addComment', AddCommentHandler),
+    ('/map.html', MapHandler),
+    ('/artists.html', ArtistsHandler),
 ], debug=True)

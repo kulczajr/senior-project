@@ -30,6 +30,10 @@ body{
 	width:80%;
 	margin:0 auto;
 }
+
+.wrap-single {
+	width:50%;
+}
 /*---start-header----*/
 .header{
 	background:url(../images/border.png) repeat-x 0px 0px #FFF;
@@ -675,6 +679,10 @@ span.mail a:hover{
 	.wrap{
 		width:85%;
 	}
+	
+	.wrap-single {
+	width:50%;
+}
 }
 /*--//End-media Quries for 1440px-monitors-*/
 /*--media Quries for 1366px-monitors-*/
@@ -688,6 +696,10 @@ span.mail a:hover{
 		background: #fff;
 		padding: 10px;
 	}
+	
+	.wrap-single {
+	width:55%;
+}
 }
 /*--//End-media Quries for 1366px-monitors-*/
 /*--media Quries for 1280px-monitors-*/
@@ -704,6 +716,10 @@ span.mail a:hover{
 	.contact-to input[type="text"] {
 		width: 30.2%;
 	}
+	
+	.wrap-single {
+	width:60%;
+}
 }
 /*--//End-media Quries for 1280px-monitors-*/
 /*--media Quries for 1024px-monitors-*/
@@ -730,6 +746,10 @@ span.mail a:hover{
 		right: 6em;
 		top: 2em;
 	}
+	
+	.wrap-single {
+	width:70%;
+}
 }
 /*--//End-media Quries for 1024px-monitors-*/
 /*--media Quries for 768px-monitors-*/

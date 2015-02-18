@@ -116,6 +116,17 @@ class AddCommentHandler(webapp2.RequestHandler):
             new_comment.put()
         self.redirect(self.request.referer)
 
+class AddArtistPageHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/AddArtist.html")
+        self.response.write(template.render())
+
+class AddSculpturePageHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/AddSculpture.html")
+        self.response.write(template.render())
+        
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/sculptures.html', SculpturesHandler),
@@ -125,4 +136,6 @@ app = webapp2.WSGIApplication([
     ('/addComment', AddCommentHandler),
     ('/map.html', MapHandler),
     ('/artists.html', ArtistsHandler),
+    ('/addArtistPage', AddArtistPageHandler),
+    ('/addSculpturePage', AddSculpturePageHandler),
 ], debug=True)

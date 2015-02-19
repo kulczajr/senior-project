@@ -20,7 +20,7 @@ import os
 from google.appengine.ext import ndb
 from models import Sculpture, Artist, Comment
 import jinja2
-import Image
+# import Image
 import webapp2
 
 
@@ -35,15 +35,15 @@ jinja_env = jinja2.Environment(
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/index.html")
-        image = Image.open("/static/images/flame1big.jpg")
-        sculpture = {
-            'title':"Wish you were here",
-            'artist':"Pink Floyd",
-            'description': "So, so you think you can tell Heaven from Hell, blue skies from pain. Can you tell a green field from a cold steel rail? A smile from a veil? Do you think you can tell? Did they get you to trade your heroes for ghosts? Hot ashes for trees? Hot air for a cool breeze? Cold comfort for change? Did you exchange a walk on part in the war for a lead role in a cage? How I wish, how I wish you were here. We're just two lost souls swimming in a fish bowl, year after year, Running over the same old ground. What have we found? The same old fears. Wish you were here.",
-            'image':image, #not quite sure how to handle images with Jinja yet... will look in to
-            'audio': "ToDo",
-            'location':"GeoPage"
-        }
+        # image = Image.open("/static/images/flame1big.jpg")
+        # sculpture = {
+        #     'title':"Wish you were here",
+        #     'artist':"Pink Floyd",
+        #     'description': "So, so you think you can tell Heaven from Hell, blue skies from pain. Can you tell a green field from a cold steel rail? A smile from a veil? Do you think you can tell? Did they get you to trade your heroes for ghosts? Hot ashes for trees? Hot air for a cool breeze? Cold comfort for change? Did you exchange a walk on part in the war for a lead role in a cage? How I wish, how I wish you were here. We're just two lost souls swimming in a fish bowl, year after year, Running over the same old ground. What have we found? The same old fears. Wish you were here.",
+        #     'image':image, #not quite sure how to handle images with Jinja yet... will look in to
+        #     'audio': "ToDo",
+        #     'location':"GeoPage"
+        # }
         self.response.write(template.render())
         
 class MobileTestHandler(webapp2.RequestHandler):

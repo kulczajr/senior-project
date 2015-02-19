@@ -144,3 +144,21 @@ footer a {
 	}
 }
 
+#googleMap {
+  top:10px;
+  min-width:300px;
+  min-height:300px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+  max-height: 600px;
+  width: 50%;
+  height: 50%;
+}
+
+h3 {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 30;
+}

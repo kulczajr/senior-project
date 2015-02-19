@@ -3,6 +3,7 @@ from google.appengine.ext import ndb
 
 
 class Sculpture(EndpointsModel):
+    _message_fields_schema = ("entityKey", "title", "artist", "description", "image", "location")
     title = ndb.StringProperty();
     artist = ndb.KeyProperty();
     description = ndb.StringProperty();
@@ -10,12 +11,14 @@ class Sculpture(EndpointsModel):
     location = ndb.GeoPtProperty();
 
 class Artist(EndpointsModel):
+    _message_fields_schema = ("entityKey", "fname", "lname", "website_url", "description")
     fname = ndb.StringProperty();
     lname = ndb.StringProperty();
     website_url = ndb.StringProperty();
     description = ndb.StringProperty();
 
 class Comment(EndpointsModel):
+    _message_fields_schema = ("entityKey", "sculpture_key", "author", "content", "timestamp")
     sculpture_key = ndb.StringProperty();
     author = ndb.StringProperty();
     content = ndb.StringProperty();

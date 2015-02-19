@@ -184,7 +184,6 @@ class AddCommentHandler(webapp2.RequestHandler):
 class AddArtistPageHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/AddArtist.html")
-        service.artist().insert({})
         self.response.write(template.render())
 
 class AddSculpturePageHandler(webapp2.RequestHandler):

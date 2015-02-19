@@ -1,0 +1,25 @@
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="static/css/mobile-angular-ui-hover.css" />
+    <link rel="stylesheet" href="static/css/mobile-angular-ui-base.css" />
+    <link rel="stylesheet" href="static/css/mobile-angular-ui-desktop.css" />
+    <script src="static/js/angular.min.js">
+    </script>
+    <script src="static/js/angular-route.min.js">
+    </script>
+    <script src="static/js/mobile-angular-ui.js">
+    </script>
+
+    {% block head %}
+    <title>{% block title %}{% endblock %} - Base Template</title>
+    {% endblock %}
+</head>
+<body>
+    <div id="navbar">{% block navbar %} {% endblock %} </div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+        {% block footer %}
+        {% endblock %}
+    </div>
+</body>

@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="static/css/mobile-angular-ui-hover.css" />
+    <link rel="stylesheet" href="static/css/mobile-angular-ui-base.css" />
+    <link rel="stylesheet" href="static/css/mobile-angular-ui-desktop.css" />
+    <script src="static/js/angular.min.js">
+    </script>
+    <script src="static/js/angular-route.min.js">
+    </script>
+    <script src="static/js/mobile-angular-ui.js">
+    </script>
+      <script src="web/js/mobile-test.js">
+    </script>
+</head>
+
+<body>
+    <div class="app">
+        <div class="navbar navbar-app navbar-absolute-top">
+
+            <div class="navbar-brand navbar-brand-center">
+                Artist Name
+            </div>
+
+            <div class="btn-group pull-left">
+                <div class="btn btn-navbar">
+                    Left Action
+                </div>
+            </div>
+
+            <div class="btn-group pull-right">
+                <div class="btn btn-navbar">
+                    <i class="fa fa-volume-up fa-3x"></i>
+                </div>
+                <div class="btn-group">
+                    <a ui-turn-on='myDropdown' class='btn'>
+                        <i class="fa fa-share-alt-square fa-3x"></i>
+                        <ul class="dropdown-menu pull-right" ui-outer-click="Ui.turnOff('myDropdown')" ui-outer-click-if="Ui.active('myDropdown')" role="menu" ui-show="myDropdown" ui-state="myDropdown" ui-turn-off="myDropdown">
+
+                            <li><a>Facebook <i class="fa fa-facebook-square fa-3x"></i></a></li>
+                            <li><a>Twitter <i class="fa fa-twtter-square fa-3x"></i></a></li>
+                            <li><a>Comment <i class="fa fa-comments fa-3x"></i></a></li>
+                        </ul>
+                    </a>
+
+                </div>
+                <div class="btn-group">
+                    <a ui-turn-on='myDropdown' class='btn'>
+                        <i class="fa fa-ellipsis-v fa-3x"></i>
+                        <ul id="myDropdown" class="dropdown-menu pull-right" ui-outer-click="Ui.turnOff('myDropdown')" ui-outer-click-if="Ui.active('myDropdown')" role="menu" ui-show="myDropdown" ui-state="myDropdown" ui-turn-off="myDropdown">
+
+                            <li><a>Artist Profile</a>
+                            </li>
+                            <li><a>Map</a>
+                            </li>
+                            <li><a>Notebook</a>
+                            </li>
+                            <li><a>Settings</a>
+                            </li>
+                            <li><a>About</a>
+                            </li>
+
+                        </ul>
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="app-body">
+
+        <ng-view></ng-view>
+    </div>
+
+</body>
+
+
+</html>

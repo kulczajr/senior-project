@@ -34,7 +34,7 @@ class SculptureApi(protorpc.remote.Service):
             
         return Sculpture(quote="deleted")
 
-    @Artist.method(name="artist.insert", path="artist/insert", http_method="POST")
+    @Artist.method(name="artist.insert", path="artist/insert/{}", http_method="POST")
     def artist_insert(self, request):
         if request.from_datastore:
             my_quote = request

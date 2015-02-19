@@ -129,21 +129,17 @@ class ArtistsHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 class AddSculptureHandler(webapp2.RequestHandler):
     def post(self):
-        # The non-string attributes probably are going to need changing here,
-        # but I don't know how to handle them yet.
-        
-
-        # Also, a general gist of what's happening here:
-        # We check to see if the statue already exists.
-        # If it does, we're updating it.
-        # If it doesn't, we're creating a new one and adding it.
-        # It checks the request for an entity key, which is what
-        # it would contain if the sculpture exists.
-        new_sculpture = Sculpture(title=self.request.get("title"),
-                                  artist=self.request.get("artist"),
-                                  location=None,
-                                  description=self.request.get("description"),
-                                  image=None)
+        #Also, a general gist of what's happening here:
+        #We check to see if the statue already exists.
+        #If it does, we're updating it.
+        #If it doesn't, we're creating a new one and adding it.
+        #It checks the request for an entity key, which is what
+        #it would contain if the sculpture exists.
+        new_sculpture = Sculpture(title = self.request.get("title"),
+                                  artist = self.request.get("artist"),
+                                  location = None,
+                                  description = self.request.get("description"),
+                                  image = self.request.get("image"))
         new_sculpture.put()
         self.redirect(self.request.referer)
 

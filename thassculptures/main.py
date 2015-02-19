@@ -109,7 +109,7 @@ class SculpturesHandler(webapp2.RequestHandler):
         self.response.write(template.render({'response': response['items']}))
 class SculptureCardHandler(webapp2.RequestHandler):
     def post(self):
-        template = jinja_env.get_template("web/single-page.html")
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
         sculpture_title = self.request.get("sculpture-title")
         sculptures = service.sculpture().list().execute()
         sculpture_for_card = None

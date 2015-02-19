@@ -1,5 +1,5 @@
   {% extends "/web/templates/base.html" %}
- {% block title %} {{title}} {% endblock %}
+ {% block title %} {{sculpture.title}} {% endblock %}
 {% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
  {% block content %}
 <div class="scrollable">
@@ -7,9 +7,9 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="article-content">
-                    <img class="img-thumbnail sculpture-image" src="/static/images/flame1big.jpg" title="banner1">
-                    <h3 class="article-header">{{title}}</h3>
-                    <h4><a href="artists.html" style="font-size:24px">{{artist}}</a></h4> {{description|e}}
+                    <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
+                    <h3 class="article-header">{{sculpture.title}}</h3>
+                    <h4><a href="artists.html" style="font-size:24px">{{sculpture.artist}}</a></h4> {{sculpture.description|e}}
 
                 </div>
             </div>

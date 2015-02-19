@@ -23,6 +23,10 @@ import jinja2
 # import Image
 import webapp2
 
+import pprint
+
+from apiclient.discovery import build
+
 
 SCULPTURE_KEY = ndb.Key("Entity", "sculpture_root")
 ARTIST_KEY = ndb.Key("Entity", "artist_root")
@@ -44,6 +48,16 @@ class MainHandler(webapp2.RequestHandler):
         #     'audio': "ToDo",
         #     'location':"GeoPage"
         # }
+
+        api_root = 'https://thassculptures.appspot.com/_ah/api'
+        api = 'sculptures'
+        version = 'v1'
+        discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
+        service = build(api, version, discoveryServiceUrl=discovery_url)
+
+        # Fetch all greetings and print them out.
+        response = service.artist().list().execute()
+        pprint.pprint(response)
         self.response.write(template.render())
         
 class MobileTestHandler(webapp2.RequestHandler):

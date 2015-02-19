@@ -35,19 +35,17 @@ jinja_env = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
   autoescape=True)
 
+api_root = 'https://thassculptures.appspot.com/_ah/api'
+api = 'sculptures'
+version = 'v1'
+discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
+service = build(api, version, discoveryServiceUrl=discovery_url)
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/index.html")
-        api_root = 'https://thassculptures.appspot.com/_ah/api'
-        api = 'sculptures'
-        version = 'v1'
-        discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
-        service = build(api, version, discoveryServiceUrl=discovery_url)
-
-        # Fetch all greetings and print them out.
-        response = service.artist().list().execute()
-        pprint.pprint(response)
         self.response.write(template.render())
+
         
 class MobileTestHandler(webapp2.RequestHandler):
     def get(self):
@@ -104,11 +102,23 @@ class twelveHundredChar(webapp2.RequestHandler):
 class SculpturesHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/sculptures.html")
-        self.response.write(template.render())
+        
+        # Fetch all greetings and print them out.
+        response = service.sculpture().list().execute()
+        #sculptures_query = Sculpture.query(ancestor=SCULPTURE_KEY)
+        self.response.write(template.render({'response': response['items']}))
 class SculptureCardHandler(webapp2.RequestHandler):
-    def get(self):
+    def post(self):
         template = jinja_env.get_template("web/single-page.html")
-        self.response.write(template.render())
+        sculpture_title = self.request.get("sculpture-title")
+        sculptures = service.sculpture().list().execute()
+        sculpture_for_card = None
+        for sculpture in sculptures['items']:
+            if sculpture['title'] == sculpture_title:
+                sculpture_for_card = sculpture
+                break
+        self.response.write(template.render({'sculpture':sculpture_for_card}))
+        
 class MapHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/map.html")
@@ -128,42 +138,21 @@ class AddSculptureHandler(webapp2.RequestHandler):
         #If it doesn't, we're creating a new one and adding it.
         #It checks the request for an entity key, which is what
         #it would contain if the sculpture exists.
-        if self.request.get("entity_key"):
-            sculpture_key = ndb.Key(urlsafe=self.request.get("entity_key"))
-            sculpture = sculpture_key.get()
-            sculpture.title = self.request.get("title")
-            sculpture.artist = self.request.get("artist")
-            sculpture.location = self.request.get("location")
-            sculpture.description = self.request.get("description")
-            sculpture.image = self.request.get("image")
-            sculpture.put()
-        else:
-            new_sculpture = Sculpture(parent = SCULPTURE_KEY,
-                                      title = self.request.get("title"),
-                                      artist = self.request.get("artist"),
-                                      location = self.request.get("location"),
-                                      description = self.request.get("description"),
-                                      image = self.request.get("image"))
-            new_sculpture.put()
+        new_sculpture = Sculpture(title = self.request.get("title"),
+                                  artist = None,
+                                  location = None,
+                                  description = self.request.get("description"),
+                                  image = None)
+        new_sculpture.put()
         self.redirect(self.request.referer)
 
 class AddArtistHandler(webapp2.RequestHandler):
     def post(self):
-        if self.request.get("entity_key"):
-            artist_key = ndb.Key(urlsafe=self.request.get("entity_key"))
-            artist = artist_key.get()
-            artist.fname = self.request.get("fname")
-            artist.lname = self.request.get("lname")
-            artist.website_url = self.request.get("website_url")
-            artist.description = self.request.get("description")
-            artist.put()
-        else:
-            new_artist = Artist(parent = ARTIST_KEY, 
-                                   fname = self.request.get("fname"), 
-                                   lname = self.request.get("lname"), 
-                                   website_url = self.request.get("website_url"), 
-                                   description = self.request.get("description"))
-            new_artist.put()
+        new_artist = Artist(fname = self.request.get("fname"), 
+                               lname = self.request.get("lname"), 
+                               website_url = self.request.get("website_url"), 
+                               description = self.request.get("description"))
+        new_artist.put()
         self.redirect(self.request.referer)
 
 class AddCommentHandler(webapp2.RequestHandler):
@@ -184,6 +173,11 @@ class AddCommentHandler(webapp2.RequestHandler):
 class AddArtistPageHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/AddArtist.html")
+        #new_artist = Artist(fname = "WHAT", 
+        #               lname = "IS", 
+        #               website_url = "GOING", 
+        #               description = "ON")
+        #service.artist().insert(new_artist)
         self.response.write(template.render())
 
 class AddSculpturePageHandler(webapp2.RequestHandler):

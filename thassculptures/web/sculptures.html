@@ -81,7 +81,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					{% for sculpture in response %}
 					<form action="/single-page.html" method="POST">
 					<li>
-					<input type="image" src="/static/images/flame1big.jpg" alt="Submit Form" />
+					<input class="grid_sculpture_images" type="image" src="/static/images/flame1big.jpg" alt="Submit Form" />
 						<div class="post-info">
 							<div class="post-basic-info">
 							<input type=text class="hidden" name="sculpture-title" value="{{sculpture['title']}}">

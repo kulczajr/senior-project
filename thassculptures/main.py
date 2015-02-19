@@ -62,6 +62,45 @@ class MobileTestHandler(webapp2.RequestHandler):
         }
         self.response.write(template.render(sculpture))
 
+class fourHundredChar(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        sculpture = {
+            'title':"Flame of the Millennium",
+            'artist':"Leonard Nierman",
+            'description': "Artist Leonardo Nierman lives in Mexico City and works in a variety of media including paint, stained glass and tapestry, but most of his large scale outdoor works are stainless steel, as is the Flame. His education in physics and mathematics and his study of the psychology of color and music have helped to shape his artistic style. What is common to all of his works is the lively and uplifting spirit that inhabits his forms and the vibrancy of the material as it moves skywar",
+            'image':"Some pretty picture", #not quite sure how to handle images with Jinja yet... will look in to
+            'audio': "ToDo",
+            'location':"GeoPage"
+        }
+        self.response.write(template.render(sculpture))
+
+class eightHundredChar(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        sculpture = {
+            'title':"Flame of the Millennium",
+            'artist':"Leonard Nierman",
+            'description': "Flame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of Technology, was the first sculpture in the Art Spaces collection. Its impressive form gives over to large gleaming surfaces which mirror the reflecting pool surrounding it, and offer a spectacle of changing colors and patterns for motorists along Historic National Road U.S. 40 as it enters Terre Haute. Artist Leonardo Nierman lives in Mexico City and works in a variety of media including paint, stained glass and tapestry, but most of his large scale outdoor works are stainless steel, as is the Flame. His education in physics and mathematics and his study of the psychology of color and music have helped to shape his artistic style. What is common to all of his works is the lively and uplifting.",
+            'image':"Some pretty picture", #not quite sure how to handle images with Jinja yet... will look in to
+            'audio': "ToDo",
+            'location':"GeoPage"
+        }
+        self.response.write(template.render(sculpture))
+
+class twelveHundredChar(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        sculpture = {
+            'title':"Flame of the Millennium",
+            'artist':"Leonard Nierman",
+            'description': "Flame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of Technology, was the first sculpture in the Art Spaces collection. Its impressive form gives over to large gleaming surfaces which mirror the reflecting pool surrounding it, and offer a spectacle of changing colors and patterns for motorists along Historic National Road U.S. 40 as it enters Terre Haute. Artist Leonardo Nierman lives in Mexico City and works in a variety of media including paint, stained glass and tapestry, but most of his large scale outdoor works are stainless steel, as is the Flame. His education in physics and mathematics and his study of the psychology of color and music have helped to shape his artistic style. What is common to all of his works is the lively and uplifting spFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of TechnFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of TechnFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of TechnFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of Techn.",
+            'image':"Some pretty picture", #not quite sure how to handle images with Jinja yet... will look in to
+            'audio': "ToDo",
+            'location':"GeoPage"
+        }
+        self.response.write(template.render(sculpture))
+
 class SculpturesHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/sculptures.html")
@@ -157,6 +196,9 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/sculptures.html', SculpturesHandler),
     ('/single-page.html', SculptureCardHandler),
+    ('/fourhundred.html', fourHundredChar),
+    ('/eighthundred.html', eightHundredChar),
+    ('/twelvehundred.html', twelveHundredChar),
     ('/mobile-test.html', MobileTestHandler),
     ('/addSculpture', AddSculptureHandler),
     ('/addArtist', AddArtistHandler),

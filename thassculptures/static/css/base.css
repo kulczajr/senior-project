@@ -1,11 +1,24 @@
 .hasTopNavbar{
 	padding-top:51px;
+
+}
+
+.fa{
+	color:black;
+}
+
+.navbarText{
+	font: 400 18px 'Open Sans', sans-serif;
+}
+
+.navbar{
+	margin-bottom:0px;
 }
 
 .article-content{
 	margin-left:5%;
 	margin-right:5%;
-	font: normal 36px/48px 'Open Sans', sans-serif,Helvetica,sans-serif;
+	font: normal 16px/24px 'Open Sans', sans-serif,Helvetica,sans-serif;
 color: #9b9b9b;
 padding: 17px 0px;
 font-weight: 400;
@@ -16,8 +29,10 @@ font-weight: 400;
 }
 
 .panel{
+	margin-top:20px;
 	margin-left:5%;
 	margin-right:5%;
+	margin-bottom:10px;
 
 }
 .article-header{
@@ -27,6 +42,10 @@ text-align: left;
 font-weight: 400;
 padding: 0.9em 0 0;
 display: block;
+}
+
+.navbar{
+	min-height:0px;
 }
 
 /*----start-comment-section---*/

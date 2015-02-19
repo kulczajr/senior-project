@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="static/css/mobile-angular-ui-hover.css" />
-    <link rel="stylesheet" href="static/css/base.css" />
     <link rel="stylesheet" href="static/css/mobile-angular-ui-base.css" />
     <link rel="stylesheet" href="static/css/mobile-angular-ui-desktop.css" />
         <link href="static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="static/css/base.css" />
 
     <script src="static/js/angular.min.js">
     </script>
@@ -29,10 +29,10 @@
     <div id="navbar">{% block navbar %} {% endblock %} </div>
     <div class = "app-body" id="content">
         <div class="app-content">{% block content %}{% endblock %}</div></div>
-  <div class="navbar navbar-app navbar-absolute-bottom">
- {% block bottomNav %}
+
+         {% block bottomNav %}
+
         {% endblock %}
-        
-    </div>
+
       </div>       
 </body>

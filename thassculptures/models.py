@@ -7,7 +7,7 @@ class Sculpture(EndpointsModel):
     title = ndb.StringProperty();
     artist = ndb.StringProperty();
     description = ndb.StringProperty();
-    image = ndb.BlobProperty();
+    image = ndb.StringProperty();
     audio = ndb.BlobProperty();
     location = ndb.StringProperty();
 

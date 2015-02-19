@@ -17,7 +17,7 @@ class SculptureApi(protorpc.remote.Service):
         if request.from_datastore:
             my_quote = request
         else:
-            my_quote = Sculpture(title=request.title, artist=request.artist, description=request.description, image=request.image, location=request.location)
+            my_quote = Sculpture(title=request.title, artist=request.artist, description=request.description, image=request.image, audio=request.audio, location=request.location)
         my_quote.put()
         return my_quote
     

@@ -35,19 +35,17 @@ jinja_env = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
   autoescape=True)
 
+api_root = 'https://thassculptures.appspot.com/_ah/api'
+api = 'sculptures'
+version = 'v1'
+discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
+service = build(api, version, discoveryServiceUrl=discovery_url)
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/index.html")
-        api_root = 'https://thassculptures.appspot.com/_ah/api'
-        api = 'sculptures'
-        version = 'v1'
-        discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
-        service = build(api, version, discoveryServiceUrl=discovery_url)
-
-        # Fetch all greetings and print them out.
-        response = service.artist().list().execute()
-        pprint.pprint(response)
         self.response.write(template.render())
+
         
 class MobileTestHandler(webapp2.RequestHandler):
     def get(self):
@@ -104,10 +102,17 @@ class twelveHundredChar(webapp2.RequestHandler):
 class SculpturesHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/sculptures.html")
-        self.response.write(template.render())
+        
+        # Fetch all greetings and print them out.
+        #response = service.sculpture().list().execute()
+        sculptures_query = Sculpture.query(ancestor=SCULPTURE_KEY)
+        self.response.write(template.render({'response':sculptures_query}))
 class SculptureCardHandler(webapp2.RequestHandler):
-    def get(self):
+    def post(self):
         template = jinja_env.get_template("web/single-page.html")
+        sculpture_key = ndb.Key(urlsafe=self.request.get("entity-key"))
+        sculpture = sculpture_key.get()
+        pprint.pprint(sculpture)
         self.response.write(template.render())
 class MapHandler(webapp2.RequestHandler):
     def get(self):
@@ -132,18 +137,18 @@ class AddSculptureHandler(webapp2.RequestHandler):
             sculpture_key = ndb.Key(urlsafe=self.request.get("entity_key"))
             sculpture = sculpture_key.get()
             sculpture.title = self.request.get("title")
-            sculpture.artist = self.request.get("artist")
-            sculpture.location = self.request.get("location")
+            sculpture.artist = None
+            sculpture.location = None
             sculpture.description = self.request.get("description")
-            sculpture.image = self.request.get("image")
+            sculpture.image = None
             sculpture.put()
         else:
             new_sculpture = Sculpture(parent = SCULPTURE_KEY,
                                       title = self.request.get("title"),
-                                      artist = self.request.get("artist"),
-                                      location = self.request.get("location"),
+                                      artist = None,
+                                      location = None,
                                       description = self.request.get("description"),
-                                      image = self.request.get("image"))
+                                      image = None)
             new_sculpture.put()
         self.redirect(self.request.referer)
 

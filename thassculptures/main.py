@@ -138,8 +138,7 @@ class AddSculptureHandler(webapp2.RequestHandler):
         #If it doesn't, we're creating a new one and adding it.
         #It checks the request for an entity key, which is what
         #it would contain if the sculpture exists.
-        new_sculpture = Sculpture(parent = SCULPTURE_KEY,
-                                  title = self.request.get("title"),
+        new_sculpture = Sculpture(title = self.request.get("title"),
                                   artist = None,
                                   location = None,
                                   description = self.request.get("description"),
@@ -149,21 +148,11 @@ class AddSculptureHandler(webapp2.RequestHandler):
 
 class AddArtistHandler(webapp2.RequestHandler):
     def post(self):
-        if self.request.get("entity_key"):
-            artist_key = ndb.Key(urlsafe=self.request.get("entity_key"))
-            artist = artist_key.get()
-            artist.fname = self.request.get("fname")
-            artist.lname = self.request.get("lname")
-            artist.website_url = self.request.get("website_url")
-            artist.description = self.request.get("description")
-            artist.put()
-        else:
-            new_artist = Artist(parent = ARTIST_KEY, 
-                                   fname = self.request.get("fname"), 
-                                   lname = self.request.get("lname"), 
-                                   website_url = self.request.get("website_url"), 
-                                   description = self.request.get("description"))
-            new_artist.put()
+        new_artist = Artist(fname = self.request.get("fname"), 
+                               lname = self.request.get("lname"), 
+                               website_url = self.request.get("website_url"), 
+                               description = self.request.get("description"))
+        new_artist.put()
         self.redirect(self.request.referer)
 
 class AddCommentHandler(webapp2.RequestHandler):
@@ -184,6 +173,11 @@ class AddCommentHandler(webapp2.RequestHandler):
 class AddArtistPageHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/AddArtist.html")
+        #new_artist = Artist(fname = "WHAT", 
+        #               lname = "IS", 
+        #               website_url = "GOING", 
+        #               description = "ON")
+        #service.artist().insert(new_artist)
         self.response.write(template.render())
 
 class AddSculpturePageHandler(webapp2.RequestHandler):

@@ -9,10 +9,22 @@
     </div>
   {% endblock %}
  {% block rightActions %}
-
- 	     <div class="btn btn-sm btn-navbar">
+    <script>
+  function play(){
+       var audio = document.getElementById("audio");
+       if(audio.playing == null || audio.playing == "false" ){
+       audio.play();
+       audio.playing = "true";
+   } else {
+    audio.pause();
+    audio.playing = "false";
+   }
+                 }
+   </script>
+ 	     <div onclick="play()" class="btn btn-sm btn-navbar">
                     <i class="fa fa-volume-up fa-3x"></i>
                 </div>
+                <audio id="audio" playing = "false" src="http://www.kozco.com/tech/piano2.wav"></audio>
 <div class="btn dropdown">
     <div class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
         <i class="fa fa-share-alt-square fa-3x"></i>

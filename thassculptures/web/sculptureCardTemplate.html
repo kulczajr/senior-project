@@ -1,0 +1,84 @@
+  {% extends "/web/templates/base.html" %}
+ {% block title %} {{title}} {% endblock %}
+{% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
+ {% block content %}
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="article-content">
+                    <img class="img-thumbnail sculpture-image" src="/static/images/flame1big.jpg" title="banner1">
+                    <h3 class="article-header">{{title}}</h3>
+                    <h4><a href="artists.html" style="font-size:24px">{{artist}}</a></h4> {{description|e}}
+
+                </div>
+            </div>
+        </div>
+        <br></br>
+        <br></br>
+        <div class ="panel panel-default">
+        							<div class="comment-section">
+				<div class="grids_of_2">
+					<h2>Comments</h2>
+					<div class="grid1_of_2">
+						<div class="grid_img">
+							<a href=""><img src="/static/images/pic10.jpg" alt=""></a>
+						</div>
+						<div class="grid_text">
+							<h4 class="style1 list"><a href="#">Uku Mason</a></h4>
+							<h3 class="style">march 2, 2013 - 12.50 AM</h3>
+							<p class="para top"> All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
+							<a href="" class="btn1">Click to Reply</a>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="grid1_of_2 left">
+						<div class="grid_img">
+							<a href=""><img src="/static/images/pic10.jpg" alt=""></a>
+						</div>
+						<div class="grid_text">
+							<h4 class="style1 list"><a href="#">Designer First</a></h4>
+							<h3 class="style">march 3, 2013 - 4.00 PM</h3>
+							<p class="para top"> All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
+							<a href="" class="btn1">Click to Reply</a>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="grid1_of_2">
+						<div class="grid_img">
+							<a href=""><img src="/static/images/pic12.jpg" alt=""></a>
+						</div>
+						<div class="grid_text">
+							<h4 class="style1 list"><a href="#">Ro Kanth</a></h4>
+							<h3 class="style">march 2, 2013 - 12.50 AM</h3>
+							<p class="para top"> All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
+							<a href="" class="btn1">Click to Reply</a>
+						</div>
+						<div class="clear"></div>
+					</div>								
+						<div class="artical-commentbox">
+						 	<h2>Leave a Comment</h2>
+				  			<div class="table-form">
+								<form action="/addComment" method="post">
+									<div>
+										<label>Name<span>*</span></label>
+										<input type="text" name="author">
+									</div>
+									<div>
+										<label>Your Comment<span>*</span></label>
+										<textarea name="content"> </textarea>	
+									</div>
+									<input type="submit" value="submit">
+								</form>
+								
+									
+							</div>
+							<div class="clear"> </div>
+				  		</div>			
+					</div>
+			</div>
+    </div>
+</div>
+</div>
+{% endblock %}
+

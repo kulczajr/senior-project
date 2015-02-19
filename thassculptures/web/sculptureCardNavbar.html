@@ -1,0 +1,48 @@
+ {% extends "/web/templates/navbarTemplate.html" %}
+ {% block navbarTitle%} {{title}} {% endblock %}
+ {% block leftActions%}
+     <div class="btn btn-navbar">
+     	<a href = "sculptures.html">
+                    <i class="fa fa-chevron-left fa-3x"></i>
+                </a>
+                </div>
+  {% endblock %}
+ {% block rightActions %}
+ 	     <div class="btn btn-navbar">
+                    <i class="fa fa-volume-up fa-3x"></i>
+                </div>
+<div class="btn btn-navbar dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        <i class="fa fa-share-alt-square fa-3x"></i>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+        <li><a> <i class="fa fa-facebook-square fa-3x"></i></a>
+        </li>
+        <li><a> <i class="fa fa-twitter-square fa-3x"></i></a>
+        </li>
+        <li><a> <i class="fa fa-comments fa-3x"></i></a>
+        </li>
+    </ul>
+</div>
+<div class="btn btn-navbar dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        <i class="fa fa-ellipsis-v fa-3x"></i>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+        <li><a>Artist Profile</a>
+        </li>
+        <li><a>Map</a>
+        </li>
+        <li><a>Notebook</a>
+        </li>
+        <li><a>Settings</a>
+        </li>
+        <li><a>About</a>
+        </li>
+
+    </ul>
+    </div>
+
+{% endblock %}

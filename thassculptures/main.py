@@ -175,14 +175,7 @@ class AddArtistPageHandler(webapp2.RequestHandler):
         #               website_url = "GOING", 
         #               description = "ON")
         # service.artist().insert(new_artist)
-        self.response.write(template.render())
-    def post(self):
-        new_artist = Artist(fname=self.request.get("fname"),
-                               lname=self.request.get("lname"),
-                               website_url=self.request.get("website_url"),
-                               description=self.request.get("description"))
-        new_artist.put()
-        self.redirect(self.request.referer)        
+        self.response.write(template.render())       
 
 class AddSculpturePageHandler(webapp2.RequestHandler):
     def get(self):

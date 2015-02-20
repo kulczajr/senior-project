@@ -1,3 +1,4 @@
+
 .hasTopNavbar{
 	padding-top:51px;
 
@@ -7,8 +8,14 @@
 	color:black;
 }
 
+.fa-2x{
+font-size:2em;
+}
+.fa-3x{
+	font-size:3em;
+}
 .navbarText{
-	font: 400 18px 'Open Sans', sans-serif;
+	font: 400 1em 'Open Sans', sans-serif;
 }
 
 .navbar{
@@ -18,7 +25,8 @@
 .article-content{
 	margin-left:5%;
 	margin-right:5%;
-	font: normal 16px/24px 'Open Sans', sans-serif,Helvetica,sans-serif;
+	font: normal 16px/22px 'Open Sans', sans-serif,Helvetica,sans-serif;
+	font: ;
 color: #9b9b9b;
 padding: 17px 0px;
 font-weight: 400;
@@ -36,11 +44,10 @@ font-weight: 400;
 
 }
 .article-header{
-	font: 400 28px/28px 'Open Sans', sans-serif;
+	font: 400 32px 'Open Sans', sans-serif;
 color: #626262;
 text-align: left;
 font-weight: 400;
-padding: 0.9em 0 0;
 display: block;
 }
 
@@ -239,3 +246,98 @@ p.para {
 	margin: 1em 0;
 }
 /*----//End-comment-section---*/
+
+
+/*Iphone 4 media query*/
+@media screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3) and (orientation:portrait){
+.fa-2x{
+font-size:7vmin;
+}
+.fa-3x{
+	font-size:7vmin;
+}
+.navbarText{
+	font: 400 7vmin 'Open Sans', sans-serif;
+}
+
+.navbar{
+	margin-bottom:0px;
+}
+
+.article-content{
+	margin-left:5%;
+	margin-right:5%;
+	font: normal 2.5em/36px 'Open Sans', sans-serif,Helvetica,sans-serif;
+	font: ;
+color: #9b9b9b;
+padding: 17px 0px;
+font-weight: 400;
+}
+
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px) {
+
+.fa-2x{
+font-size:7vmin;
+}
+.fa-3x{
+	font-size:7vmin;
+}
+.navbarText{
+	font: 400 7vmin 'Open Sans', sans-serif;
+}
+
+.navbar{
+	margin-bottom:0px;
+}
+.article-header{
+	font-size:2em;
+}
+
+.article-content{
+	margin-left:5%;
+	margin-right:5%;
+	font: normal 2.5em/36px 'Open Sans', sans-serif,Helvetica,sans-serif;
+	font: ;
+color: #9b9b9b;
+padding: 17px 0px;
+font-weight: 400;
+}
+.dropdown-menu > li > a{
+	font-size: 2.5em;
+}
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px) {
+
+.fa-2x{
+font-size:7vmin;
+}
+.fa-3x{
+	font-size:7vmin;
+}
+.navbarText{
+	font: 400 7vmin 'Open Sans', sans-serif;
+}
+.article-header{
+	font-size:2em;
+}
+.dropdown-menu > li > a{
+	font-size: 2.5em;
+}
+.navbar{
+	margin-bottom:0px;
+}
+
+.article-content{
+	margin-left:5%;
+	margin-right:5%;
+	font: normal 2.5em/36px 'Open Sans', sans-serif,Helvetica,sans-serif;
+	font: ;
+color: #9b9b9b;
+padding: 17px 0px;
+font-weight: 400;
+}
+
+}

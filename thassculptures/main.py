@@ -127,7 +127,12 @@ class ArtistsHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/artists.html")
         self.response.write(template.render())
+        
 class AddSculptureHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/AddSculpture.html")
+        self.response.write(template.render())
+        
     def post(self):
         #Also, a general gist of what's happening here:
         #We check to see if the statue already exists.
@@ -143,14 +148,6 @@ class AddSculptureHandler(webapp2.RequestHandler):
         new_sculpture.put()
         self.redirect(self.request.referer)
 
-class AddArtistHandler(webapp2.RequestHandler):
-    def post(self):
-        new_artist = Artist(fname=self.request.get("fname"),
-                               lname=self.request.get("lname"),
-                               website_url=self.request.get("website_url"),
-                               description=self.request.get("description"))
-        new_artist.put()
-        self.redirect(self.request.referer)
 
 class AddCommentHandler(webapp2.RequestHandler):
     def post(self):
@@ -167,7 +164,7 @@ class AddCommentHandler(webapp2.RequestHandler):
             new_comment.put()
         self.redirect(self.request.referer)
 
-class AddArtistPageHandler(webapp2.RequestHandler):
+class AddArtistHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/AddArtist.html")
         # new_artist = Artist(fname = "WHAT", 
@@ -175,14 +172,14 @@ class AddArtistPageHandler(webapp2.RequestHandler):
         #               website_url = "GOING", 
         #               description = "ON")
         # service.artist().insert(new_artist)
-        self.response.write(template.render())
+        self.response.write(template.render())    
     def post(self):
         new_artist = Artist(fname=self.request.get("fname"),
                                lname=self.request.get("lname"),
                                website_url=self.request.get("website_url"),
                                description=self.request.get("description"))
         new_artist.put()
-        self.redirect(self.request.referer)        
+        self.redirect(self.request.referer)
 
 class AddSculpturePageHandler(webapp2.RequestHandler):
     def get(self):
@@ -203,6 +200,4 @@ app = webapp2.WSGIApplication([
     ('/addComment', AddCommentHandler),
     ('/map.html', MapHandler),
     ('/artists.html', ArtistsHandler),
-    ('/addArtistPage', AddArtistPageHandler),
-    ('/addSculpturePage', AddSculpturePageHandler),
 ], debug=True)

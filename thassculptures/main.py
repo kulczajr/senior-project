@@ -21,7 +21,7 @@ from google.appengine.ext import ndb
 from models import Sculpture, Artist, Comment
 import jinja2
 import webapp2
-
+import time
 import pprint
 
 from apiclient.discovery import build
@@ -46,59 +46,6 @@ class MainHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/index.html")
         self.response.write(template.render())
 
-        
-class MobileTestHandler(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_env.get_template("web/sculptureCardTemplate.html")
-        sculpture = {
-            'title':"Flame of the Millennium",
-            'artist':"Leonard Nierman",
-            'description': "Flame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of Technology, was the first sculpture in the Art Spaces collection. Its impressive form gives over to large gleaming surfaces which mirror the reflecting pool surrounding it, and offer a spectacle of changing colors and patterns for motorists along Historic National Road U.S. 40 as it enters Terre Haute. Artist Leonardo Nierman lives in Mexico City and works in a variety of media including paint, stained glass and tapestry, but most of his large scale outdoor works are stainless steel, as is the Flame. His education in physics and mathematics and his study of the psychology of color and music have helped to shape his artistic style. What is common to all of his works is the lively and uplifting spirit that inhabits his forms and the vibrancy of the material as it moves skyward.",
-            'image':"Some pretty picture",  # not quite sure how to handle images with Jinja yet... will look in to
-            'audio': "ToDo",
-            'location':"GeoPage"
-        }
-        self.response.write(template.render(sculpture))
-
-class fourHundredChar(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_env.get_template("web/sculptureCardTemplate.html")
-        sculpture = {
-            'title':"Flame of the Millennium",
-            'artist':"Leonard Nierman",
-            'description': "Artist Leonardo Nierman lives in Mexico City and works in a variety of media including paint, stained glass and tapestry, but most of his large scale outdoor works are stainless steel, as is the Flame. His education in physics and mathematics and his study of the psychology of color and music have helped to shape his artistic style. What is common to all of his works is the lively and uplifting spirit that inhabits his forms and the vibrancy of the material as it moves skywar",
-            'image':"Some pretty picture",  # not quite sure how to handle images with Jinja yet... will look in to
-            'audio': "ToDo",
-            'location':"GeoPage"
-        }
-        self.response.write(template.render(sculpture))
-
-class eightHundredChar(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_env.get_template("web/sculptureCardTemplate.html")
-        sculpture = {
-            'title':"Flame of the Millennium",
-            'artist':"Leonard Nierman",
-            'description': "Flame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of Technology, was the first sculpture in the Art Spaces collection. Its impressive form gives over to large gleaming surfaces which mirror the reflecting pool surrounding it, and offer a spectacle of changing colors and patterns for motorists along Historic National Road U.S. 40 as it enters Terre Haute. Artist Leonardo Nierman lives in Mexico City and works in a variety of media including paint, stained glass and tapestry, but most of his large scale outdoor works are stainless steel, as is the Flame. His education in physics and mathematics and his study of the psychology of color and music have helped to shape his artistic style. What is common to all of his works is the lively and uplifting.",
-            'image':"Some pretty picture",  # not quite sure how to handle images with Jinja yet... will look in to
-            'audio': "ToDo",
-            'location':"GeoPage"
-        }
-        self.response.write(template.render(sculpture))
-
-class twelveHundredChar(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_env.get_template("web/sculptureCardTemplate.html")
-        sculpture = {
-            'title':"Flame of the Millennium",
-            'artist':"Leonard Nierman",
-            'description': "Flame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of Technology, was the first sculpture in the Art Spaces collection. Its impressive form gives over to large gleaming surfaces which mirror the reflecting pool surrounding it, and offer a spectacle of changing colors and patterns for motorists along Historic National Road U.S. 40 as it enters Terre Haute. Artist Leonardo Nierman lives in Mexico City and works in a variety of media including paint, stained glass and tapestry, but most of his large scale outdoor works are stainless steel, as is the Flame. His education in physics and mathematics and his study of the psychology of color and music have helped to shape his artistic style. What is common to all of his works is the lively and uplifting spFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of TechnFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of TechnFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of TechnFlame of the Millennium by Leonardo Nierman, located on the campus of Rose-Hulman Institute of Techn.",
-            'image':"Some pretty picture",  # not quite sure how to handle images with Jinja yet... will look in to
-            'audio': "ToDo",
-            'location':"GeoPage"
-        }
-        self.response.write(template.render(sculpture))
-
 class SculpturesHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/sculptures.html")
@@ -107,17 +54,24 @@ class SculpturesHandler(webapp2.RequestHandler):
         response = service.sculpture().list().execute()
         # sculptures_query = Sculpture.query(ancestor=SCULPTURE_KEY)
         self.response.write(template.render({'response': response['items']}))
+
+        
 class SculptureCardHandler(webapp2.RequestHandler):
     def post(self):
         template = jinja_env.get_template("web/sculptureCardTemplate.html")
         sculpture_title = self.request.get("sculpture-title")
         sculptures = service.sculpture().list().execute()
+        comments = service.comment().list().execute()
         sculpture_for_card = None
+        comments_for_card = []
         for sculpture in sculptures['items']:
             if sculpture['title'] == sculpture_title:
                 sculpture_for_card = sculpture
+                for comment in comments['items']:
+                    if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
+                        comments_for_card.append(comment)
                 break
-        self.response.write(template.render({'sculpture':sculpture_for_card}))
+        self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
         
 class MapHandler(webapp2.RequestHandler):
     def get(self):
@@ -150,6 +104,10 @@ class AddSculptureHandler(webapp2.RequestHandler):
 
 
 class AddCommentHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/AddComment.html")
+        self.response.write(template.render())
+
     def post(self):
         if self.request.get("entity_key"):
             comment_key = ndb.Key(urlsafe=self.request.get("entity_key"))
@@ -158,9 +116,12 @@ class AddCommentHandler(webapp2.RequestHandler):
             comment.content = self.request.get("content")
             comment.put()
         else:
+            time = time.time()
             new_comment = Comment(parent=COMMENT_KEY,
                                    author=self.request.get("author"),
-                                   content=self.request.get("content"))
+                                   sculpture_key = self.request.get("sculpture_key"),
+                                   content=self.request.get("content"),
+                                   timestamp=time)
             new_comment.put()
         self.redirect(self.request.referer)
 
@@ -191,10 +152,6 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/sculptures.html', SculpturesHandler),
     ('/single-page.html', SculptureCardHandler),
-    ('/fourhundred.html', fourHundredChar),
-    ('/eighthundred.html', eightHundredChar),
-    ('/twelvehundred.html', twelveHundredChar),
-    ('/mobile-test.html', MobileTestHandler),
     ('/addSculpture', AddSculptureHandler),
     ('/addArtist', AddArtistHandler),
     ('/addComment', AddCommentHandler),

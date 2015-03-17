@@ -22,9 +22,11 @@ from models import Sculpture, Artist, Comment
 import jinja2
 import webapp2
 import time
+import json
 import pprint
 
 from apiclient.discovery import build
+from google.appengine._internal.django.utils.safestring import mark_safe
 
 
 SCULPTURE_KEY = ndb.Key("Entity", "sculpture_root")
@@ -94,9 +96,12 @@ class AddSculptureHandler(webapp2.RequestHandler):
         #If it doesn't, we're creating a new one and adding it.
         #It checks the request for an entity key, which is what
         #it would contain if the sculpture exists.
+        latitude = self.request.get("latitude")
+        longitude = self.request.get("longitude")
+        location = latitude + ", " + longitude
         new_sculpture = Sculpture(title = self.request.get("title"),
                                   artist = self.request.get("artist"),
-                                  location = None,
+                                  location = location,
                                   description = self.request.get("description"),
                                   image = self.request.get("image"))
         new_sculpture.put()
@@ -146,6 +151,14 @@ class AddSculpturePageHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/AddSculpture.html")
         self.response.write(template.render())
+
+class MyLocationHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/my_location.html")
+        sculptures = service.sculpture().list().execute()
+        sculpture_items = sculptures['items']
+        print sculpture_items
+        self.response.write(template.render({'sculptures' : sculpture_items}))
         
 
 app = webapp2.WSGIApplication([
@@ -157,4 +170,5 @@ app = webapp2.WSGIApplication([
     ('/addComment', AddCommentHandler),
     ('/map.html', MapHandler),
     ('/artists.html', ArtistsHandler),
+    ('/my_location', MyLocationHandler),
 ], debug=True)

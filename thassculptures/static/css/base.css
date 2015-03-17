@@ -84,41 +84,7 @@ display: block;
 	font-weight:bold;
 	margin-left: 10px;
 }
-/*Iphone 4 media query*/
-@media screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3) and (orientation:portrait){
-.fa-2x{
-font-size:7vmin;
-}
-.fa-3x{
-	font-size:7vmin;
-}
-.navbarText{
-	font: 400 7vmin 'Open Sans', sans-serif;
-}
 
-.navbar{
-	margin-bottom:0px;
-}
-
-.article-content{
-	margin-left:5%;
-	margin-right:5%;
-	font: normal 3.5em/36px 'Open Sans', sans-serif,Helvetica,sans-serif;
-color: #9b9b9b;
-padding: 17px 0px;
-font-weight: 400;
-}
-.commentBody{
-	font-size:150%;
-	margin-left:25px;
-}
-.commentAuthor{
-	font-size:200%;
-	font-weight:bold;
-	margin-left: 10px;
-}
-
-}
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 568px) {
 
@@ -142,7 +108,7 @@ font-size:7vmin;
 .article-content{
 	margin-left:5%;
 	margin-right:5%;
-	font: normal 140% 'Open Sans', sans-serif,Helvetica,sans-serif;
+	font: normal 250% 'Open Sans', sans-serif,Helvetica,sans-serif;
 color: #9b9b9b;
 padding: 17px 0px;
 font-weight: 400;
@@ -152,13 +118,48 @@ font-weight: 400;
 }
 
 .commentBody{
-	font-size:150%;
+	font-size:200%;
 	margin-left:25px;
 }
 .commentAuthor{
-	font-size:200%;
+	font-size:250%;
 	font-weight:bold;
 	margin-left: 10px;
 }
 }
 
+/*Iphone 4 media query*/
+@media screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3) and (orientation:portrait){
+.fa-2x{
+font-size:7vmin;
+}
+.fa-3x{
+	font-size:7vmin;
+}
+.navbarText{
+	font: 400 7vmin 'Open Sans', sans-serif;
+}
+
+.navbar{
+	margin-bottom:0px;
+}
+
+.article-content{
+	margin-left:5%;
+	margin-right:5%;
+	font: normal 250% 'Open Sans', sans-serif,Helvetica,sans-serif;
+color: #9b9b9b;
+padding: 17px 0px;
+font-weight: 400;
+}
+.commentBody{
+	font-size:250%;
+	margin-left:25px;
+}
+.commentAuthor{
+	font-size:250%;
+	font-weight:bold;
+	margin-left: 10px;
+}
+
+}

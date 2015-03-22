@@ -24,6 +24,7 @@ import webapp2
 import time
 import json
 import pprint
+import re
 
 from apiclient.discovery import build
 from google.appengine._internal.django.utils.safestring import mark_safe
@@ -168,12 +169,45 @@ class MyLocationHandler(webapp2.RequestHandler):
         
 class CheckForStatueHandler(webapp2.RequestHandler):
     def post(self):
-        sculptures = service.sculpture().list().execute()
+        #sculptures = service.sculpture().list().execute()
+        sculptures = Sculpture.query()
         print "got here!"
-        print self.request.get("x_coord")
-        print self.request.get("y_coord")
-        for sculpture in sculptures['items']:
-            print sculpture['title']
+        current_x = float(self.request.get("x_coord"))
+        current_y = float(self.request.get("y_coord"))
+        print current_x
+        print current_y
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        for sculpture in sculptures:
+            sculpture_x = float(self.get_x(sculpture.location))
+            sculpture_y = float(self.get_y(sculpture.location))
+            print sculpture_x
+            print sculpture_y
+            if self.is_by_statue(sculpture_x, sculpture_y, current_x, current_y):
+                print "You're by a statue!"
+                sculpture_title = sculpture.title
+                #coordinates = {'sculpture_x' : sculpture_x, 'sculpture_y' : sculpture_y}
+                self.response.out.write(json.dumps({"sculpture_title": sculpture_title}))
+    
+    def is_by_statue(self, sculpture_x, sculpture_y, current_x, current_y):
+        print "sculpture_x is " + str(sculpture_x)
+        print "sculpture_y is " + str(sculpture_y)
+        print "current_x is " + str(current_x)
+        print "current_y is " + str(current_y)
+        return (abs(sculpture_x - current_x) < 1 and abs(sculpture_y - current_y) < 1)
+    
+    def get_x(self, location):
+        split_string = re.split(", ", location)
+        return split_string[0]
+    
+    def get_y(self, location):
+        split_string = re.split(", ", location)
+        return split_string[1]
+    
+class CardFromLocationHandler(webapp2.RequestHandler):
+    def post(self):
+        name = self.request.get("sculpture_name")
+        response = "Loading the card for " + name
+        self.response.out.write(response)
             
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -186,4 +220,5 @@ app = webapp2.WSGIApplication([
     ('/artists.html', ArtistsHandler),
     ('/my_location', MyLocationHandler),
     ('/CheckForStatue', CheckForStatueHandler),
+    ('/CardFromLocation', CardFromLocationHandler),
 ], debug=True)

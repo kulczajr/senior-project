@@ -27,6 +27,7 @@ import pprint
 
 from apiclient.discovery import build
 from google.appengine._internal.django.utils.safestring import mark_safe
+from google.storage.speckle.proto.jdbc_type import NULL
 
 
 SCULPTURE_KEY = ndb.Key("Entity", "sculpture_root")
@@ -157,10 +158,23 @@ class MyLocationHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/my_location.html")
         sculptures = service.sculpture().list().execute()
         sculpture_items = sculptures['items']
+        json_test = self.parse_for_json()
+        print json_test
         print sculpture_items
         self.response.write(template.render({'sculptures' : sculpture_items}))
-        
 
+    def parse_for_json(self):
+        return "parse_magic"
+        
+class CheckForStatueHandler(webapp2.RequestHandler):
+    def post(self):
+        sculptures = service.sculpture().list().execute()
+        print "got here!"
+        print self.request.get("x_coord")
+        print self.request.get("y_coord")
+        for sculpture in sculptures['items']:
+            print sculpture['title']
+            
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/sculptures.html', SculpturesHandler),
@@ -171,4 +185,5 @@ app = webapp2.WSGIApplication([
     ('/map.html', MapHandler),
     ('/artists.html', ArtistsHandler),
     ('/my_location', MyLocationHandler),
+    ('/CheckForStatue', CheckForStatueHandler),
 ], debug=True)

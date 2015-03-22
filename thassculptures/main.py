@@ -169,22 +169,24 @@ class MyLocationHandler(webapp2.RequestHandler):
         
 class CheckForStatueHandler(webapp2.RequestHandler):
     def post(self):
-        #sculptures = service.sculpture().list().execute()
-        sculptures = Sculpture.query()
+        sculptures = service.sculpture().list().execute()
+        #sculptures = Sculpture.query()
         print "got here!"
         current_x = float(self.request.get("x_coord"))
         current_y = float(self.request.get("y_coord"))
+        #current_x = 75
+        #current_y = 75
         print current_x
         print current_y
         template = jinja_env.get_template("web/sculptureCardTemplate.html")
-        for sculpture in sculptures:
-            sculpture_x = float(self.get_x(sculpture.location))
-            sculpture_y = float(self.get_y(sculpture.location))
+        for sculpture in sculptures['items']:
+            sculpture_x = float(self.get_x(sculpture['location']))
+            sculpture_y = float(self.get_y(sculpture['location']))
             print sculpture_x
             print sculpture_y
             if self.is_by_statue(sculpture_x, sculpture_y, current_x, current_y):
                 print "You're by a statue!"
-                sculpture_title = sculpture.title
+                sculpture_title = sculpture['title']
                 #coordinates = {'sculpture_x' : sculpture_x, 'sculpture_y' : sculpture_y}
                 self.response.out.write(json.dumps({"sculpture_title": sculpture_title}))
     
@@ -207,7 +209,20 @@ class CardFromLocationHandler(webapp2.RequestHandler):
     def post(self):
         name = self.request.get("sculpture_name")
         response = "Loading the card for " + name
-        self.response.out.write(response)
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        sculpture_title = name
+        sculptures = service.sculpture().list().execute()
+        comments = service.comment().list().execute()
+        sculpture_for_card = None
+        comments_for_card = []
+        for sculpture in sculptures['items']:
+            if sculpture['title'] == sculpture_title:
+                sculpture_for_card = sculpture
+                for comment in comments['items']:
+                    if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
+                        comments_for_card.append(comment)
+                break
+        self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
             
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

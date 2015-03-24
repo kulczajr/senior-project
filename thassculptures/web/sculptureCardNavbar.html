@@ -10,16 +10,19 @@
   {% endblock %}
  {% block rightActions %}
     <script>
+    var on = false;
   function play(){
-       var audio = document.getElementById("audio");
-       if(audio.playing == null || audio.playing == "false" ){
-       audio.play();
-       audio.playing = "true";
-   } else {
-    audio.pause();
-    audio.playing = "false";
-   }
+    if(on){
+      responsiveVoice.cancel();
+      on = false;
+    } else {
+      on = true;
+      var text = "SCULPTURE     " + document.getElementById("sculptureTitle").innerHTML;
+      text = text + "ARTIST     " + document.getElementById("artistName").innerHTML;
+      text = text + " " + document.getElementById("sculptureText").innerHTML;
+       responsiveVoice.speak(text);
                  }
+               }
    </script>
  	     <div onclick="play()" class="btn btn-sm btn-navbar">
                     <i class="fa fa-volume-up fa-3x"></i>

@@ -76,7 +76,8 @@ function handleNoGeolocation(errorFlag) {
   var options = {
     map: map,
     position: new google.maps.LatLng(60, 105),
-    content: content
+    content: content,
+    enableHighAccuracy: true
   };
 
   var infowindow = new google.maps.InfoWindow(options);

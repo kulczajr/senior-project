@@ -8,7 +8,7 @@
             <div class="panel-body">
                 <div class="article-content">
                     <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
-                    <h3 class="article-header" id="sculptureTitle">{{sculpture.title}}</h3>
+                    <h3 class="article-header" id="sculptureTitle">{{sculpture.title}} {{sculpture.entityKey}}</h3>
                     <h4><a href="artists.html" id= "artistName" style="font-size:24px">{{sculpture.artist}}</a></h4><p id="sculptureText"> {{sculpture.description|e}}</p>
 
                 </div>
@@ -34,9 +34,13 @@
                 </div>
             </div>
         </div>
-        <br><br><br>
-        <br><br><br>
+        
+        <form role="form" action="/addComment" method="post" id="login-form" autocomplete="off">
+        <div class="form-group">
+        <label for="fname" class="sr-only">First Name</label>
+        <input type="text" name="addCommentAuthor" id="addCommentAuthor" class="form-control" placeholder="Your name"> </input>
 
+        
     </div>
 </div>
 {% endblock %}

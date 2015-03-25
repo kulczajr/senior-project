@@ -34,6 +34,7 @@ from google.storage.speckle.proto.jdbc_type import NULL
 SCULPTURE_KEY = ndb.Key("Entity", "sculpture_root")
 ARTIST_KEY = ndb.Key("Entity", "artist_root")
 COMMENT_KEY = ndb.Key("Entity", "comment_root")
+TOLERANCE = .001
 
 jinja_env = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -195,7 +196,7 @@ class CheckForStatueHandler(webapp2.RequestHandler):
         print "sculpture_y is " + str(sculpture_y)
         print "current_x is " + str(current_x)
         print "current_y is " + str(current_y)
-        return (abs(sculpture_x - current_x) < 1 and abs(sculpture_y - current_y) < 1)
+        return (abs(sculpture_x - current_x) < TOLERANCE and abs(sculpture_y - current_y) < TOLERANCE)
     
     def get_x(self, location):
         split_string = re.split(", ", location)

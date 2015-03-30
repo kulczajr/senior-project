@@ -25,7 +25,7 @@ import time
 import json
 import pprint
 import re
-
+import datetime
 from apiclient.discovery import build
 from google.appengine._internal.django.utils.safestring import mark_safe
 from google.storage.speckle.proto.jdbc_type import NULL
@@ -117,21 +117,25 @@ class AddCommentHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
     def post(self):
-        if self.request.get("entity_key"):
-            comment_key = ndb.Key(urlsafe=self.request.get("entity_key"))
-            comment = comment_key.get()
-            comment.author = self.request.get("author")
-            comment.content = self.request.get("content")
-            comment.put()
-        else:
-            time = time.time()
-            new_comment = Comment(parent=COMMENT_KEY,
-                                   author=self.request.get("author"),
-                                   sculpture_key = self.request.get("sculpture_key"),
-                                   content=self.request.get("content"),
-                                   timestamp=time)
-            new_comment.put()
-        self.redirect(self.request.referer)
+        new_comment = Comment(author=self.request.get("addCommentAuthor"),
+                              sculpture_key = self.request.get("sculpture_key"),
+                              content=self.request.get("addCommentBody"))
+        new_comment.put()
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        sculpture_title = self.request.get("sculpture_title")
+        sculptures = service.sculpture().list().execute()
+        comments = service.comment().list().execute()
+        sculpture_for_card = None
+        comments_for_card = []
+        for sculpture in sculptures['items']:
+            if sculpture['title'] == sculpture_title:
+                sculpture_for_card = sculpture
+                for comment in comments['items']:
+                    if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
+                        comments_for_card.append(comment)
+                break
+        self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
+
 
 class AddArtistHandler(webapp2.RequestHandler):
     def get(self):

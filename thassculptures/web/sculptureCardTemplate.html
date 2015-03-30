@@ -10,12 +10,11 @@
                     <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
                     <h3 class="article-header" id="sculptureTitle">{{sculpture.title}} </h3>
                     <h4><a href="artists.html" id= "artistName" style="font-size:24px">{{sculpture.artist}}</a></h4><p id="sculptureText"> {{sculpture.description|e}}</p>
-
                 </div>
             </div>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default commentArea">
             <div class="" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 <div class="panel-heading" role="tab" id="headingTwo">
                     <p id="commentHeader"> Comments</p>
@@ -25,8 +24,41 @@
             </div>
             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body" id="commentBox">
+                    <div class="comment panel panel-default">
+                          <p class="commentAuthor">Leave a Comment</p>
+                          <form role="form" action="/addComment" method="post"
+                            id="login-form" autocomplete="off">
+                          <div class="row commentField">
+                            <div class="col-xs-3">
+
+                          <div class="text-center mediumText">Name</div>
+                      </div>
+                          <div class="col-xs-8">
+                <input type="text" name="addCommentAuthor" id="addCommentAuthor" class="form-control input-lg" placeholder="Your name"> </input>
+            </div>
+        </div>
+            <div class="row commentField">
+             <div class="col-xs-3">
+                <div class="text-center mediumText">Comment</div>
+            </div>
+             <div class="col-xs-8">
+               <input type="textarea" name="addCommentBody" id="addCommentBody" class="form-control input-lg" rows = "2" placeholder="Share your thoughts!"> </input>
+               <input type="hidden" name="sculpture_key" id="sculpture_key" style="display:none" value="{{sculpture.entityKey}}"></input>
+               <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
+            </div>
+        </div>
+        <div class="row commentField">
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-3">
+            <input type="submit" style="margin-bottom:10px"class="btn btn-primary btn-lg btn-block"></input>
+        </div>
+    </div>
+            </form>
+
+                    </div>
                 	{% for comment in comments %}
-                    <div class="comment">
+                    <div class="comment panel panel-default">
                         <p class="commentAuthor">{{comment['author']}}</p>
                         <p class="commentBody"> {{comment['content']}}</p>
                     </div>
@@ -34,13 +66,6 @@
                 </div>
             </div>
         </div>
-        
-        <form role="form" action="/addComment" method="post" id="login-form" autocomplete="off">
-        <div class="form-group">
-        <label for="fname" class="sr-only">First Name</label>
-        <input type="text" name="addCommentAuthor" id="addCommentAuthor" class="form-control" placeholder="Your name"> </input>
-
-        
     </div>
 </div>
 {% endblock %}

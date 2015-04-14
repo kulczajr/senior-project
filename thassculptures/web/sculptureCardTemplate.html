@@ -9,14 +9,11 @@
                 <div class="article-content">
                     <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
                     <h3 class="article-header" id="sculptureTitle">{{sculpture.title}} </h3>
-                    <h4><a href="artist" id= "artistName" style="font-size:24px">{{sculpture.artist}}</a></h4><p id="sculptureText"> {{sculpture.description|e}}</p>
                     <form role="form" action="/artist" method="post">
+                    <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{sculpture.artist}}</a></h4><p id="sculptureText"> {{sculpture.description|e}}</p>
                     <input type="hidden" name="artistName" id="artistName" value="{{sculpture.artist}}"></input>
 
                <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
-
-            <input type="submit" style="margin-bottom:10px"class="btn btn-primary btn-lg btn-block"> REPLACE ME WITH A LINK WHEN YOU HAVE INTERNET</input>
-
                 </form>
 
                 </div>

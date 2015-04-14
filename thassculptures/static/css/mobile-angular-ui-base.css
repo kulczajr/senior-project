@@ -7220,7 +7220,7 @@ a.list-group-item .icon.pull-right {
   position: relative;
   z-index: 2;
   width: 100%;
-  background: #777777;
+  background: #F0EFEE;
   overflow: hidden;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
@@ -7258,7 +7258,7 @@ a.list-group-item .icon.pull-right {
 .navbar-app {
   min-height: 50px;
   border-color: #cccccc;
-  background: #f7f7f7;
+  background: white;
   border-width: 1px;
   border-style: solid;
   color: #007aff;

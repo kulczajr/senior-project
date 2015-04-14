@@ -12,11 +12,12 @@ class Sculpture(EndpointsModel):
     location = ndb.StringProperty();
 
 class Artist(EndpointsModel):
-    _message_fields_schema = ("entityKey", "fname", "lname", "website_url", "description")
+    _message_fields_schema = ("entityKey", "fname", "lname", "website_url", "description","image")
     fname = ndb.StringProperty();
     lname = ndb.StringProperty();
     website_url = ndb.StringProperty();
     description = ndb.StringProperty();
+    image = ndb.StringProperty();
 
 class Comment(EndpointsModel):
     _message_fields_schema = ("entityKey", "sculpture_key", "author", "content", "timestamp")

@@ -1,0 +1,62 @@
+ {% extends "/web/templates/navbarTemplate.html" %}
+ {% block navbarTitle%}  <div>
+            </div> {% endblock %}
+ {% block leftActions%}
+ <div>
+     	<a href = "sculptures.html">
+                    <i class="fa fa-angle-left fa-2x"> <span class="navbarText">Gallery</span></i> 
+                </a>
+    </div>
+  {% endblock %}
+ {% block rightActions %}
+    <script>
+    var on = false;
+  function play(){
+    if(on){
+      responsiveVoice.cancel();
+      on = false;
+    } else {
+      on = true;
+      var text = document.getElementById("description").innerHTML;
+       responsiveVoice.speak(text);
+                 }
+               }
+   </script>
+ 	     <div onclick="play()" class="btn btn-sm btn-navbar">
+                    <i class="fa fa-volume-up fa-3x"></i>
+                </div>
+                <audio id="audio" playing = "false" src="http://www.kozco.com/tech/piano2.wav"></audio>
+<div class="btn dropdown">
+    <div class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        <i class="fa fa-share-alt-square fa-3x"></i>
+    </div>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+        <li><a> <i class="fa fa-facebook-square fa-3x"></i></a>
+        </li>
+        <li><a> <i class="fa fa-twitter-square fa-3x"></i></a>
+        </li>
+        <li><a> <i class="fa fa-comments fa-3x"></i></a>
+        </li>
+    </ul>
+</div>
+<div class="btn dropdown">
+    <div class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        <i class="fa fa-ellipsis-v fa-3x"></i>
+    </div>
+
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+        <li><a>Artist Profile</a>
+        </li>
+        <li><a>Map</a>
+        </li>
+        <li><a>Notebook</a>
+        </li>
+        <li><a>Settings</a>
+        </li>
+        <li><a>About</a>
+        </li>
+
+    </ul>
+    </div>
+{% endblock %}

@@ -86,6 +86,16 @@ class ArtistsHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/artists.html")
         self.response.write(template.render())
+    def post(self):
+        artists = service.artist().list().execute()
+        template = jinja_env.get_template("web/artists.html")
+        sculpture = self.request.get("sculpture_title")
+        artistName = self.request.get("artistName")
+        artistToFetch = None
+        for artist in artists['items']:
+            if artist['fname'] + " " + artist['lname'] == artistName:
+                artistToFetch = artist
+        self.response.write(template.render({'artist':artistToFetch, 'referringSculpture':sculpture}))
         
 class AddSculptureHandler(webapp2.RequestHandler):
     def get(self):
@@ -237,7 +247,7 @@ app = webapp2.WSGIApplication([
     ('/addArtist', AddArtistHandler),
     ('/addComment', AddCommentHandler),
     ('/map.html', MapHandler),
-    ('/artists.html', ArtistsHandler),
+    ('/artist', ArtistsHandler),
     ('/my_location', MyLocationHandler),
     ('/CheckForStatue', CheckForStatueHandler),
     ('/CardFromLocation', CardFromLocationHandler),

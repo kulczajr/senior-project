@@ -81,7 +81,11 @@ class SculptureCardHandler(webapp2.RequestHandler):
 class MapHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/map.html")
-        self.response.write(template.render())
+		
+        # Fetch all sculptures, put them into template
+        response = service.sculpture().list().execute()
+        self.response.write(template.render({'response': response['items']}))
+
 class ArtistsHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/artists.html")

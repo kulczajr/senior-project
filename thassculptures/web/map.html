@@ -29,7 +29,7 @@
 				</li>
 				{% for sculpture in response %}
 				<li class="list-group">
-					<input id="checkbox{{sculpture['title']}}" type="checkbox" class="regular-checkbox big-checkbox" /><label for="checkbox{{sculpture['title']}}"> {{sculpture['title']}} </label>
+					<input id="checkbox{{sculpture['title']}}" type="checkbox" class="regular-checkbox big-checkbox" onclick="addMarker('{{sculpture['location']|safe}}','{{sculpture['title']|safe}}')" /><label for="checkbox{{sculpture['title']}}"> {{sculpture['title']}} </label>
 				</li>
 				{% endfor %}
 			</ul>
@@ -42,7 +42,11 @@
 			</div>
 
 
-
+	<script>
+	function addMarker(location,title){
+		console.log(title);
+	}
+	</script>
 	<script>
 	function initialize() {
 		var mapProp = {

@@ -20,9 +20,9 @@
 	
 			<ul class = "list-group"style="height: 45%;overflow: scroll;">
 				<li class="list-group-item">
-					<button class="btn btn-default" style="width:100%"> Check All </button>
+					<button class="btn btn-default" style="width:100%" onclick=""> Check All </button>
 				</li>
-				{% for sculpture in response %}
+				{% for sculpture in response | sort(attribute="title") %}
 				<li class="item" >
 					<input id="checkbox{{sculpture['title']}}" type="checkbox" style="width=100%" class="regular-checkbox big-checkbox" onclick="addMarker('{{sculpture['location']|safe}}','{{sculpture['title']|safe}}')" /><label for="checkbox{{sculpture['title']}}" style="width=100%"> {{sculpture['title']}} </label>
 				</li>
@@ -33,20 +33,38 @@
 
 
 	<script>
-	function addMarker(location,title){
 
+	var existingMarkers = [];
+
+
+	function addMarker(location,title){
+		var exists = false;
 		var loc = location.split(",");
 		var position = new google.maps.LatLng(loc[0], loc[1]);
-		var image = "./static/images/statue.png";
-		var newPosition = new google.maps.Marker({
-      				position: position,
-      				});
-		var infowindow = new google.maps.InfoWindow({
-				content:title
-				});
-		newPosition.setMap(window.map);
-		infowindow.open(window.map,newPosition);
+
+		//check if the marker exists by comparing lat/long
+		for(var i =0; i<existingMarkers.length; i++){
+			console.log(existingMarkers[i].getPosition());
+			console.log(position);
+			if(position.equals(existingMarkers[i].getPosition())){
+				exists = true;
+				existingMarkers[i].setMap(null);
+				existingMarkers.splice(i,1);
+			}
+		}
+		if(!exists){
+			var image = "./static/images/statue.png";
+			var newPosition = new google.maps.Marker({
+      					position: position,
+      					});
+			var infowindow = new google.maps.InfoWindow({
+					content:title
+					});
+			newPosition.setMap(window.map);
+			infowindow.open(window.map,newPosition);
+			existingMarkers.push(newPosition);
 	}
+}
 
 	function initialize() {
 		var mapProp = {
@@ -67,7 +85,7 @@
 		      		icon: image
       				})
       		var infowindow = new google.maps.InfoWindow({
-				content:"Your Location!"
+				content:"Your Location"
 				});
       		yourLocation.setMap(window.map);
 			infowindow.open(window.map,yourLocation);}, 

@@ -54,7 +54,8 @@ top: 0px;
 left: 3px;
 }
 .big-checkbox + label {
-padding: 18px;
+padding: 3% 5% 3% 5%;
+width:100%;
 }
 .big-checkbox:checked + label:after {
 font-size: 28px;

@@ -1,0 +1,104 @@
+  {% extends "/web/templates/base.html" %}
+ {% block title %} Sculptures Map {% endblock %}
+{% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
+ {% block content %}
+
+	<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="/static/images/fav-icon-art-space.png" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/css/main.css">
+
+	<script src="http://maps.googleapis.com/maps/api/js"></script>
+
+	<div class ="row">
+
+
+							<div id="googleMap" style="width:90%;height:50%;"></div>
+			</div>
+	
+			<ul class = "list-group"style="height: 45%;overflow: scroll;">
+				<li class="list-group-item">
+					<button class="btn btn-default" style="width:100%" onclick=""> Check All </button>
+				</li>
+				{% for sculpture in response | sort(attribute="title") %}
+				<li class="item" >
+					<input id="checkbox{{sculpture['title']}}" type="checkbox" style="width=100%" class="regular-checkbox big-checkbox" onclick="addMarker('{{sculpture['location']|safe}}','{{sculpture['title']|safe}}')" /><label for="checkbox{{sculpture['title']}}" style="width=100%"> {{sculpture['title']}} </label>
+				</li>
+				{% endfor %}
+			</ul>
+
+			
+
+
+	<script>
+
+	var existingMarkers = [];
+
+
+	function addMarker(location,title){
+		var exists = false;
+		var loc = location.split(",");
+		var position = new google.maps.LatLng(loc[0], loc[1]);
+
+		//check if the marker exists by comparing lat/long
+		for(var i =0; i<existingMarkers.length; i++){
+			console.log(existingMarkers[i].getPosition());
+			console.log(position);
+			if(position.equals(existingMarkers[i].getPosition())){
+				exists = true;
+				existingMarkers[i].setMap(null);
+				existingMarkers.splice(i,1);
+			}
+		}
+		if(!exists){
+			var image = "./static/images/statue.png";
+			var newPosition = new google.maps.Marker({
+      					position: position,
+      					});
+			var infowindow = new google.maps.InfoWindow({
+					content:title
+					});
+			newPosition.setMap(window.map);
+			infowindow.open(window.map,newPosition);
+			existingMarkers.push(newPosition);
+	}
+}
+
+	function initialize() {
+		var mapProp = {
+			center:new google.maps.LatLng(39.465521, -87.413038),
+			zoom:12,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+		window.map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		var browserSupportFlag =  new Boolean();
+		var image = "./static/images/yourLocationIcon.png";
+		 if(navigator.geolocation) {
+  			browserSupportFlag = true;
+    		navigator.geolocation.getCurrentPosition(function(position) {
+      			initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      			window.map.setCenter(initialLocation);
+      			var yourLocation = new google.maps.Marker({
+      				position: initialLocation,
+		      		icon: image
+      				})
+      		var infowindow = new google.maps.InfoWindow({
+				content:"Your Location"
+				});
+      		yourLocation.setMap(window.map);
+			infowindow.open(window.map,yourLocation);}, 
+			function() {
+      			console.log("Location detected sucessfully");
+    		});
+  		}
+  // Browser doesn't support Geolocation
+  else {
+    browserSupportFlag = false;
+    console.log("Error in initial location");
+  }
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+{% endblock %}

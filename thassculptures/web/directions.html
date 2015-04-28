@@ -13,58 +13,18 @@
 	<script src="http://maps.googleapis.com/maps/api/js"></script>
 
 	<div class ="row">
-
-
-							<div id="googleMap" style="width:90%;height:50%;"></div>
-			</div>
-	
-			<ul class = "list-group"style="height: 45%;overflow: scroll;">
-				<li class="list-group-item">
-					<button class="btn btn-default" style="width:100%" onclick=""> Check All </button>
-				</li>
-				{% for sculpture in response | sort(attribute="title") %}
-				<li class="item" >
-					<input id="checkbox{{sculpture['title']}}" type="checkbox" style="width=100%" class="regular-checkbox big-checkbox" onclick="addMarker('{{sculpture['location']|safe}}','{{sculpture['title']|safe}}')" /><label for="checkbox{{sculpture['title']}}" style="width=100%"> {{sculpture['title']}} </label>
-				</li>
-				{% endfor %}
-			</ul>
-
-			
-
-
+		<div id="googleMap" style="width:90%;height:50%;"></div>
+	</div>
 	<script>
+	
+	var directionsDisplay;
+	var directionsService = new google.maps.DirectionsService();
+	
+	var currLoc; //found via geolocation; two-element array of [lat, lng]
 
-	var existingMarkers = [];
-
-
-	function addMarker(location,title){
-		var exists = false;
-		var loc = location.split(",");
-		var position = new google.maps.LatLng(loc[0], loc[1]);
-
-		//check if the marker exists by comparing lat/long
-		for(var i =0; i<existingMarkers.length; i++){
-			console.log(existingMarkers[i].getPosition());
-			console.log(position);
-			if(position.equals(existingMarkers[i].getPosition())){
-				exists = true;
-				existingMarkers[i].setMap(null);
-				existingMarkers.splice(i,1);
-			}
-		}
-		if(!exists){
-			var image = "./static/images/statue.png";
-			var newPosition = new google.maps.Marker({
-      					position: position,
-      					});
-			var infowindow = new google.maps.InfoWindow({
-					content:title
-					});
-			newPosition.setMap(window.map);
-			infowindow.open(window.map,newPosition);
-			existingMarkers.push(newPosition);
+	function addDirections(){
+		
 	}
-}
 
 	function initialize() {
 		var mapProp = {
@@ -78,7 +38,8 @@
 		 if(navigator.geolocation) {
   			browserSupportFlag = true;
     		navigator.geolocation.getCurrentPosition(function(position) {
-      			initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      			initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				currLoc = [position.coords.latitude, position.coords.longitude];
       			window.map.setCenter(initialLocation);
       			var yourLocation = new google.maps.Marker({
       				position: initialLocation,
@@ -92,6 +53,25 @@
 			function() {
       			console.log("Location detected sucessfully");
     		});
+			
+			// the actual directions part
+			var destLocString = {{response.location}};
+			var destLoc = destLocString.split(",");
+			
+			//translate arrays into actual google positions
+			var currPos = new google.maps.LatLng(currLoc[0], currLoc[1]);
+			var destPos = new google.maps.LatLng(destLoc[0], destLoc[1]); 
+
+			var request = {
+				origin:currPos,
+				destination:destPos,
+				travelMode: google.maps.TravelMode.DRIVING
+			};
+			directionsService.route(request, function(response, status) {
+				if (status == google.maps.DirectionsStatus.OK) {
+					directionsDisplay.setDirections(response);
+				}
+			});
   		}
   // Browser doesn't support Geolocation
   else {
@@ -101,4 +81,5 @@
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
+	
 {% endblock %}

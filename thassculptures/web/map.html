@@ -20,11 +20,11 @@
 	
 			<ul class = "list-group"style="height: 45%;overflow: scroll;">
 				<li class="list-group-item">
-					<button class="btn btn-default" style="width:100%" onclick=""> Check All </button>
+					<h4 style="width:100%; text-align: center"> Sculptures </h4>
 				</li>
 				{% for sculpture in response | sort(attribute="title") %}
 				<li class="item" >
-					<input id="checkbox{{sculpture['title']}}" type="checkbox" style="width=100%" class="regular-checkbox big-checkbox" onclick="addMarker('{{sculpture['location']|safe}}','{{sculpture['title']|safe}}')" /><label for="checkbox{{sculpture['title']}}" style="width=100%"> {{sculpture['title']}} </label>
+					<input id="checkbox{{sculpture['title']}}" type="checkbox" style="width=100%" class="regular-checkbox big-checkbox" onClick="addMarker('{{sculpture['location']|safe}}','{{sculpture['title']|safe}}')" /><label for="checkbox{{sculpture['title']}}" style="width=100%"> {{sculpture['title']}} </label>
 				</li>
 				{% endfor %}
 			</ul>
@@ -38,6 +38,7 @@
 
 
 	function addMarker(location,title){
+		console.log("test");
 		var exists = false;
 		var loc = location.split(",");
 		var position = new google.maps.LatLng(loc[0], loc[1]);

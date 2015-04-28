@@ -77,7 +77,15 @@ class SculptureCardHandler(webapp2.RequestHandler):
                         comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
-        
+
+
+class DirectionsToStatue(webapp2.RequestHandler):
+    def post(self):
+        template = jinja_env.get_template("web/DirectionsToStatue.html")
+        sculpture_title = self.request.get("sculpture-title")
+        sculpture_location = self.request.get("location")
+        self.response.write(template.render({'title':sculpture_title, 'location':sculpture_location}))
+
 class MapHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/map.html")
@@ -255,4 +263,5 @@ app = webapp2.WSGIApplication([
     ('/my_location', MyLocationHandler),
     ('/CheckForStatue', CheckForStatueHandler),
     ('/CardFromLocation', CardFromLocationHandler),
+    ('/DirectionsToStatue', DirectionsToStatue)
 ], debug=True)

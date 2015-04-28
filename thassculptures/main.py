@@ -82,7 +82,7 @@ class SculptureCardHandler(webapp2.RequestHandler):
 class DirectionsToStatue(webapp2.RequestHandler):
     def post(self):
         template = jinja_env.get_template("web/DirectionsToStatue.html")
-        sculpture_title = self.request.get("sculpture-title")
+        sculpture_title = self.request.get("sculpture_title")
         sculpture_location = self.request.get("location")
         self.response.write(template.render({'title':sculpture_title, 'location':sculpture_location}))
 

@@ -88,10 +88,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<h3>
 									<a href="#">{{sculpture['title']}}</a>
 								</h3>
-								<span><a href="map.html"><label> </label>See On Map</a></span>
+														</form>
+
+							<form role="form" action="/DirectionsToStatue" method="post">
+								       <input type="hidden" name="sculpture_location" id="sculpture_location" value="{{sculpture.location}}"></input>
+								<input type=text class="hidden" name="sculpture-title" value="{{sculpture['title']}}">
+
+								<span><a href="" onclick="parentNode.parentNode.submit();return false;"><label id="sculpture">Directions </label></a></span>
+							</form>
+
 							</div>
 						</div></li> 
-						</form>
 						{% endfor %}
 				</ul>
 			</div>

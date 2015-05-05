@@ -8,6 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 <head>
 <title>Terre Haute Art Spaces Sculptures App</title>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=geometry"></script>
 
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="/static/css/style.css" rel='stylesheet' type='text/css' />
@@ -19,8 +20,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
 
 </script>
-</script>
-<!----webfonts---->
+
+
+							<!----webfonts---->
 <link
 	href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800'
 	rel='stylesheet' type='text/css'>
@@ -73,6 +75,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</div>
 	<!---//End-header---->
 	<!---start-content---->
+
+										<script>
+
+								function computeDistance(statueLocation,stauteTitle){
+
+
+							if(navigator.geolocation){
+    							navigator.geolocation.getCurrentPosition(function(position) {
+      							window.initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      				
+								var loc = statueLocation.split(",");
+								var statueLoc = new google.maps.LatLng(loc[0], loc[1]);
+      							var distance = google.maps.geometry.spherical.computeDistanceBetween(window.initialLocation, statueLoc) * 0.000621371192;
+      							distance = Math.round(distance * 100)/ 100;
+      							var string = "&nbspDistance:&nbsp" + distance + "&nbspMi."
+      							document.getElementById("distance_" + stauteTitle).innerHTML = string;
+								
+								})
+								}
+								}
+								</script>
 	<div class="content">
 		<div class="wrap">
 			<div id="main" role="main">
@@ -88,10 +111,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<h3>
 									<a href="#">{{sculpture['title']}}</a>
 								</h3>
-								<span><a href="map.html"><label> </label>See On Map</a></span>
+														</form>
+
+							<form role="form" action="/DirectionsToStatue" method="post">
+								       <input type="hidden" name="sculpture_location" id="sculpture_location" value="{{sculpture.location}}"></input>
+								<input type=text class="hidden" name="sculpture-title" value="{{sculpture['title']}}">
+
+								<span><a href="" onclick="parentNode.parentNode.submit();return false;"><label></label> See on Map<p id="distance_{{sculpture.title}}"> Distance </p></a></span>
+								<script>
+								computeDistance("{{sculpture.location}}","{{sculpture.title}}")
+								</script>
+							</form>
+
 							</div>
 						</div></li> 
-						</form>
 						{% endfor %}
 				</ul>
 			</div>
@@ -102,6 +135,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<!----wookmark-scripts---->
 	<script src="/static/js/jquery.imagesloaded.js"></script>
 	<script src="/static/js/jquery.wookmark.js"></script>
+
+				
 	<script type="text/javascript">
 		(function($) {
 			var $tiles = $('#tiles'), $handler = $('li', $tiles), $main = $('#main'), $window = $(window), $document = $(document), options = {

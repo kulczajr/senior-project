@@ -24,7 +24,19 @@
 				</li>
 				{% for sculpture in response | sort(attribute="title") %}
 				<li class="item" >
+					<div class = "row">
+						<div class = "col-xs-9">
 					<input id="checkbox{{sculpture['title']}}" type="checkbox" style="width=100%" class="regular-checkbox big-checkbox" onClick="addMarker('{{sculpture['location']|safe}}','{{sculpture['title']|safe}}')" /><label for="checkbox{{sculpture['title']}}" style="width=100%"> {{sculpture['title']}} </label>
+				</div>
+				<div class = "col-xs-3">
+						<form role="form" action="/DirectionsToStatue" method="post">
+					<div class="btn btn-default" onclick="parentNode.submit()" style="width = 100%; height=50%; margin-top:10%"> <span class= "glyphicon glyphicon-map-marker"></span> </div>
+
+					<input type="hidden" id="sculpture_title" value = "{{sculpture.title}}"></input>
+				</form>
+				</div>
+
+				</div>
 				</li>
 				{% endfor %}
 			</ul>

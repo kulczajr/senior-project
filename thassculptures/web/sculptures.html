@@ -101,7 +101,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div id="main" role="main">
 				<ul id="tiles">
 					<!-- These are our grid blocks -->
-					{% for sculpture in response %}
+					{% for sculpture in response | sort(attribute="title")%}
 					<form action="/single-page.html" method="POST">
 					<li>
 					<input class="grid_sculpture_images" type="image" src="{{sculpture['image']}}" alt="Submit Form" />

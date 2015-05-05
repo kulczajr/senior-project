@@ -22,10 +22,6 @@
 	
 	var currLoc; //found via geolocation; two-element array of [lat, lng]
 
-	function addDirections(){
-		
-	}
-
 	function initialize() {
 		var mapProp = {
 			center:new google.maps.LatLng(39.465521, -87.413038),
@@ -35,44 +31,68 @@
 		window.map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 		var browserSupportFlag =  new Boolean();
 		var image = "./static/images/yourLocationIcon.png";
-		 if(navigator.geolocation) {
-  			browserSupportFlag = true;
-    		navigator.geolocation.getCurrentPosition(function(position) {
-      			initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-				currLoc = [position.coords.latitude, position.coords.longitude];
-      			window.map.setCenter(initialLocation);
-      			var yourLocation = new google.maps.Marker({
-      				position: initialLocation,
-		      		icon: image
-      				})
-      		var infowindow = new google.maps.InfoWindow({
-				content:"Your Location"
-				});
-      		yourLocation.setMap(window.map);
-			infowindow.open(window.map,yourLocation);}, 
-			function() {
-      			console.log("Location detected sucessfully");
+    
+    var initialLocation;
+    var destLocation;
+    var destLocString = "{{response.location}}";
+    var destLocArray = destLocString.split(",");
+    var destLocation = new google.maps.LatLng(destLocArray[0], destLocArray[1]);
+    
+		if (navigator.geolocation) {
+  		browserSupportFlag = true;
+      
+      // getting current location
+    	navigator.geolocation.getCurrentPosition(
+        function(position) {
+          initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          window.map.setCenter(initialLocation);
+          
+          // create initial location marker and info window
+          var initialMarker = new google.maps.Marker({
+            position: initialLocation,
+            icon: image
+          })
+          var initialInfoWindow = new google.maps.InfoWindow({
+            content:"Your Location"
+          });
+          
+          // put marker and info window on map
+          initialMarker.setMap(window.map);
+          initialInfoWindow.open(window.map, initialMarker);
+        }, 
+        function() {
+      		console.log("Location detected sucessfully");
     		});
-			
-			// the actual directions part
-			var destLocString = {{response.location}};
-			var destLoc = destLocString.split(",");
-			
-			//translate arrays into actual google positions
-			var currPos = new google.maps.LatLng(currLoc[0], currLoc[1]);
-			var destPos = new google.maps.LatLng(destLoc[0], destLoc[1]); 
+        
+        // set up destination marker and info window
+        var destMarker = new google.maps.Marker({
+            position: destLocation,
+            icon: image
+        });
+        var destInfoWindow = new google.maps.InfoWindow({
+          content:"{{response.sculpture}}"
+        });
+        
+        // put marker and info on map
+        destMarker.setMap(window.map);
+        destInfoWindow.open(window.map, destMarker);
+        
+        // initializing directionsDisplay
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);
 
-			var request = {
-				origin:currPos,
-				destination:destPos,
-				travelMode: google.maps.TravelMode.DRIVING
-			};
-			directionsService.route(request, function(response, status) {
-				if (status == google.maps.DirectionsStatus.OK) {
-					directionsDisplay.setDirections(response);
-				}
-			});
-  		}
+        // requesting and displaying the directions
+        var request = {
+          origin: initialLocation,
+          destination: destLocation,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          }
+        });
+    }
   // Browser doesn't support Geolocation
   else {
     browserSupportFlag = false;

@@ -1,0 +1,105 @@
+  {% extends "/web/templates/base.html" %}
+ {% block title %} Sculptures Map {% endblock %}
+{% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
+ {% block content %}
+
+	<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="/static/images/fav-icon-art-space.png" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/css/main.css">
+
+	<script src="http://maps.googleapis.com/maps/api/js"></script>
+
+	<div class ="row">
+		<div id="googleMap" style="width:90%;height:50%;"></div>
+	</div>
+	<script>
+	
+	var directionsDisplay;
+	var directionsService = new google.maps.DirectionsService();
+	
+	var currLoc; //found via geolocation; two-element array of [lat, lng]
+
+	function initialize() {
+		var mapProp = {
+			center:new google.maps.LatLng(39.465521, -87.413038),
+			zoom:12,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+		window.map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		var browserSupportFlag =  new Boolean();
+		var image = "./static/images/yourLocationIcon.png";
+    
+    var initialLocation;
+    var destLocation;
+    var destLocString = "{{response.location}}";
+    var destLocArray = destLocString.split(",");
+    var destLocation = new google.maps.LatLng(destLocArray[0], destLocArray[1]);
+    
+		if (navigator.geolocation) {
+  		browserSupportFlag = true;
+      
+      // getting current location
+    	navigator.geolocation.getCurrentPosition(
+        function(position) {
+          initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          window.map.setCenter(initialLocation);
+          
+          // create initial location marker and info window
+          var initialMarker = new google.maps.Marker({
+            position: initialLocation,
+            icon: image
+          })
+          var initialInfoWindow = new google.maps.InfoWindow({
+            content:"Your Location"
+          });
+          
+          // put marker and info window on map
+          initialMarker.setMap(window.map);
+          initialInfoWindow.open(window.map, initialMarker);
+        }, 
+        function() {
+      		console.log("Location detected sucessfully");
+    		});
+        
+        // set up destination marker and info window
+        var destMarker = new google.maps.Marker({
+            position: destLocation,
+            icon: image
+        });
+        var destInfoWindow = new google.maps.InfoWindow({
+          content:"{{response.sculpture}}"
+        });
+        
+        // put marker and info on map
+        destMarker.setMap(window.map);
+        destInfoWindow.open(window.map, destMarker);
+        
+        // initializing directionsDisplay
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);
+
+        // requesting and displaying the directions
+        var request = {
+          origin: initialLocation,
+          destination: destLocation,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          }
+        });
+    }
+  // Browser doesn't support Geolocation
+  else {
+    browserSupportFlag = false;
+    console.log("Error in initial location");
+  }
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+	
+{% endblock %}

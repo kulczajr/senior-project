@@ -60,7 +60,6 @@ class SculpturesHandler(webapp2.RequestHandler):
         # sculptures_query = Sculpture.query(ancestor=SCULPTURE_KEY)
         self.response.write(template.render({'response': response['items']}))
 
-        
 class SculptureCardHandler(webapp2.RequestHandler):
     def post(self):
         template = jinja_env.get_template("web/sculptureCardTemplate.html")
@@ -79,13 +78,21 @@ class SculptureCardHandler(webapp2.RequestHandler):
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
 
-class DirectionsToStatue(webapp2.RequestHandler):
+class DirectionsHandler(webapp2.RequestHandler):
     def post(self):
-        template = jinja_env.get_template("web/DirectionsToStatue.html")
+        template = jinja_env.get_template("web/directions.html")
         sculpture_title = self.request.get("sculpture_title")
         sculpture_location = self.request.get("location")
         self.response.write(template.render({'title':sculpture_title, 'location':sculpture_location}))
 
+class MapHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/map.html")
+		
+        # Fetch all sculptures, put them into template
+        response = service.sculpture().list().execute()
+        self.response.write(template.render({'response': response['items']}))
+		
 class MapHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/map.html")
@@ -263,5 +270,5 @@ app = webapp2.WSGIApplication([
     ('/my_location', MyLocationHandler),
     ('/CheckForStatue', CheckForStatueHandler),
     ('/CardFromLocation', CardFromLocationHandler),
-    ('/DirectionsToStatue', DirectionsToStatue)
+    ('/directions.html', DirectionsHandler)
 ], debug=True)

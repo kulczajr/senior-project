@@ -77,13 +77,17 @@ class SculptureCardHandler(webapp2.RequestHandler):
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
-
 class DirectionsHandler(webapp2.RequestHandler):
     def post(self):
         template = jinja_env.get_template("web/directions.html")
-        sculpture_title = self.request.get("sculpture_title")
-        sculpture_location = self.request.get("location")
-        self.response.write(template.render({'title':sculpture_title, 'location':sculpture_location}))
+        sculpture_title = self.request.get("sculpture-title")
+        sculptures = service.sculpture().list().execute()
+        dest_location = None
+        for sculpture in sculptures['items']:
+            if sculpture['title'] == sculpture_title:
+                # note: do we need a case where we can't find the sculpture?
+                dest_location = sculpture['location'];
+        self.response.write(template.render({'title':sculpture_title, 'location': dest_location}))
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):

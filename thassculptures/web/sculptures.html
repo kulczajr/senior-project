@@ -113,10 +113,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								</h3>
 														</form>
 
-							<form role="form" action="/DirectionsToStatue" method="post">
-								       <input type="hidden" name="sculpture_location" id="sculpture_location" value="{{sculpture.location}}"></input>
-								<input type=text class="hidden" name="sculpture-title" value="{{sculpture['title']}}">
-
+							<form role="form" action="/directions.html" method="post">
+                <input type=text class="hidden" name="sculpture-title" value="{{sculpture['title']}}">
 								<span><a href="" onclick="parentNode.parentNode.submit();return false;"><label></label> See on Map<p id="distance_{{sculpture.title}}"> Distance </p></a></span>
 								<script>
 								computeDistance("{{sculpture.location}}","{{sculpture.title}}")

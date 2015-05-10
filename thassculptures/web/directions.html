@@ -1,7 +1,7 @@
-  {% extends "/web/templates/base.html" %}
- {% block title %} Sculptures Map {% endblock %}
+{% extends "/web/templates/base.html" %}
+{% block title %} Sculptures Map {% endblock %}
 {% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
- {% block content %}
+{% block content %}
 
 	<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,7 +70,7 @@
             icon: image
         });
         var destInfoWindow = new google.maps.InfoWindow({
-          content:"{{response.sculpture}}"
+          content:"{{response.title}}"
         });
         
         // put marker and info on map

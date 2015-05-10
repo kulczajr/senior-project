@@ -56,7 +56,7 @@ class SculpturesHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/sculptures.html")
         
         # Fetch all greetings and print them out.
-        response = service.sculpture().list().execute()
+        response = service.sculpture().list(limit=50).execute()
         # sculptures_query = Sculpture.query(ancestor=SCULPTURE_KEY)
         self.response.write(template.render({'response': response['items']}))
 

@@ -1,0 +1,38 @@
+{% extends "/web/templates/base.html" %}
+
+{% block content %}
+<h3>Comment Approval</h3>
+<div style="margin-left:10%;margin-right:10%;" class="column centered">
+<table class="table table-stripped">
+	<thead>
+		<tr>
+			<th>Author</th>
+			<th>Sculpture</th>
+			<th>Content</th>
+			<th>Approve</th>
+		</tr>
+	</thead>
+	{% for comment in comments %}
+	<tr >
+		<td>{{comment['author']}}</td>
+		<td>{{comment['sculpture']}}
+		<td>{{comment['content']}}</td>
+
+		<td>
+<button class="button"> <i style="color:green" class="fa fa-check"> </i></button> 
+<button class="button"> <i style="color:red" class="fa fa-remove"> </i></button> 
+		</td>
+
+	</tr>
+	{% endfor %}
+</table>
+</div>
+{% endblock %}
+
+
+<script> 
+function approve(commentKey){
+	$.ajax({ "POST",
+	url: "/ApproveComments"})
+}
+

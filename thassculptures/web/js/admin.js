@@ -36,11 +36,11 @@ rh.wp.enableButtons = function() {
 		
 		image_url = $(this).find(".image").html();
 		caption = $(this).find(".title").html();
-		entityKey = $(this).find(".entity-key").html();
+		entityKey = $(this).find(".entityKey").html();
 		
 		$("#insert-weatherpic-modal input[name=image]").val(image_url);
 		$("#insert-weatherpic-modal input[name=title]").val(caption);
-		$("#insert-weatherpic-modal input[name=entity_key]").val(entityKey).prop("disabled", false);
+		$("#insert-weatherpic-modal input[name=entityKey]").val(entityKey).prop("disabled", false);
 		
 	});
 	

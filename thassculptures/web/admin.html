@@ -62,14 +62,14 @@
 						<button data-toggle="modal" data-target="#insert-weatherpic-modal"
 							type="button" class="edit-weatherpic btn btn-xs btn-success">
 							<span class="glyphicon glyphicon-pencil"></span>
-							<div class="hidden entity-key">{{sculpture.entityKey}}</div>
+							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
 							<div class="hidden image">{{sculpture.image}}</div>
 							<div class="hidden title">{{sculpture.title}}</div>
 						</button>
 						<button data-toggle="modal" data-target="#delete-weatherpic-modal"
 							type="button" class="delete-weatherpic btn btn-xs btn-danger">
 							<span class="glyphicon glyphicon-remove"></span>
-							<div class="hidden entity-key">{{sculpture.entityKey}}</div>
+							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
 						</button>
 					</div>
 					<img src="{{sculpture.image}}" alt="A picture of the statue">
@@ -93,7 +93,7 @@
 				</div>
 				<form action="/addSculpture" method="POST" class="form-horizontal"
 					role="form">
-					<input type="text" name="entity_key" class="hidden">
+					<input type="text" name="entityKey" class="hidden">
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="image-url-input" class="col-sm-2 control-label">Image
@@ -162,7 +162,7 @@
 				</div>
 				<form action="/deleteWeatherPic" method="POST" class="form-horizontal"
 					role="form">
-					<input type="text" name="entity_key" class="hidden">
+					<input type="text" name="entityKey" class="hidden">
 					<div class="modal-body">
 						<p>Are you sure you wish to delete this statue?</p>
 					</div>

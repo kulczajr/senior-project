@@ -131,12 +131,23 @@ class AddSculptureHandler(webapp2.RequestHandler):
         latitude = self.request.get("latitude")
         longitude = self.request.get("longitude")
         location = latitude + ", " + longitude
-        new_sculpture = Sculpture(title = self.request.get("title"),
+        if self.request.get("entityKey"):
+            sculptures = service.sculpture().list().execute()
+            for sculpture in sculptures['items']:
+                if sculpture.entityKey == self.request.get("entityKey"):
+                    sculpture.title = self.request.get("title")
+                    sculpture.artist = self.request.get("artist")
+                    sculpture.location = location
+                    sculpture.description = self.request.get("description")
+                    sculpture.image = self.request.get("image")
+                    sculpture.put()
+        else: 
+            new_sculpture = Sculpture(title = self.request.get("title"),
                                   artist = self.request.get("artist"),
                                   location = location,
                                   description = self.request.get("description"),
                                   image = self.request.get("image"))
-        new_sculpture.put()
+            new_sculpture.put()
         self.redirect(self.request.referer)
 
 

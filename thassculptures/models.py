@@ -20,10 +20,10 @@ class Artist(EndpointsModel):
     image = ndb.StringProperty();
 
 class Comment(EndpointsModel):
-    _message_fields_schema = ("entityKey", "sculpture_key", "author", "content", "timestamp")
+    _message_fields_schema = ("entityKey", "sculpture_key", "author", "content", "timestamp","is_approved")
     sculpture_key = ndb.StringProperty();
     author = ndb.StringProperty();
     content = ndb.StringProperty();
     timestamp = ndb.DateTimeProperty(auto_now=True);
-    
+    is_approved = ndb.BooleanProperty();
     

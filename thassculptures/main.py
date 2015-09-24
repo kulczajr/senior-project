@@ -161,7 +161,8 @@ class AddCommentHandler(webapp2.RequestHandler):
                 sculpture_for_card = sculpture
                 for comment in comments['items']:
                     if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
-                        comments_for_card.append(comment)
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
@@ -254,7 +255,8 @@ class CardFromLocationHandler(webapp2.RequestHandler):
                 sculpture_for_card = sculpture
                 for comment in comments['items']:
                     if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
-                        comments_for_card.append(comment)
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
@@ -263,9 +265,31 @@ class AdminHandler(webapp2.RequestHandler):
         sculptures = service.sculpture().list(limit=50).execute()
         template = jinja_env.get_template("web/admin.html")
         self.response.write(template.render({'sculptures': sculptures['items']}))
-            
+
+class ApproveCommentsHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/ApproveComments.html")
+        comments = service.comment().list().execute()
+        comments_for_card = []
+        for comment in comments['items']:
+            sculpture_key = ndb.Key(urlsafe=comment['sculpture_key'])
+            sculpture = sculpture_key.get()       
+            comment['sculpture'] = sculpture.title
+            comments_for_card.append(comment)
+        self.response.write(template.render({'comments':comments_for_card}))
+class DenyComment(webapp2.RequestHandler):
+    def post(self):
+        comment = ''
+class ApproveComment(webapp2.RequestHandler):
+    def post(self):
+        comment = ''
+>>>>>>> 07eacfe1b386b4387114ac547085ba697eb36ade
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/admin', AdminHandler),
+    ('/ApproveComments', ApproveCommentsHandler),
+    ("/DenyComment", DenyComment),
+    ("/ApproveComment", ApproveComment),
     ('/sculptures.html', SculpturesHandler),
     ('/single-page.html', SculptureCardHandler),
     ('/addSculpture', AddSculptureHandler),

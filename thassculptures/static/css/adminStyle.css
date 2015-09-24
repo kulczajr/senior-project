@@ -1,0 +1,13 @@
+body {
+  padding-top: 70px;
+  background-color: #8B95A0;
+}
+
+.caption {
+  text-align: center;
+}
+
+.edit-actions {
+  position: relative;
+  top: -7px;
+}

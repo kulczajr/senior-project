@@ -283,7 +283,7 @@ class DenyComment(webapp2.RequestHandler):
 class ApproveComment(webapp2.RequestHandler):
     def post(self):
         comment = ''
->>>>>>> 07eacfe1b386b4387114ac547085ba697eb36ade
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/admin', AdminHandler),

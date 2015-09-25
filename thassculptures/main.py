@@ -72,7 +72,7 @@ class SculptureCardHandler(webapp2.RequestHandler):
             if sculpture['title'] == sculpture_title:
                 sculpture_for_card = sculpture
                 for comment in comments['items']:
-                    if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
+                    if comment["sculpture_key"] == sculpture_for_card["entityKey"]:
                         comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))

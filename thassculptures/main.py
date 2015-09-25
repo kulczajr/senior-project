@@ -131,12 +131,26 @@ class AddSculptureHandler(webapp2.RequestHandler):
         latitude = self.request.get("latitude")
         longitude = self.request.get("longitude")
         location = latitude + ", " + longitude
-        new_sculpture = Sculpture(title = self.request.get("title"),
+
+        if self.request.get("entityKey"):
+            print "I think this is an existing sculpture."
+            sculptures = service.sculpture().list().execute()
+            for sculpture in sculptures['items']:
+                if sculpture.entityKey == self.request.get("entityKey"):
+                    sculpture.title = self.request.get("entityKey")
+                    sculpture.artist = self.request.get("artist")
+                    sculpture.location = location
+                    sculpture.description = self.request.get("description")
+                    sculpture.image = self.request.get("image")
+                    sculpture.put()
+        else: 
+            print "I think this is a new sculpture."
+            new_sculpture = Sculpture(title = self.request.get("title"),
                                   artist = self.request.get("artist"),
                                   location = location,
                                   description = self.request.get("description"),
                                   image = self.request.get("image"))
-        new_sculpture.put()
+            new_sculpture.put()
         self.redirect(self.request.referer)
 
 
@@ -259,11 +273,12 @@ class CardFromLocationHandler(webapp2.RequestHandler):
                             comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
-   
+
 class AdminHandler(webapp2.RequestHandler):
     def get(self):
+        sculptures = service.sculpture().list(limit=50).execute()
         template = jinja_env.get_template("web/admin.html")
-        self.response.write(template.render())
+        self.response.write(template.render({'sculptures': sculptures['items']}))
 
 class ApproveCommentsHandler(webapp2.RequestHandler):
     def get(self):
@@ -282,6 +297,7 @@ class DenyComment(webapp2.RequestHandler):
 class ApproveComment(webapp2.RequestHandler):
     def post(self):
         comment = ''
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/admin', AdminHandler),
@@ -298,5 +314,6 @@ app = webapp2.WSGIApplication([
     ('/my_location', MyLocationHandler),
     ('/CheckForStatue', CheckForStatueHandler),
     ('/CardFromLocation', CardFromLocationHandler),
-    ('/directions.html', DirectionsHandler)
+    ('/directions.html', DirectionsHandler),
+    ('/admin', AdminHandler)
 ], debug=True)

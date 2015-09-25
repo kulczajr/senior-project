@@ -26,6 +26,7 @@ import json
 import pprint
 import re
 import datetime
+import logging
 from apiclient.discovery import build
 from google.appengine._internal.django.utils.safestring import mark_safe
 from google.storage.speckle.proto.jdbc_type import NULL
@@ -45,6 +46,7 @@ api = 'sculptures'
 version = 'v1'
 discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
 service = build(api, version, discoveryServiceUrl=discovery_url)
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -73,7 +75,9 @@ class SculptureCardHandler(webapp2.RequestHandler):
                 sculpture_for_card = sculpture
                 for comment in comments['items']:
                     if comment["sculpture_key"] == sculpture_for_card["entityKey"]:
-                        comments_for_card.append(comment)
+                        logging.debug(comment["is_approved"])
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
@@ -160,9 +164,11 @@ class AddCommentHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
     def post(self):
-        new_comment = Comment(author=self.request.get("addCommentAuthor"),
-                              sculpture_key = self.request.get("sculpture_key"),
-                              content=self.request.get("addCommentBody"))
+        jsonData = json.loads(self.request.body)
+        new_comment = Comment(author=jsonData["addCommentAuthor"],
+                              sculpture_key = jsonData["sculpture_key"],
+                              content=jsonData["addCommentBody"],
+                              is_approved=False)
         new_comment.put()
         template = jinja_env.get_template("web/sculptureCardTemplate.html")
         sculpture_title = self.request.get("sculpture_title")
@@ -291,19 +297,26 @@ class ApproveCommentsHandler(webapp2.RequestHandler):
             comment['sculpture'] = sculpture.title
             comments_for_card.append(comment)
         self.response.write(template.render({'comments':comments_for_card}))
-class DenyComment(webapp2.RequestHandler):
+
+class DenyCommentHandler(webapp2.RequestHandler):
     def post(self):
-        comment = ''
-class ApproveComment(webapp2.RequestHandler):
+        data = json.loads(self.request.body)
+        comment = ndb.Key(urlsafe=data['commentKey']).get()
+        comment.key.delete() #aaaaannnndddd it's gone. 
+
+class ApproveCommentHandler(webapp2.RequestHandler):
     def post(self):
-        comment = ''
+        data = json.loads(self.request.body)
+        comment = ndb.Key(urlsafe=data['commentKey']).get()
+        comment.is_approved = True
+        comment.put();
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/admin', AdminHandler),
     ('/ApproveComments', ApproveCommentsHandler),
-    ("/DenyComment", DenyComment),
-    ("/ApproveComment", ApproveComment),
+    ("/DenyComment", DenyCommentHandler),
+    ("/ApproveComment", ApproveCommentHandler),
     ('/sculptures.html', SculpturesHandler),
     ('/single-page.html', SculptureCardHandler),
     ('/addSculpture', AddSculptureHandler),

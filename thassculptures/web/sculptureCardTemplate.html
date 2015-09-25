@@ -2,6 +2,36 @@
  {% block title %} {{sculpture.title}} {% endblock %}
 {% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
  {% block content %}
+
+ <style>
+ #notification {
+    position:fixed;
+    top:70%;
+    width:100%;
+    z-index:105;
+    height:60px;
+    text-align:center;
+    font-weight:normal;
+    font-size:25px;
+    font-weight:bold;
+    color:white;
+    background-color:#337ab7;
+    padding:5px;
+}
+#notification span.dismiss {
+    border:2px solid #FFF;
+    padding:0 5px;
+    cursor:pointer;
+    float:right;
+    margin-right:10px;
+}
+#notification a {
+    color:white;
+    text-decoration:none;
+    font-weight:bold
+}
+ </style>
+
 <div class="scrollable">
     <div class="scrollable-content">
         <div class="panel panel-default">
@@ -10,60 +40,54 @@
                     <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
                     <h3 class="article-header" id="sculptureTitle">{{sculpture.title}} </h3>
                     <form role="form" action="/artist" method="post">
-                    <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{sculpture.artist}}</a></h4><p id="sculptureText"> {{sculpture.description|e}}</p>
-                    <input type="hidden" name="artistName" id="artistName" value="{{sculpture.artist}}"></input>
-
-               <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
-                </form>
-
+                        <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{sculpture.artist}}</a></h4>
+                        <p id="sculptureText"> {{sculpture.description|e}}</p>
+                        <input type="hidden" name="artistName" id="artistName" value="{{sculpture.artist}}"></input>
+                        <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
+                    </form>
                 </div>
             </div>
         </div>
-
         <div class="panel panel-default commentArea">
             <div class="" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 <div class="panel-heading" role="tab" id="headingTwo">
                     <p id="commentHeader"> Comments</p>
                     <p id="expandHeader"> Expand</p>
-
                 </div>
             </div>
             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body" id="commentBox">
                     <div class="comment panel panel-default">
-                          <p class="commentAuthor">Leave a Comment</p>
-                          <form role="form" action="/addComment" method="post"
-                            id="login-form" autocomplete="off">
-                          <div class="row commentField">
-                            <div class="col-xs-3">
-
-                          <div class="text-center mediumText">Name</div>
-                      </div>
-                          <div class="col-xs-8">
-                <input type="text" name="addCommentAuthor" id="addCommentAuthor" class="form-control input-lg" placeholder="Your name"> </input>
-            </div>
-        </div>
-            <div class="row commentField">
-             <div class="col-xs-3">
-                <div class="text-center mediumText">Comment</div>
-            </div>
-             <div class="col-xs-8">
-               <input type="textarea" name="addCommentBody" id="addCommentBody" class="form-control input-lg" rows = "2" placeholder="Share your thoughts!"> </input>
-               <input type="hidden" name="sculpture_key" id="sculpture_key" style="display:none" value="{{sculpture.entityKey}}"></input>
-               <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
-            </div>
-        </div>
-        <div class="row commentField">
-            <div class="col-xs-1">
-            </div>
-            <div class="col-xs-3">
-            <input type="submit" style="margin-bottom:10px"class="btn btn-primary btn-lg btn-block"></input>
-        </div>
-    </div>
-            </form>
-
+                        <p class="commentAuthor">Leave a Comment</p>
+                        <form role="form" id="commentForm" action="/addComment" method="post" id="login-form" autocomplete="off">
+                            <div class="row commentField">
+                                <div class="col-xs-3">
+                                    <div class="text-center mediumText">Name</div>
+                                </div>
+                                <div class="col-xs-8">
+                                    <input type="text" name="addCommentAuthor" id="addCommentAuthor" class="form-control input-lg" placeholder="Your name"> </input>
+                                </div>
+                            </div>
+                            <div class="row commentField">
+                                <div class="col-xs-3">
+                                    <div class="text-center mediumText">Comment</div>
+                                </div>
+                                <div class="col-xs-8">
+                                    <input type="textarea" name="addCommentBody" id="addCommentBody" class="form-control input-lg" rows="2" placeholder="Share your thoughts!"> </input>
+                                    <input type="hidden" name="sculpture_key" id="sculpture_key" style="display:none" value="{{sculpture.entityKey}}"></input>
+                                    <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
+                                </div>
+                            </div>
+                            <div class="row commentField">
+                                <div class="col-xs-1">
+                                </div>
+                                <div class="col-xs-3">
+                                    <input id="submitBtn" type="submit" style="margin-bottom:10px" class="btn btn-primary btn-lg btn-block"></input>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                	{% for comment in comments %}
+                    {% for comment in comments %}
                     <div class="comment panel panel-default">
                         <p class="commentAuthor">{{comment['author']}}</p>
                         <p class="commentBody"> {{comment['content']}}</p>
@@ -74,4 +98,39 @@
         </div>
     </div>
 </div>
+                        <div id="notification" style="display: none;">
+  <span class="dismiss"><a title="dismiss this notification"></a></span>
+</div>
+<script>
+$("#commentForm").submit(function(){
+    $("#submitBtn").prop('disabled', true);
+
+     var dataString = 
+     $.ajax({
+        type:"POST",
+        url:"/addComment",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "sculpture_key": "{{sculpture.entityKey}}",
+            "addCommentAuthor" :  $("#addCommentAuthor").val(),
+            "addCommentBody": $("#addCommentBody").val()
+        })     
+    })
+
+    $("#notification").fadeIn("slow").append('Your comment has been submitted for approval');
+    $(document).one("click",function(){
+       $("#notification").fadeOut("slow");
+   });
+       setTimeout(function(){
+        if($("#notification").is(":visible")){
+            $(document).click();
+        }
+       },3000);
+    return false;
+})
+
+
+
+</script>
 {% endblock %}

@@ -7,7 +7,7 @@ Created Feb 12, 2015
 import endpoints
 import protorpc
 
-from models import Sculpture, Artist, Comment
+from models import Sculpture, Artist, Comment, Tour
 
 @endpoints.api(name="sculptures", version="v1", description="Sculpture API")
 class SculptureApi(protorpc.remote.Service):
@@ -17,7 +17,7 @@ class SculptureApi(protorpc.remote.Service):
         if request.from_datastore:
             my_quote = request
         else:
-            my_quote = Sculpture(title=request.title, artist=request.artist, description=request.description, image=request.image, audio=request.audio, location=request.location)
+            my_quote = Sculpture(title=request.title, artist=request.artist, description=request.description, image=request.image, audio=request.audio, location=request.location, artist_key=request.artist_key)
         my_quote.put()
         return my_quote
     
@@ -79,5 +79,28 @@ class SculptureApi(protorpc.remote.Service):
             request.key.delete()
             
         return Comment(quote="deleted")
+    
+    @Tour.method(name="tour.insert", path="tour/insert", http_method="POST")
+    def tour_insert(self, request):
+        if request.from_datastore:
+            my_quote = request
+        else:
+            my_quote = Tour(sculpture_list=request.sculpture_list, description=request.description)
+        
+        my_quote.put()
+        return my_quote
+    
+    @Tour.query_method(name="tour.list", path="tour/list", http_method="GET", query_fields=("limit", "order", "pageToken"))
+    def tour_list(self, query):
+        return query
+    
+    @Tour.method(name="tour.delete", path="tour/delete/{entityKey}", http_method="DELETE", request_fields=("entityKey",))
+    def tour_delete(self, request):
+        if not request.from_datastore:
+            raise endpoints.NotFoundException("KEY NOT FOUND")
+        else:
+            request.key.delete()
+            
+        return Tour(quote="deleted")
 
 app = endpoints.api_server([SculptureApi], restricted=False)

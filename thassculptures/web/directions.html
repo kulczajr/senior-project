@@ -34,7 +34,7 @@
     
     var initialLocation;
     var destLocation;
-    var destLocString = "{{response.location}}";
+    var destLocString = "{{location}}";
     var destLocArray = destLocString.split(",");
     var destLocation = new google.maps.LatLng(destLocArray[0], destLocArray[1]);
     
@@ -70,7 +70,7 @@
             icon: image
         });
         var destInfoWindow = new google.maps.InfoWindow({
-          content:"{{response.title}}"
+          content:"{{title}}"
         });
         
         // put marker and info on map

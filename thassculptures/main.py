@@ -274,5 +274,5 @@ app = webapp2.WSGIApplication([
     ('/my_location', MyLocationHandler),
     ('/CheckForStatue', CheckForStatueHandler),
     ('/CardFromLocation', CardFromLocationHandler),
-    ('/directions.html', DirectionsHandler)
+    ('/DirectionsToStatue', DirectionsHandler)
 ], debug=True)

@@ -36,7 +36,8 @@
     var destLocation;
     var destLocString = "{{location}}";
     var destLocArray = destLocString.split(",");
-    var destLocation = new google.maps.LatLng(destLocArray[0], destLocArray[1]);
+    destLocation = new google.maps.LatLng(destLocArray[0], destLocArray[1]);
+    window.alert(title);
     
 		if (navigator.geolocation) {
   		browserSupportFlag = true;

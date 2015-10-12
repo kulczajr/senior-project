@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>THAS Statues Admin Hub</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap -->
+<!-- Latest compiled and minified CSS -->
+
+<link rel="stylesheet" type="text/css"
+	href="static/css/pinterest.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<link rel="stylesheet" type="text/css"
+	href="static/css/adminStyle.css">
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">THAS Statues Admin Hub</a>
+
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a id="add-weatherpic" data-toggle="modal"
+						data-target="#insert-weatherpic-modal">Add Statue</a></li>
+					<li><a href="/ApproveComments">Comment Review</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a id="toggle-edit" href="#">Edit</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+	<div class="container">
+		<div id="wrapper">
+			<div id="columns">
+				{% for sculpture in sculptures %}
+				<div class="pin">
+					<div class="hidden pull-right edit-actions">
+						<button data-toggle="modal" data-target="#insert-weatherpic-modal"
+							type="button" class="edit-weatherpic btn btn-xs btn-success">
+							<span class="glyphicon glyphicon-pencil"></span>
+							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
+							<div class="hidden image">{{sculpture.image}}</div>
+							<div class="hidden title">{{sculpture.title}}</div>
+						</button>
+						<button data-toggle="modal" data-target="#delete-weatherpic-modal"
+							type="button" class="delete-weatherpic btn btn-xs btn-danger">
+							<span class="glyphicon glyphicon-remove"></span>
+							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
+						</button>
+					</div>
+					<img src="{{sculpture.image}}" alt="A picture of the statue">
+					<p class="caption">{{sculpture.title}}</p>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="insert-weatherpic-modal" tabindex="-1"
+		role="dialog" aria-labelledby="Insert Statue" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Add a Statue</h4>
+				</div>
+				<form action="/addSculpture" method="POST" class="form-horizontal"
+					role="form">
+					<input type="text" name="entityKey" class="hidden">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="image-url-input" class="col-sm-2 control-label">Image
+								URL</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="image-input"
+									name="image" placeholder="Image URL">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Title</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="title-input"
+									placeholder="Title" name="title">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Artist</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="artist-input"
+									placeholder="Artist Name" name="artist">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Description</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="description-input"
+									placeholder="Description" name="description">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Longitude</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="longitude-input"
+									placeholder="Longitude" name="longitude">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Latitude</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="latitude-input"
+									placeholder="Latitude" name="latitude">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-primary">Add
+							Statue</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="delete-weatherpic-modal" tabindex="-1"
+		role="dialog" aria-labelledby="Delete Statue" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Delete a Statue</h4>
+				</div>
+				<form action="/deleteWeatherPic" method="POST" class="form-horizontal"
+					role="form">
+					<input type="text" name="entityKey" class="hidden">
+					<div class="modal-body">
+						<p>Are you sure you wish to delete this statue?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-danger">Delete Statue</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="/static/js/adminJS.js"></script>
+
+</body>
+</html>

@@ -16,8 +16,7 @@
 		<div id="googleMap" style="width:90%;height:50%;"></div>
 	</div>
   <div style = "margin-top:10px">
-  {{title}}{{location}}
-</div>
+  </div>
 	<script>
 	
 	var directionsDisplay;
@@ -40,12 +39,27 @@
     var destLocString = "{{location}}";
     var destLocArray = destLocString.split(",");
     destLocation = new google.maps.LatLng(destLocArray[0], destLocArray[1]);
-    window.alert(title);
-    
+
 		if (navigator.geolocation) {
   		browserSupportFlag = true;
-      
-      // getting current location
+
+      // initializing directionsDisplay
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+
+      // set up destination marker and info window
+      var destMarker = new google.maps.Marker({
+        position: destLocation,
+        icon: image
+      });
+      var destInfoWindow = new google.maps.InfoWindow({
+        content:"{{title}}"
+      });
+      // put marker and info on map
+      destMarker.setMap(window.map);
+      destInfoWindow.open(window.map, destMarker);
+
+      // getting current location; in callback, get directions as well
     	navigator.geolocation.getCurrentPosition(
         function(position) {
           initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -63,39 +77,25 @@
           // put marker and info window on map
           initialMarker.setMap(window.map);
           initialInfoWindow.open(window.map, initialMarker);
+
+          // requesting and displaying the directions
+          var request = {
+            origin: initialLocation,
+            destination: destLocation,
+            travelMode: google.maps.TravelMode.DRIVING
+          };
+
+          directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            console.log("Current location and directions fetched correctly.");
+          } else {
+            console.log("Current location detected successfully, but failure in in getting directions.")
+          }});
         }, 
         function() {
       		console.log("Location detected sucessfully");
     		});
-        
-        // set up destination marker and info window
-        var destMarker = new google.maps.Marker({
-            position: destLocation,
-            icon: image
-        });
-        var destInfoWindow = new google.maps.InfoWindow({
-          content:"{{title}}"
-        });
-        
-        // put marker and info on map
-        destMarker.setMap(window.map);
-        destInfoWindow.open(window.map, destMarker);
-        
-        // initializing directionsDisplay
-        directionsDisplay = new google.maps.DirectionsRenderer();
-        directionsDisplay.setMap(map);
-
-        // requesting and displaying the directions
-        var request = {
-          origin: initialLocation,
-          destination: destLocation,
-          travelMode: google.maps.TravelMode.DRIVING
-        };
-        directionsService.route(request, function(response, status) {
-          if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-          }
-        });
     }
   // Browser doesn't support Geolocation
   else {

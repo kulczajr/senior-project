@@ -26,6 +26,7 @@ import json
 import pprint
 import re
 import datetime
+import logging
 from apiclient.discovery import build
 from google.appengine._internal.django.utils.safestring import mark_safe
 from google.storage.speckle.proto.jdbc_type import NULL
@@ -46,6 +47,7 @@ version = 'v1'
 discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
 service = build(api, version, discoveryServiceUrl=discovery_url)
 
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/index.html")
@@ -56,7 +58,7 @@ class SculpturesHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/sculptures.html")
         
         # Fetch all greetings and print them out.
-        response = service.sculpture().list().execute()
+        response = service.sculpture().list(limit=50).execute()
         # sculptures_query = Sculpture.query(ancestor=SCULPTURE_KEY)
         self.response.write(template.render({'response': response['items']}))
 
@@ -72,8 +74,10 @@ class SculptureCardHandler(webapp2.RequestHandler):
             if sculpture['title'] == sculpture_title:
                 sculpture_for_card = sculpture
                 for comment in comments['items']:
-                    if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
-                        comments_for_card.append(comment)
+                    if comment["sculpture_key"] == sculpture_for_card["entityKey"]:
+                        logging.debug(comment["is_approved"])
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
@@ -135,12 +139,26 @@ class AddSculptureHandler(webapp2.RequestHandler):
         latitude = self.request.get("latitude")
         longitude = self.request.get("longitude")
         location = latitude + ", " + longitude
-        new_sculpture = Sculpture(title = self.request.get("title"),
+
+        if self.request.get("entityKey"):
+            print "I think this is an existing sculpture."
+            sculptures = service.sculpture().list().execute()
+            for sculpture in sculptures['items']:
+                if sculpture.entityKey == self.request.get("entityKey"):
+                    sculpture.title = self.request.get("entityKey")
+                    sculpture.artist = self.request.get("artist")
+                    sculpture.location = location
+                    sculpture.description = self.request.get("description")
+                    sculpture.image = self.request.get("image")
+                    sculpture.put()
+        else: 
+            print "I think this is a new sculpture."
+            new_sculpture = Sculpture(title = self.request.get("title"),
                                   artist = self.request.get("artist"),
                                   location = location,
                                   description = self.request.get("description"),
                                   image = self.request.get("image"))
-        new_sculpture.put()
+            new_sculpture.put()
         self.redirect(self.request.referer)
 
 
@@ -150,9 +168,11 @@ class AddCommentHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
     def post(self):
-        new_comment = Comment(author=self.request.get("addCommentAuthor"),
-                              sculpture_key = self.request.get("sculpture_key"),
-                              content=self.request.get("addCommentBody"))
+        jsonData = json.loads(self.request.body)
+        new_comment = Comment(author=jsonData["addCommentAuthor"],
+                              sculpture_key = jsonData["sculpture_key"],
+                              content=jsonData["addCommentBody"],
+                              is_approved=False)
         new_comment.put()
         template = jinja_env.get_template("web/sculptureCardTemplate.html")
         sculpture_title = self.request.get("sculpture_title")
@@ -165,7 +185,8 @@ class AddCommentHandler(webapp2.RequestHandler):
                 sculpture_for_card = sculpture
                 for comment in comments['items']:
                     if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
-                        comments_for_card.append(comment)
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
@@ -258,12 +279,48 @@ class CardFromLocationHandler(webapp2.RequestHandler):
                 sculpture_for_card = sculpture
                 for comment in comments['items']:
                     if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
-                        comments_for_card.append(comment)
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
-            
+
+class AdminHandler(webapp2.RequestHandler):
+    def get(self):
+        sculptures = service.sculpture().list(limit=50).execute()
+        template = jinja_env.get_template("web/admin.html")
+        self.response.write(template.render({'sculptures': sculptures['items']}))
+
+class ApproveCommentsHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/ApproveComments.html")
+        comments = service.comment().list().execute()
+        comments_for_card = []
+        for comment in comments['items']:
+            sculpture_key = ndb.Key(urlsafe=comment['sculpture_key'])
+            sculpture = sculpture_key.get()       
+            comment['sculpture'] = sculpture.title
+            comments_for_card.append(comment)
+        self.response.write(template.render({'comments':comments_for_card}))
+
+class DenyCommentHandler(webapp2.RequestHandler):
+    def post(self):
+        data = json.loads(self.request.body)
+        comment = ndb.Key(urlsafe=data['commentKey']).get()
+        comment.key.delete() #aaaaannnndddd it's gone. 
+
+class ApproveCommentHandler(webapp2.RequestHandler):
+    def post(self):
+        data = json.loads(self.request.body)
+        comment = ndb.Key(urlsafe=data['commentKey']).get()
+        comment.is_approved = True
+        comment.put();
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/admin', AdminHandler),
+    ('/ApproveComments', ApproveCommentsHandler),
+    ("/DenyComment", DenyCommentHandler),
+    ("/ApproveComment", ApproveCommentHandler),
     ('/sculptures.html', SculpturesHandler),
     ('/single-page.html', SculptureCardHandler),
     ('/addSculpture', AddSculptureHandler),
@@ -274,5 +331,6 @@ app = webapp2.WSGIApplication([
     ('/my_location', MyLocationHandler),
     ('/CheckForStatue', CheckForStatueHandler),
     ('/CardFromLocation', CardFromLocationHandler),
-    ('/DirectionsToStatue', DirectionsHandler)
+    ('/DirectionsToStatue', DirectionsHandler),
+    ('/admin', AdminHandler)
 ], debug=True)

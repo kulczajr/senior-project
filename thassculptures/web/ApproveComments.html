@@ -1,0 +1,109 @@
+{% extends "/web/templates/base.html" %} {% block content %}
+<style type="text/css">
+.type_True {
+    display: none;
+}
+
+.filter.selected {
+    background-color: #395BCE;
+}
+
+.filter {
+    background-color: white;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.btn-group {
+    color: black;
+    font-weight: bold;
+    font-size: 25px;
+}
+</style>
+<h3>Comment Approval</h3>
+<div style="margin-left:10%;margin-right:10%;" class="column centered">
+    .
+    <div class="btn-group">
+        <div id="PendingToggle" class="btn filter selected">Pending</div>
+        <div id="ApprovedToggle" class="btn filter">Approved</div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Sculpture</th>
+                <th>Content</th>
+                <th>Approve</th>
+            </tr>
+        </thead>
+        {% for comment in comments|sort(attribute='sculpture') %}
+        <tr id="row-{{comment.entityKey}}" class="type_{{comment['is_approved']}}">
+            <td>{{comment['author']}}</td>
+            <td>{{comment['sculpture']}}
+                <td>{{comment['content']}}</td>
+                <td>
+                    {% if comment['is_approved'] != true %}
+                    <button class="button" id="approveButton-{{comment.entityKey}}" onclick="approve('{{comment.entityKey}}')"> <i style="color:green" class="fa fa-check"> </i></button>
+                    {% endif %}
+                    <button class="button" onclick="deleteComment('{{comment.entityKey}}')"> <i style="color:red" class="fa fa-remove"> </i></button>
+                </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<script>
+$(document).ready(function() {
+    $("#PendingToggle").on("click", function() {
+        $("#PendingToggle").addClass("selected")
+        $("#ApprovedToggle").removeClass("selected")
+        $(".type_True").each(function() {
+            $(this).hide();
+        })
+        $(".type_False").each(function() {
+            $(this).show("fade");
+        })
+    })
+    $("#ApprovedToggle").on("click", function() {
+        $("#ApprovedToggle").addClass("selected")
+        $("#PendingToggle").removeClass("selected")
+        $(".type_False").each(function() {
+            $(this).hide();
+        })
+        $(".type_True").each(function() {
+            $(this).show("fade");
+        })
+    })
+})
+
+function approve(commentKey) {
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "commentKey": commentKey
+        }),
+        url: "/ApproveComment",
+    })
+    $("#row-" + commentKey).removeClass("type_False")
+    $("#row-" + commentKey).addClass("type_True")
+    $("#row-" + commentKey).hide("fade")
+    $("#approveButton-" + commentKey).hide()
+};
+
+function deleteComment(commentKey) {
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "commentKey": commentKey
+        }),
+        url: "/DenyComment",
+    })
+        $("#row-" + commentKey).removeClass("type_True")
+
+    $("#row-" + commentKey).remove()
+};
+</script>
+{% endblock %}

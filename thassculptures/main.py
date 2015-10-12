@@ -26,6 +26,7 @@ import json
 import pprint
 import re
 import datetime
+import urllib
 import logging
 from apiclient.discovery import build
 from google.appengine._internal.django.utils.safestring import mark_safe
@@ -46,7 +47,7 @@ api = 'sculptures'
 version = 'v1'
 discovery_url = '%s/discovery/v1/apis/%s/%s/rest' % (api_root, api, version)
 service = build(api, version, discoveryServiceUrl=discovery_url)
-
+logging.getLogger().setLevel(logging.DEBUG)
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -270,7 +271,7 @@ class CardFromLocationHandler(webapp2.RequestHandler):
         response = "Loading the card for " + name
         template = jinja_env.get_template("web/sculptureCardTemplate.html")
         sculpture_title = name
-        sculptures = service.sculpture().list().execute()
+        sculptures = service.sculpture().list(limit=50).execute()
         comments = service.comment().list().execute()
         sculpture_for_card = None
         comments_for_card = []
@@ -315,14 +316,51 @@ class ApproveCommentHandler(webapp2.RequestHandler):
         comment.is_approved = True
         comment.put();
 
+class SingleScultpureFinder(webapp2.RequestHandler):
+    def get(self):
+        name = self.request.get("sculpture-title")
+        response = "Loading the card for " + name
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        sculptures = service.sculpture().list(limit=50).execute()
+        comments = service.comment().list(limit=50).execute()
+        sculpture_for_card = None
+        comments_for_card = []
+        for sculpture in sculptures['items']:
+            if sculpture['title'] == name:
+                sculpture_for_card = sculpture
+                for comment in comments['items']:
+                    if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
+                break
+        self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
+    def post(self):
+        name = self.request.get("sculpture-title")
+        response = "Loading the card for " + name
+        template = jinja_env.get_template("web/sculptureCardTemplate.html")
+        sculptures = service.sculpture().list(limit=50).execute()
+        comments = service.comment().list(limit=50).execute()
+        sculpture_for_card = None
+        comments_for_card = []
+        for sculpture in sculptures['items']:
+            if sculpture['title'] == name:
+                sculpture_for_card = sculpture
+                for comment in comments['items']:
+                    if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
+                        if comment['is_approved']:
+                            comments_for_card.append(comment)
+                break
+        self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
+
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/admin', AdminHandler),
     ('/ApproveComments', ApproveCommentsHandler),
+    ('/single-sculpture',SingleScultpureFinder),
     ("/DenyComment", DenyCommentHandler),
     ("/ApproveComment", ApproveCommentHandler),
     ('/sculptures.html', SculpturesHandler),
-    ('/single-page.html', SculptureCardHandler),
     ('/addSculpture', AddSculptureHandler),
     ('/addArtist', AddArtistHandler),
     ('/addComment', AddCommentHandler),

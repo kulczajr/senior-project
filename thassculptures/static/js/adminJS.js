@@ -27,7 +27,7 @@ rh.wp.enableButtons = function() {
 		
 		$("#insert-weatherpic-modal input[name=image]").val("");
 		$("#insert-weatherpic-modal input[name=title]").val("");
-		$("#insert-weatherpic-modal input[name=entity_key]").val("").prop("disabled", true);
+		$("#insert-weatherpic-modal input[name=entityKey]").val("").prop("disabled", true);
 	});
 	
 	$(".edit-weatherpic").click(function(){
@@ -36,17 +36,32 @@ rh.wp.enableButtons = function() {
 		
 		image = $(this).find(".image").html();
 		title = $(this).find(".title").html();
-		entityKey = $(this).find(".entity-key").html();
+		artist = $(this).find(".artist").html();
+		description = $(this).find(".description").html();
+		//location = $(this).find(".location").html();
+		entityKey = $(this).find(".entityKey").html();
+		
+		//var locationSplit = location.split(",");
+		//var longitude = locationSplit[0];
+		//var latitude = locationSplit[1];
+		//console.log(longitude);
+		//console.log(latitude);
+		
 		
 		$("#insert-weatherpic-modal input[name=image]").val(image);
 		$("#insert-weatherpic-modal input[name=title]").val(title);
-		$("#insert-weatherpic-modal input[name=entity_key]").val(entityKey).prop("disabled", false);
+		$("#insert-weatherpic-modal input[name=artist]").val(artist);
+		//$("#insert-weatherpic-modal input[name=longitude]").val(longitude);
+		//$("#insert-weatherpic-modal input[name=latitude]").val(latitude);
+		//$("#insert-weatherpic-modal input[name=longitude]").val(location);
+		$("#insert-weatherpic-modal input[name=description]").val(description);
+		$("#insert-weatherpic-modal input[name=entityKey]").val(entityKey).prop("disabled", false);
 		
 	});
 	
 	$(".delete-weatherpic").click(function(){
-		entityKey = $(this).find(".entity-key").html();
-		$("#delete-weatherpic-modal input[name=entity_key]").val(entityKey);
+		entityKey = $(this).find(".entityKey").html();
+		$("#delete-weatherpic-modal input[name=entityKey]").val(entityKey);
 	});
 };
 

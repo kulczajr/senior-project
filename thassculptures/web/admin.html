@@ -67,6 +67,9 @@
 							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
 							<div class="hidden image">{{sculpture.image}}</div>
 							<div class="hidden title">{{sculpture.title}}</div>
+							<div class="hidden artist">{{sculpture.artist}}</div>
+							<div class="hidden description">{{sculpture.description}}</div>
+							<div class="hidden location">{{sculpture.location}}</div>
 						</button>
 						<button data-toggle="modal" data-target="#delete-weatherpic-modal"
 							type="button" class="delete-weatherpic btn btn-xs btn-danger">
@@ -162,7 +165,7 @@
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Delete a Statue</h4>
 				</div>
-				<form action="/deleteWeatherPic" method="POST" class="form-horizontal"
+				<form action="/deleteSculpture" method="POST" class="form-horizontal"
 					role="form">
 					<input type="text" name="entityKey" class="hidden">
 					<div class="modal-body">
@@ -170,7 +173,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-danger">Delete Statue</button>
+						<button type="submit" class="btn btn-danger">Delete Sculpture</button>
 					</div>
 				</form>
 			</div>

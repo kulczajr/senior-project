@@ -142,18 +142,15 @@ class AddSculptureHandler(webapp2.RequestHandler):
         location = latitude + ", " + longitude
 
         if self.request.get("entityKey"):
-            print "I think this is an existing sculpture."
-            sculptures = service.sculpture().list().execute()
-            for sculpture in sculptures['items']:
-                if sculpture.entityKey == self.request.get("entityKey"):
-                    sculpture.title = self.request.get("entityKey")
-                    sculpture.artist = self.request.get("artist")
-                    sculpture.location = location
-                    sculpture.description = self.request.get("description")
-                    sculpture.image = self.request.get("image")
-                    sculpture.put()
+            sculpture_key = ndb.Key(urlsafe=self.request.get("entityKey"))
+            sculpture = sculpture_key.get()       
+            sculpture.title = self.request.get("title")
+            sculpture.artist = self.request.get("artist")
+            sculpture.location = location
+            sculpture.description = self.request.get("description")
+            sculpture.image = self.request.get("image")
+            sculpture.put()
         else: 
-            print "I think this is a new sculpture."
             new_sculpture = Sculpture(title = self.request.get("title"),
                                   artist = self.request.get("artist"),
                                   location = location,
@@ -191,6 +188,12 @@ class AddCommentHandler(webapp2.RequestHandler):
                 break
         self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
 
+class DeleteSculptureHandler(webapp2.RequestHandler):
+    def post(self):
+        sculpture_key = ndb.Key(urlsafe=self.request.get("entityKey"))
+        sculpture = sculpture_key.get()       
+        sculpture.key.delete();
+        self.redirect(self.request.referer)
 
 class AddArtistHandler(webapp2.RequestHandler):
     def get(self):
@@ -362,6 +365,7 @@ app = webapp2.WSGIApplication([
     ("/ApproveComment", ApproveCommentHandler),
     ('/sculptures.html', SculpturesHandler),
     ('/addSculpture', AddSculptureHandler),
+    ('/deleteSculpture', DeleteSculptureHandler),
     ('/addArtist', AddArtistHandler),
     ('/addComment', AddCommentHandler),
     ('/map.html', MapHandler),

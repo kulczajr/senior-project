@@ -41,13 +41,13 @@
 	<div class="content">
 		<div class="wrap">
 			<div id="main" role="main">
-				<ul id="tiles" style="margin-bottom:30px;">
+				<ul id="tiles" style="margin-bottom:50px;">
 					<!-- These are our grid blocks -->
 					{% for sculpture in response | sort(attribute="title")%}
 					<form action="/single-sculpture?sculpture-title={{sculpture['title']}}" method="POST">
-					<li style="box-shadow: 0px 0px 15px 3px; width:90%; margin-left:5%; margin-right:5%;margin-bottom:25px;margin-top:25px; border-radius: 8px 8px 8px 8px;">
-					<input style="width:100%; border-radius: 8px 8px 0px 0px;" class="grid_sculpture_images" type="image" src="{{sculpture['image']}}" alt="Submit Form" />
-						<div class="post-info">
+					<li class="tiles" style="max-width:300px; box-shadow: 0px 0px 15px 3px; width:90%; margin-left:5%; margin-right:5%;margin-bottom:25px;margin:0 auto;margin-top:25px; border-radius: 8px 8px 8px 8px;">
+					<input style="max-width:300px;width:100%; border-radius: 8px 8px 0px 0px;" class="grid_sculpture_images" type="image" src="{{sculpture['image']}}" alt="Submit Form" />
+						<div class="post-info" style="background:white;text-align:center">
 							<div class="post-basic-info">
 							<input type=text class="hidden" name="sculpture-title" value="{{sculpture['title']}}">
 								<h3>

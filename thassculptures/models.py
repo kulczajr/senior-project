@@ -3,7 +3,7 @@ from google.appengine.ext import ndb
 
 
 class Sculpture(EndpointsModel):
-    _message_fields_schema = ("entityKey", "title", "artist", "description", "image", "audio", "location", "artist_key")
+    _message_fields_schema = ("entityKey", "title", "artist", "description", "image", "audio", "location", "artist_key","do","think")
     title = ndb.StringProperty();
     artist = ndb.StringProperty();
     description = ndb.StringProperty();
@@ -11,6 +11,8 @@ class Sculpture(EndpointsModel):
     audio = ndb.BlobProperty();
     location = ndb.StringProperty();
     artist_key = ndb.StringProperty();
+    do = ndb.StringProperty();
+    think = ndb.StringProperty();
 
 class Artist(EndpointsModel):
     _message_fields_schema = ("entityKey", "fname", "lname", "website_url", "description", "image")

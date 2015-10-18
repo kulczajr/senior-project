@@ -2,81 +2,150 @@
  {% block title %} {{sculpture.title}} {% endblock %}
 {% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
  {% block content %}
-
- <style>
- a.twitter-share-button{
-    width:20%;
-    height:20%;
- }
-
- #notification {
-    position:fixed;
-    top:70%;
-    width:100%;
-    z-index:105;
-    height:60px;
-    text-align:center;
-    font-weight:normal;
-    font-size:25px;
-    font-weight:bold;
-    color:white;
-    background-color:#337ab7;
-    padding:5px;
+<style>
+a.twitter-share-button {
+    width: 20%;
+    height: 20%;
 }
+
+#notification {
+    position: fixed;
+    top: 70%;
+    width: 100%;
+    z-index: 105;
+    height: 60px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    background-color: #337ab7;
+    padding: 5px;
+}
+
 #notification span.dismiss {
-    border:2px solid #FFF;
-    padding:0 5px;
-    cursor:pointer;
-    float:right;
-    margin-right:10px;
+    border: 2px solid #FFF;
+    padding: 0 5px;
+    cursor: pointer;
+    float: right;
+    margin-right: 10px;
 }
+
 #notification a {
-    color:white;
-    text-decoration:none;
-    font-weight:bold
+    color: white;
+    text-decoration: none;
+    font-weight: bold
 }
- </style>
+
+
+
+.contentTab {
+    border: 1px solid black;
+    border-top:none;
+    font-size: 28px;
+    opacity: 1;
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-family: sans-serif;
+    background-image: -webkit-linear-gradient(top, #337ab7 0%, #265a88 100%);
+    background-image: -o-linear-gradient(top, #337ab7 0%, #265a88 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#337ab7), to(#265a88));
+    background-image: linear-gradient(to bottom, #337ab7 0%, #265a88 100%);
+}
+.contentTab.selected{
+    background-color:white;
+    background-image: none;
+    border-bottom:0px;
+    border-top:1px;
+    color:black;
+}
+
+#rowNoMargin{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+#thinkTab{
+    font-size:24px;
+    margin-top:5%;
+}
+</style>
 <script>
-  window.fbAsyncInit = function() {
+window.fbAsyncInit = function() {
     FB.init({
-      appId      : '1044518588913353',
-      xfbml      : true,
-      version    : 'v2.5'
+        appId: '1044518588913353',
+        xfbml: true,
+        version: 'v2.5'
     });
-  };
+};
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {
+        return;
+    }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 </script>
-
 <div class="scrollable">
     <div class="scrollable-content">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="article-content">
-                    <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
-                    <h3 class="article-header" id="sculptureTitle">{{sculpture.title}} 
-                    </h3>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                <div class="article">
+                    <div id="rowNoMargin" class="row">
+                        <div id="learnTabButton" style="border-left:none;"class="col-xs-4 contentTab selected">Learn</div>
+                        <div id="thinkTabButton" class="col-xs-4 contentTab">Think</div>
+                        <div id="doTabButton" style="border-right:none;"class="col-xs-4 contentTab">Do</div>
+                     </div>
+                    <div class="article-content">
+                                                <div id="learnTab">
 
-                    <form role="form" action="/artist" method="post">
-                        <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{sculpture.artist}}</a></h4>
-                        <p id="sculptureText"> {{sculpture.description|e}}</p>
-                        <input type="hidden" name="artistName" id="artistName" value="{{sculpture.artist}}"></input>
-                        <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
-                    </form>
-<div style="display:table">
-<div class="fb-share-button" data-href="http://thassculptures.appspot.com/sculptures.html" data-layout="button_count"></div>
-                    <a href="https://twitter.com/share" style="margin-left:5px" class="twitter-share-button" data-text="Check out the Wabash Valley Art Spaces sculpture"></a>
-                </div>
-                </div>
+                        <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
+                        <h3 class="article-header" id="sculptureTitle">{{sculpture.title}} 
+                        </h3>
+                        <script>
+                        ! function(d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0],
+                                p = /^http:/.test(d.location) ? 'http' : 'https';
+                            if (!d.getElementById(id)) {
+                                js = d.createElement(s);
+                                js.id = id;
+                                js.src = p + '://platform.twitter.com/widgets.js';
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }
+                        }(document, 'script', 'twitter-wjs');
+                        </script>
+                        <form role="form" action="/artist" method="post">
+                            <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{sculpture.artist}}</a></h4>
+                            <p id="sculptureText"> {{sculpture.description|e}}</p>
+                            <input type="hidden" name="artistName" id="artistName" value="{{sculpture.artist}}"></input>
+                            <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
+                        </form>
+
+                    </div>
+
+                    <div id="thinkTab">
+                        {{sculpture.think}}
+                    </div>
+                    <div id="doTab">
+                        {{sculpture.do}}
+
+                            <h3>Share your experience on social media</h3>
+                            <div>
+                            <div class="fb-share-button" data-href="http://thassculptures.appspot.com/sculptures.html" data-layout="button_count"></div>
+                            <span style="width:5px;"></span>
+                            <a href="https://twitter.com/share" style="margin-left:5px" class="twitter-share-button" data-text="Check out the Wabash Valley Art Spaces sculpture"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
+            </div>
+        </div>
         <div class="panel panel-default commentArea">
             <div class="" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 <div class="panel-heading" role="tab" id="headingTwo">
@@ -127,39 +196,72 @@
         </div>
     </div>
 </div>
-                        <div id="notification" style="display: none;">
-  <span class="dismiss"><a title="dismiss this notification"></a></span>
+<div id="notification" style="display: none;">
+    <span class="dismiss"><a title="dismiss this notification"></a></span>
 </div>
 <script>
-$("#commentForm").submit(function(){
-    $("#submitBtn").prop('disabled', true);
 
-     var dataString = 
-     $.ajax({
-        type:"POST",
-        url:"/addComment",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            "sculpture_key": "{{sculpture.entityKey}}",
-            "addCommentAuthor" :  $("#addCommentAuthor").val(),
-            "addCommentBody": $("#addCommentBody").val()
-        })     
-    })
 
-    $("#notification").fadeIn("slow").append('Your comment has been submitted for approval');
-    $(document).one("click",function(){
-       $("#notification").fadeOut("slow");
-   });
-       setTimeout(function(){
-        if($("#notification").is(":visible")){
-            $(document).click();
-        }
-       },3000);
-    return false;
+$("#learnTabButton").on("click", function(){
+$("#learnTabButton").addClass("selected");
+$("#thinkTabButton").removeClass("selected");
+$("#doTabButton").removeClass("selected");
+
+$("#doTab").hide();
+$("#thinkTab").hide();
+$("#learnTab").show("fade");
+
 })
 
+$("#thinkTabButton").on("click", function(){
+$("#thinkTabButton").addClass("selected");
+$("#doTabButton").removeClass("selected");
+$("#learnTabButton").removeClass("selected");
 
 
+$("#doTab").hide();
+$("#learnTab").hide();
+$("#thinkTab").show("fade");
+})
+
+$("#doTabButton").on("click", function(){
+$("#doTabButton").addClass("selected");
+$("#thinkTabButton").removeClass("selected");
+$("#learnTabButton").removeClass("selected");
+
+$("#learnTab").hide();
+$("#thinkTab").hide();
+$("#doTab").show("fade");
+
+
+})
+$("#commentForm").submit(function() {
+    $("#submitBtn").prop('disabled', true);
+
+    var dataString =
+        $.ajax({
+            type: "POST",
+            url: "/addComment",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                "sculpture_key": "{{sculpture.entityKey}}",
+                "addCommentAuthor": $("#addCommentAuthor").val(),
+                "addCommentBody": $("#addCommentBody").val()
+            })
+        })
+
+    $("#notification").fadeIn("slow").append('Your comment has been submitted for approval');
+    $(document).one("click", function() {
+        $("#notification").fadeOut("slow");
+    });
+    setTimeout(function() {
+        if ($("#notification").is(":visible")) {
+            $(document).click();
+        }
+    }, 3000);
+    return false;
+})
 </script>
+
 {% endblock %}

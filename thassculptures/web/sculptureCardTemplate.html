@@ -37,14 +37,11 @@ a.twitter-share-button {
     font-weight: bold
 }
 
-
-
 .contentTab {
-    border: 1px solid black;
+    border: 2px solid black;
     border-top:none;
-    font-size: 28px;
+    font-size: 42px;
     opacity: 1;
-    font-size: 22px;
     text-align: center;
     font-weight: bold;
     color: white;
@@ -68,8 +65,12 @@ a.twitter-share-button {
 }
 
 #thinkTab{
-    font-size:24px;
-    margin-top:5%;
+    font-size:42px;
+    display:none;
+}
+#doTab{
+    font-size: 42px;
+    display:none;
 }
 </style>
 <script>
@@ -134,9 +135,8 @@ window.fbAsyncInit = function() {
                     </div>
                     <div id="doTab">
                         {{sculpture.do}}
-
-                            <h3>Share your experience on social media</h3>
-                            <div>
+                            Share your experience on social media
+                            <div style="display:flex;">
                             <div class="fb-share-button" data-href="http://thassculptures.appspot.com/sculptures.html" data-layout="button_count"></div>
                             <span style="width:5px;"></span>
                             <a href="https://twitter.com/share" style="margin-left:5px" class="twitter-share-button" data-text="Check out the Wabash Valley Art Spaces sculpture"></a>
@@ -154,8 +154,8 @@ window.fbAsyncInit = function() {
                 </div>
             </div>
             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="panel-body" id="commentBox">
-                    <div class="comment panel panel-default">
+                <div id="commentBox">
+                    <div id="leaveComment" class="comment panel panel-default">
                         <p class="commentAuthor">Leave a Comment</p>
                         <form role="form" id="commentForm" action="/addComment" method="post" id="login-form" autocomplete="off">
                             <div class="row commentField">
@@ -236,7 +236,7 @@ $("#doTab").show("fade");
 
 })
 $("#commentForm").submit(function() {
-    $("#submitBtn").prop('disabled', true);
+    $("#leaveComment").hide();
 
     var dataString =
         $.ajax({

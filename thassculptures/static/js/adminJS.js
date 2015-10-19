@@ -25,9 +25,15 @@ rh.wp.enableButtons = function() {
 		$("#insert-weatherpic-modal .modal-title").html("Add a Statue");
 		$("#insert-weatherpic-modal button[type=submit]").html("Add a Statue");
 		
-		//$("#insert-weatherpic-modal input[name=image]").val("");
-		//$("#insert-weatherpic-modal input[name=title]").val("");
-		//$("#insert-weatherpic-modal input[name=entityKey]").val("").prop("disabled", true);
+		$("#insert-weatherpic-modal input[name=image]").val("");
+		$("#insert-weatherpic-modal input[name=title]").val("");
+		$("#insert-weatherpic-modal input[name=description]").val("");
+		$("#insert-weatherpic-modal input[name=think]").val("");
+		$("#insert-weatherpic-modal input[name=do]").val("");
+		$("#insert-weatherpic-modal input[name=longitude]").val("");
+		$("#insert-weatherpic-modal input[name=latitude]").val("");
+		$("#insert-weatherpic-modal input[name=artist]").val("");
+		$("#insert-weatherpic-modal input[name=entityKey]").val("").prop("disabled", true);
 	});
 	
 	$(".edit-weatherpic").click(function(){

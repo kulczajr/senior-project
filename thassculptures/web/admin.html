@@ -70,6 +70,8 @@
 							<div class="hidden artist">{{sculpture.artist}}</div>
 							<div class="hidden description">{{sculpture.description}}</div>
 							<div class="hidden location">{{sculpture.location}}</div>
+							<div class="hidden think">{{sculpture.think}}</div>
+							<div class="hidden do">{{sculpture.do}}</div>
 						</button>
 						<button data-toggle="modal" data-target="#delete-weatherpic-modal"
 							type="button" class="delete-weatherpic btn btn-xs btn-danger">
@@ -78,7 +80,7 @@
 						</button>
 					</div>
 					<img src="{{sculpture.image}}" alt="A picture of the statue">
-					<p class="caption">{{sculpture.title}}</p>
+					<p class="caption">{{sculpture.title}} {{sculpture.think}} {{sculpture.do}}</p>
 				</div>
 				{% endfor %}
 			</div>
@@ -127,6 +129,20 @@
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="description-input"
 									placeholder="Description" name="description">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Think</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="think-input"
+									placeholder="Think" name="think">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Do</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="do-input"
+									placeholder="Do" name="do">
 							</div>
 						</div>
 						<div class="form-group">

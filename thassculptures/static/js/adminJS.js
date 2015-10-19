@@ -25,9 +25,9 @@ rh.wp.enableButtons = function() {
 		$("#insert-weatherpic-modal .modal-title").html("Add a Statue");
 		$("#insert-weatherpic-modal button[type=submit]").html("Add a Statue");
 		
-		$("#insert-weatherpic-modal input[name=image]").val("");
-		$("#insert-weatherpic-modal input[name=title]").val("");
-		$("#insert-weatherpic-modal input[name=entityKey]").val("").prop("disabled", true);
+		//$("#insert-weatherpic-modal input[name=image]").val("");
+		//$("#insert-weatherpic-modal input[name=title]").val("");
+		//$("#insert-weatherpic-modal input[name=entityKey]").val("").prop("disabled", true);
 	});
 	
 	$(".edit-weatherpic").click(function(){
@@ -40,6 +40,10 @@ rh.wp.enableButtons = function() {
 		description = $(this).find(".description").html();
 		//location = $(this).find(".location").html();
 		entityKey = $(this).find(".entityKey").html();
+		think = $(this).find(".think").html();
+		do_text = $(this).find(".do").html();
+		console.log("Text of think is " + think);
+		console.log("Text of do is " + do_text);
 		
 		//var locationSplit = location.split(",");
 		//var longitude = locationSplit[0];
@@ -55,6 +59,8 @@ rh.wp.enableButtons = function() {
 		//$("#insert-weatherpic-modal input[name=latitude]").val(latitude);
 		//$("#insert-weatherpic-modal input[name=longitude]").val(location);
 		$("#insert-weatherpic-modal input[name=description]").val(description);
+		$("#insert-weatherpic-modal input[name=think]").val(think);
+		$("#insert-weatherpic-modal input[name=do]").val(do_text);
 		$("#insert-weatherpic-modal input[name=entityKey]").val(entityKey).prop("disabled", false);
 		
 	});

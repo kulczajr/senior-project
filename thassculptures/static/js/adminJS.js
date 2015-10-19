@@ -44,16 +44,16 @@ rh.wp.enableButtons = function() {
 		title = $(this).find(".title").html();
 		artist = $(this).find(".artist").html();
 		description = $(this).find(".description").html();
-		//location = $(this).find(".location").html();
+		locationCoordinates = $(this).find(".location").html();
 		entityKey = $(this).find(".entityKey").html();
 		think = $(this).find(".think").html();
 		do_text = $(this).find(".do").html();
 		console.log("Text of think is " + think);
 		console.log("Text of do is " + do_text);
 		
-		//var locationSplit = location.split(",");
-		//var longitude = locationSplit[0];
-		//var latitude = locationSplit[1];
+		locationSplit = locationCoordinates.split(",");
+		latitude = locationSplit[0];
+		longitude = locationSplit[1].trim();
 		//console.log(longitude);
 		//console.log(latitude);
 		
@@ -62,8 +62,8 @@ rh.wp.enableButtons = function() {
 		$("#insert-weatherpic-modal input[name=title]").val(title);
 		$("#insert-weatherpic-modal input[name=artist]").val(artist);
 		//$("#insert-weatherpic-modal input[name=longitude]").val(longitude);
-		//$("#insert-weatherpic-modal input[name=latitude]").val(latitude);
-		//$("#insert-weatherpic-modal input[name=longitude]").val(location);
+		$("#insert-weatherpic-modal input[name=latitude]").val(latitude);
+		$("#insert-weatherpic-modal input[name=longitude]").val(longitude);
 		$("#insert-weatherpic-modal input[name=description]").val(description);
 		$("#insert-weatherpic-modal input[name=think]").val(think);
 		$("#insert-weatherpic-modal input[name=do]").val(do_text);

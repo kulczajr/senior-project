@@ -149,12 +149,16 @@ class AddSculptureHandler(webapp2.RequestHandler):
             sculpture.location = location
             sculpture.description = self.request.get("description")
             sculpture.image = self.request.get("image")
+            sculpture.think = self.request.get("think")
+            sculpture.do = self.request.get("do")
             sculpture.put()
         else: 
             new_sculpture = Sculpture(title = self.request.get("title"),
                                   artist = self.request.get("artist"),
                                   location = location,
                                   description = self.request.get("description"),
+                                  think = self.request.get("think"),
+                                  do = self.request.get("do"),
                                   image = self.request.get("image"))
             new_sculpture.put()
         self.redirect(self.request.referer)

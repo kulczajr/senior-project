@@ -39,15 +39,13 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">THAS Statues Admin Hub</a>
+				<a class="navbar-brand" href="#">THAS Tours Admin Hub</a>
 
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li><a id="add-weatherpic" data-toggle="modal"
-						data-target="#insert-weatherpic-modal">Add Statue</a></li>
-					<li><a href="/ToursAdmin">Manage Tours</a></li>
-					<li><a href="/ApproveComments">Comment Review</a></li>
+						data-target="#insert-weatherpic-modal">Add Tour</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a id="toggle-edit" href="#">Edit</a></li>
@@ -59,29 +57,24 @@
 	<div class="container">
 		<div id="wrapper">
 			<div id="columns">
-				{% for sculpture in sculptures %}
+				{% for tour in tours %}
 				<div class="pin">
 					<div class="hidden pull-right edit-actions">
 						<button data-toggle="modal" data-target="#insert-weatherpic-modal"
 							type="button" class="edit-weatherpic btn btn-xs btn-success">
 							<span class="glyphicon glyphicon-pencil"></span>
-							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
-							<div class="hidden image">{{sculpture.image}}</div>
-							<div class="hidden title">{{sculpture.title}}</div>
-							<div class="hidden artist">{{sculpture.artist}}</div>
-							<div class="hidden description">{{sculpture.description}}</div>
-							<div class="hidden location">{{sculpture.location}}</div>
-							<div class="hidden think">{{sculpture.think}}</div>
-							<div class="hidden do">{{sculpture.do}}</div>
+							<div class="hidden entityKey">{{tour.entityKey}}</div>
+							<div class="hidden description">{{tour.description}}</div>
+							<div class="hidden sculpture_list">{{tour.sculpture_list}}</div>
 						</button>
 						<button data-toggle="modal" data-target="#delete-weatherpic-modal"
 							type="button" class="delete-weatherpic btn btn-xs btn-danger">
 							<span class="glyphicon glyphicon-remove"></span>
-							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
+							<div class="hidden entityKey">{{tour.entityKey}}</div>
 						</button>
 					</div>
-					<img src="{{sculpture.image}}" alt="A picture of the statue">
-					<p class="caption">{{sculpture.title}}</p>
+					<img src="http://www.wabashvalleyartspaces.com/images/logo10.gif" alt="Art Spaces Logo">
+					<p class="caption">{{tour.description}}</p>
 				</div>
 				{% endfor %}
 			</div>
@@ -97,34 +90,13 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Add a Statue</h4>
+					<h4 class="modal-title" id="myModalLabel">Add a Tour</h4>
 				</div>
-				<form action="/addSculpture" method="POST" class="form-horizontal"
+				<form action="/AddTour" method="POST" class="form-horizontal"
 					role="form">
 					<input type="text" name="entityKey" class="hidden">
 					<div class="modal-body">
-						<div class="form-group">
-							<label for="image-url-input" class="col-sm-2 control-label">Image
-								URL</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="image-input"
-									name="image" placeholder="Image URL">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Title</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="title-input"
-									placeholder="Title" name="title">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Artist</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="artist-input"
-									placeholder="Artist Name" name="artist">
-							</div>
-						</div>
+					
 						<div class="form-group">
 							<label for="caption-input" class="col-sm-2 control-label">Description</label>
 							<div class="col-sm-10">
@@ -133,33 +105,24 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Think</label>
+							<label for="caption-input" class="col-sm-2 control-label">Current Sculptures</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="think-input"
-									placeholder="Think" name="think">
+								<select name="current_sculptures" class="form-control" id="current_sculptures">
+								</select>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Do</label>
+							<label for="caption-input" class="col-sm-2 control-label">Sculpture to Add</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="do-input"
-									placeholder="Do" name="do">
+								<select name="sculpture_list" class="form-control" id="sculpture_list">
+								{% for sculpture in sculptures %}
+									<option value="{{sculpture.entityKey}}">{{sculpture.title}}</option>
+								{% endfor %}
+								</select>
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Longitude</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="longitude-input"
-									placeholder="Longitude" name="longitude">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Latitude</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="latitude-input"
-									placeholder="Latitude" name="latitude">
-							</div>
-						</div>
+						
+					
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -205,7 +168,7 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	<script src="/static/js/adminJS.js"></script>
+	<script src="/static/js/tours.js"></script>
 
 </body>
 </html>

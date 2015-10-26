@@ -18,7 +18,7 @@
 import os
 
 from google.appengine.ext import ndb
-from models import Sculpture, Artist, Comment
+from models import Sculpture, Artist, Comment, Tour
 import jinja2
 import webapp2
 import time
@@ -298,6 +298,39 @@ class AdminHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/admin.html")
         self.response.write(template.render({'sculptures': sculptures['items']}))
 
+class ToursAdminHandler(webapp2.RequestHandler):
+    def get(self):
+        sculptures = service.sculpture().list(limit=50).execute()
+        tours = service.tour().list(limit=50).execute()
+        template = jinja_env.get_template("web/ToursAdminHub.html")
+        self.response.write(template.render({'sculptures': sculptures['items'], 'tours': tours['items']}))
+
+class AddTourHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template("web/ToursAdminHub.html")
+        self.response.write(template.render())
+        
+    def post(self):
+        selected_sculpture_key = ndb.Key(urlsafe=self.request.get("sculpture_list")) 
+        selected_sculpture = selected_sculpture_key.get()
+        sculpture_to_add = selected_sculpture.title + "SEPERATOR" + selected_sculpture.entityKey
+        if self.request.get("entityKey"):
+            tour_key = ndb.Key(urlsafe=self.request.get("entityKey"))
+            tour = tour_key.get()       
+            tour.title = self.request.get("description")
+            selected_sculpture_key = ndb.Key(urlsafe=self.request.get("sculpture_list")) 
+            selected_sculpture = selected_sculpture_key.get()
+            sculpture_list = tour.sculpture_list
+            sculpture_list.append(sculpture_to_add)
+            tour.sculpture_list = sculpture_list
+            tour.put()
+        else:
+            new_tour = Tour(description = self.request.get("description"),
+                            sculpture_list = [sculpture_to_add]) 
+            new_tour.put()
+        self.redirect(self.request.referer)
+
+        
 class ApproveCommentsHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/ApproveComments.html")
@@ -378,5 +411,7 @@ app = webapp2.WSGIApplication([
     ('/CheckForStatue', CheckForStatueHandler),
     ('/CardFromLocation', CardFromLocationHandler),
     ('/DirectionsToStatue', DirectionsHandler),
+    ('/ToursAdmin', ToursAdminHandler),
+    ('/AddTour', AddTourHandler),
     ('/admin', AdminHandler)
 ], debug=True)

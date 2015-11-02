@@ -48,12 +48,21 @@ rh.wp.enableButtons = function() {
 		var sculptureTitles = [];
 		var sculptureKeys = [];
 		for (i = 0; i < sculpture_list.length; i++) { 
-		    sculpture_title = sculpture_list[i].split("SEPERATOR")[0];
-		    sculpture_key = sculpture_list[i].split("SEPERATOR")[1];
-		    console.log("key is " + sculpture_key);
-		    console.log("value is " + sculpture_title);
-		    sculpture_title = sculpture_title.replace("u'", "");
-		    sculpture_title = sculpture_title.replace("[", "");
+		    //sculpture_title = sculpture_list[i].split("SEPERATOR")[0];
+		    //sculpture_key = sculpture_list[i].split("SEPERATOR")[1];
+		    //console.log("key is " + sculpture_key);
+		    //console.log("value is " + sculpture_title);
+		    //sculpture_title = sculpture_title.replace("u'", "");
+		    //sculpture_title = sculpture_title.replace("[", "");
+			sculpture_key = sculpture_list[i];
+			sculpture_key = sculpture_key.replace("u'", "");
+			sculpture_key = sculpture_key.replace("[", "");
+			sculpture_key = sculpture_key.replace("]", "");
+			sculpture_key = sculpture_key.replace("'", "");
+			sculpture_key = sculpture_key.trim();
+			sculpture_title = $("html").find("#" + sculpture_key).html();
+			console.log("looking for sculpture key " + sculpture_key);
+			console.log("found sculpture title: " + sculpture_title);
 		    sculptureDict[sculpture_key] = sculpture_title;
 		}
 		

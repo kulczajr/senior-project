@@ -78,6 +78,11 @@
 				</div>
 				{% endfor %}
 			</div>
+			{% for sculpture in sculptures %}
+								<div class="hidden" id="{{sculpture.entityKey}}">
+								{{sculpture.title}}
+								</div>
+							{% endfor %}
 		</div>
 	</div>
 
@@ -116,10 +121,11 @@
 							<div class="col-sm-10">
 								<select name="sculpture_list" class="form-control" id="sculpture_list">
 								{% for sculpture in sculptures %}
-									<option value="{{sculpture.entityKey}}">{{sculpture.title}}</option>
+									<option value="{{sculpture.entityKey}}" id="{{sculpture.entityKey}}">{{sculpture.title}}</option>
 								{% endfor %}
 								</select>
 							</div>
+							
 						</div>
 						
 					

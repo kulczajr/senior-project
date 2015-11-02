@@ -313,11 +313,11 @@ class AddTourHandler(webapp2.RequestHandler):
     def post(self):
         selected_sculpture_key = ndb.Key(urlsafe=self.request.get("sculpture_list")) 
         selected_sculpture = selected_sculpture_key.get()
-        sculpture_to_add = selected_sculpture.title + "SEPERATOR" + selected_sculpture.entityKey
+        sculpture_to_add = selected_sculpture.entityKey
         if self.request.get("entityKey"):
             tour_key = ndb.Key(urlsafe=self.request.get("entityKey"))
             tour = tour_key.get()       
-            tour.title = self.request.get("description")
+            tour.description = self.request.get("description")
             selected_sculpture_key = ndb.Key(urlsafe=self.request.get("sculpture_list")) 
             selected_sculpture = selected_sculpture_key.get()
             sculpture_list = tour.sculpture_list

@@ -72,6 +72,9 @@ a.twitter-share-button {
     font-size: 42px;
     display:none;
 }
+#additionalText{
+    display:none;
+}
 </style>
 <script>
 window.fbAsyncInit = function() {
@@ -93,10 +96,23 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 </script>
+<script>
+! function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+        p = /^http:/.test(d.location) ? 'http' : 'https';
+    if (!d.getElementById(id)) {
+        js = d.createElement(s);
+        js.id = id;
+        js.src = p + '://platform.twitter.com/widgets.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }
+}(document, 'script', 'twitter-wjs');
+</script>
 <div class="scrollable">
     <div class="scrollable-content">
         <div class="panel panel-default">
             <div class="panel-body">
+            <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
                 <div class="article">
                     <div id="rowNoMargin" class="row">
                         <div id="learnTabButton" style="border-left:none;"class="col-xs-4 contentTab selected">Learn</div>
@@ -104,30 +120,22 @@ window.fbAsyncInit = function() {
                         <div id="doTabButton" style="border-right:none;"class="col-xs-4 contentTab">Do</div>
                      </div>
                     <div class="article-content">
-                                                <div id="learnTab">
 
-                        <img class="img-thumbnail sculpture-image" src="{{sculpture.image}}" title="banner1">
+                    <div id="learnTab">
+
                         <h3 class="article-header" id="sculptureTitle">{{sculpture.title}} 
                         </h3>
-                        <script>
-                        ! function(d, s, id) {
-                            var js, fjs = d.getElementsByTagName(s)[0],
-                                p = /^http:/.test(d.location) ? 'http' : 'https';
-                            if (!d.getElementById(id)) {
-                                js = d.createElement(s);
-                                js.id = id;
-                                js.src = p + '://platform.twitter.com/widgets.js';
-                                fjs.parentNode.insertBefore(js, fjs);
-                            }
-                        }(document, 'script', 'twitter-wjs');
-                        </script>
+
                         <form role="form" action="/artist" method="post">
                             <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{sculpture.artist}}</a></h4>
-                            <p id="sculptureText"> {{sculpture.description|e}}</p>
+                            
                             <input type="hidden" name="artistName" id="artistName" value="{{sculpture.artist}}"></input>
                             <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
                         </form>
-
+            <p id="sculptureText"> {{sculpture.description|e}}</p>
+            <a id="showMore" onclick="displayMoreText()" style="font-size:14px;">Show More Information
+            </a>
+            <p id="additionalText"> {{sculpture.additionalText|e}}</p>
                     </div>
 
                     <div id="thinkTab">
@@ -147,13 +155,11 @@ window.fbAsyncInit = function() {
             </div>
         </div>
         <div class="panel panel-default commentArea">
-            <div class="" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <div class="" >
                 <div class="panel-heading" role="tab" id="headingTwo">
                     <p id="commentHeader"> Comments</p>
-                    <p id="expandHeader"> Expand</p>
                 </div>
             </div>
-            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div id="commentBox">
                     <div id="leaveComment" class="comment panel panel-default">
                         <p class="commentAuthor">Leave a Comment</p>
@@ -192,7 +198,6 @@ window.fbAsyncInit = function() {
                     </div>
                     {% endfor %}
                 </div>
-            </div>
         </div>
     </div>
 </div>
@@ -262,6 +267,11 @@ $("#commentForm").submit(function() {
     }, 3000);
     return false;
 })
+
+function displayMoreText(){
+    $("#additionalText").show();
+    $("#showMore").hide();
+}
 </script>
 
 {% endblock %}

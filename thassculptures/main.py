@@ -200,20 +200,36 @@ class DeleteSculptureHandler(webapp2.RequestHandler):
         self.redirect(self.request.referer)
 
 class AddArtistHandler(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_env.get_template("web/AddArtist.html")
-        # new_artist = Artist(fname = "WHAT", 
-        #               lname = "IS", 
-        #               website_url = "GOING", 
-        #               description = "ON")
-        # service.artist().insert(new_artist)
-        self.response.write(template.render())    
     def post(self):
-        new_artist = Artist(fname=self.request.get("fname"),
-                               lname=self.request.get("lname"),
-                               website_url=self.request.get("website_url"),
-                               description=self.request.get("description"))
-        new_artist.put()
+        if self.request.get("entityKey"):
+            artist_key = ndb.Key(urlsafe=self.request.get("entityKey"))
+            artist = artist_key.get()       
+            artist.fname = self.request.get("fname")
+            artist.lname = self.request.get("lname")
+            artist.image = self.request.get("image")
+            artist.website_url = self.request.get("website_url")
+            artist.description = self.request.get("description")
+            artist.put()
+        else: 
+            new_artist = Artist(fname = self.request.get("fname"),
+                                  lname = self.request.get("lname"),
+                                  image = self.request.get("image"),
+                                  website_url = self.request.get("website_url"),
+                                  description = self.request.get("description"))
+            new_artist.put()
+        self.redirect(self.request.referer)
+
+class ArtistAdminHandler(webapp2.RequestHandler):
+    def get(self):
+        artists = service.artist().list(limit=50).execute()
+        template = jinja_env.get_template("web/ArtistAdminHub.html")
+        self.response.write(template.render({'artists': artists['items']}))
+
+class DeleteArtistHandler(webapp2.RequestHandler):
+    def post(self):
+        artist_key = ndb.Key(urlsafe=self.request.get("entityKey"))
+        artist = artist_key.get()       
+        artist.key.delete();
         self.redirect(self.request.referer)
 
 class AddSculpturePageHandler(webapp2.RequestHandler):
@@ -413,5 +429,8 @@ app = webapp2.WSGIApplication([
     ('/DirectionsToStatue', DirectionsHandler),
     ('/ToursAdmin', ToursAdminHandler),
     ('/AddTour', AddTourHandler),
+    ('/AddArtist', AddArtistHandler),
+    ('/ArtistAdmin', ArtistAdminHandler),
+    ('/deleteArtist', DeleteArtistHandler),
     ('/admin', AdminHandler)
 ], debug=True)

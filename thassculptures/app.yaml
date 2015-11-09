@@ -11,8 +11,7 @@ handlers:
   
 - url: /static
   static_dir: static
-  
-  
+
 #Endpoints handler
 - url: /_ah/spi/.*
   script: sculptures_api.app

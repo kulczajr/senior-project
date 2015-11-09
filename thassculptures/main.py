@@ -17,6 +17,7 @@
 
 import os
 
+from google.appengine.api import users
 from google.appengine.ext import ndb
 from models import Sculpture, Artist, Comment, Tour
 import jinja2
@@ -53,6 +54,18 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/index.html")
         self.response.write(template.render())
+
+class MyHandler(webapp2.RequestHandler):
+    def get(self):
+        user = users.get_current_user()
+        if user:
+            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+                        (user.nickname(), users.create_logout_url('/')))
+        else:
+            greeting = ('<a href="%s">Sign in or register</a>.' %
+                        users.create_login_url('/'))
+
+        self.response.out.write('<html><body>%s</body></html>' % greeting)
 
 class SculpturesHandler(webapp2.RequestHandler):
     def get(self):
@@ -310,9 +323,20 @@ class CardFromLocationHandler(webapp2.RequestHandler):
 
 class AdminHandler(webapp2.RequestHandler):
     def get(self):
-        sculptures = service.sculpture().list(limit=50).execute()
-        template = jinja_env.get_template("web/admin.html")
-        self.response.write(template.render({'sculptures': sculptures['items']}))
+        user = users.get_current_user()
+        if user:
+            if user.nickname() == "wabashvalleyartspaces":
+                sculptures = service.sculpture().list(limit=50).execute()
+                template = jinja_env.get_template("web/admin.html")
+                self.response.write(template.render({'sculptures': sculptures['items']}))
+            else:
+                greeting = ('You cannot access this page as %s. (<a href="%s">sign out</a>)' % (user.nickname(), users.create_logout_url('/')))
+                self.response.out.write('<html><body>%s</body></html>' % greeting)
+            
+        else:
+            greeting = ('<a href="%s">Sign in to access this page</a>.' %
+                        users.create_login_url('/'))
+            self.response.write(greeting)
 
 class ToursAdminHandler(webapp2.RequestHandler):
     def get(self):

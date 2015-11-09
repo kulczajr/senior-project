@@ -47,6 +47,7 @@
 					<li><a id="add-weatherpic" data-toggle="modal"
 						data-target="#insert-weatherpic-modal">Add Statue</a></li>
 					<li><a href="/ToursAdmin">Manage Tours</a></li>
+					<li><a href="/ArtistAdmin">Manage Artists</a></li>
 					<li><a href="/ApproveComments">Comment Review</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -81,7 +82,7 @@
 						</button>
 					</div>
 					<img src="{{sculpture.image}}" alt="A picture of the statue">
-					<p class="caption">{{sculpture.title}}</p>
+					<p class="caption">{{sculpture.title}} {{user}}</p>
 				</div>
 				{% endfor %}
 			</div>

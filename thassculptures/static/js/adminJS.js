@@ -43,7 +43,7 @@ rh.wp.enableButtons = function() {
 		image = $(this).find(".image").html();
 		title = $(this).find(".title").html();
 		artist = $(this).find(".artist").html();
-		//artist_key = $(this).find(".artists").html();
+		artist_key = $(this).find(".artist_key").html();
 		description = $(this).find(".description").html();
 		locationCoordinates = $(this).find(".location").html();
 		entityKey = $(this).find(".entityKey").html();
@@ -62,6 +62,7 @@ rh.wp.enableButtons = function() {
 		$("#insert-weatherpic-modal input[name=image]").val(image);
 		$("#insert-weatherpic-modal input[name=title]").val(title);
 		$("#insert-weatherpic-modal input[name=artist]").val(artist);
+		$("#artist_key").val(artist_key);
 		//$("#insert-weatherpic-modal input[name=longitude]").val(longitude);
 		$("#insert-weatherpic-modal input[name=latitude]").val(latitude);
 		$("#insert-weatherpic-modal input[name=longitude]").val(longitude);

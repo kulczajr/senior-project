@@ -74,6 +74,7 @@
 							<div class="hidden location">{{sculpture.location}}</div>
 							<div class="hidden think">{{sculpture.think}}</div>
 							<div class="hidden do">{{sculpture.do}}</div>
+							<div class="hidden artist_key">{{sculpture.artist_key}}</div>
 						</button>
 						<button data-toggle="modal" data-target="#delete-weatherpic-modal"
 							type="button" class="delete-weatherpic btn btn-xs btn-danger">
@@ -129,7 +130,7 @@
 						<div class="form-group">
 							<label for="caption-input" class="col-sm-2 control-label">Artist</label>
 							<div class="col-sm-10">
-							<select name="artists" class="form-control" id="artists">
+							<select name="artist_key" class="form-control" id="artist_key">
 								{% for artist in artists %}
 									<option value="{{artist.entityKey}}" id="{{artist.entityKey}}">{{artist.fname}} {{artist.lname}}</option>
 								{% endfor %}

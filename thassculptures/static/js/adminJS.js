@@ -43,6 +43,7 @@ rh.wp.enableButtons = function() {
 		image = $(this).find(".image").html();
 		title = $(this).find(".title").html();
 		artist = $(this).find(".artist").html();
+		//artist_key = $(this).find(".artists").html();
 		description = $(this).find(".description").html();
 		locationCoordinates = $(this).find(".location").html();
 		entityKey = $(this).find(".entityKey").html();

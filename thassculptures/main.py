@@ -327,8 +327,9 @@ class AdminHandler(webapp2.RequestHandler):
         if user:
             if user.nickname() == "wabashvalleyartspaces":
                 sculptures = service.sculpture().list(limit=50).execute()
+                artists = service.artist().list(limit=50).execute()
                 template = jinja_env.get_template("web/admin.html")
-                self.response.write(template.render({'sculptures': sculptures['items']}))
+                self.response.write(template.render({'sculptures': sculptures['items'], 'artists': artists['items']}))
             else:
                 greeting = ('You cannot access this page as %s. (<a href="%s">sign out</a>)' % (user.nickname(), users.create_logout_url('/')))
                 self.response.out.write('<html><body>%s</body></html>' % greeting)

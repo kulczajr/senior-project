@@ -115,7 +115,7 @@ class ArtistsHandler(webapp2.RequestHandler):
         template = jinja_env.get_template("web/artists.html")
         self.response.write(template.render())
     def post(self):
-        artists = service.artist().list().execute()
+        artists = service.artist().list(limit=50).execute()
         template = jinja_env.get_template("web/artists.html")
         sculpture = self.request.get("sculpture_title")
         artistName = self.request.get("artistName")

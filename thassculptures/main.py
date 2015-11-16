@@ -67,6 +67,16 @@ class MyHandler(webapp2.RequestHandler):
 
         self.response.out.write('<html><body>%s</body></html>' % greeting)
 
+class LogoutHandler(webapp2.RequestHandler):
+    def get(self):
+        user = users.get_current_user()
+        if user:
+            greeting = ('You are about to sign out of the %s account. (<a href="%s">sign out</a>)' %
+                        (user.nickname(), users.create_logout_url('/')))
+        else:
+            greeting = "An unexpected error has occurred. Please sign out from your gmail account and try again."
+        self.response.out.write('<html><body>%s</body></html>' % greeting)
+
 class SculpturesHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template("web/sculptures.html")
@@ -335,14 +345,15 @@ class AdminHandler(webapp2.RequestHandler):
                 sculptures = service.sculpture().list(limit=50).execute()
                 artists = service.artist().list(limit=50).execute()
                 template = jinja_env.get_template("web/admin.html")
-                self.response.write(template.render({'sculptures': sculptures['items'], 'artists': artists['items']}))
+                greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' % (user.nickname(), users.create_logout_url('/')))
+                self.response.write(template.render({'sculptures': sculptures['items'], 'artists': artists['items'], 'logout':greeting}))
             else:
                 greeting = ('You cannot access this page as %s. (<a href="%s">sign out</a>)' % (user.nickname(), users.create_logout_url('/')))
                 self.response.out.write('<html><body>%s</body></html>' % greeting)
             
         else:
             greeting = ('<a href="%s">Sign in to access this page</a>.' %
-                        users.create_login_url('/'))
+                        users.create_login_url('/admin'))
             self.response.write(greeting)
 
 class ToursAdminHandler(webapp2.RequestHandler):
@@ -472,5 +483,6 @@ app = webapp2.WSGIApplication([
     ('/AddArtist', AddArtistHandler),
     ('/ArtistAdmin', ArtistAdminHandler),
     ('/deleteArtist', DeleteArtistHandler),
+    ('/logout', LogoutHandler),
     ('/admin', AdminHandler)
 ], debug=True)

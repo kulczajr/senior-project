@@ -417,7 +417,6 @@ class SingleScultpureFinder(webapp2.RequestHandler):
             if sculpture['title'] == name:
                 sculpture_for_card = sculpture
                 artist_key_for_sculpture = sculpture.artist_key
-                print "artist key is " + artist_key_for_sculpture
                 artist_for_sculpture = artist_key_for_sculpture.get()
                 artist_name_for_sculpture = artist_for_sculpture.fname + " " + artist_for_sculpture.lname
                 for comment in comments['items']:
@@ -433,14 +432,15 @@ class SingleScultpureFinder(webapp2.RequestHandler):
         sculptures = service.sculpture().list(limit=50).execute()
         comments = service.comment().list(limit=50).execute()
         sculpture_for_card = None
-        artist_name_for_sculpture = None
+        artist_name_for_sculpture = ""
         comments_for_card = []
         for sculpture in sculptures['items']:
             if sculpture['title'] == name:
                 sculpture_for_card = sculpture
-                artist_key_for_sculpture = ndb.Key(urlsafe=sculpture['artist_key'])
-                artist_for_sculpture = artist_key_for_sculpture.get()
-                artist_name_for_sculpture = artist_for_sculpture.fname + " " + artist_for_sculpture.lname
+                if 'artist_key' in sculpture:
+                    artist_key_for_sculpture = ndb.Key(urlsafe=sculpture['artist_key'])
+                    artist_for_sculpture = artist_key_for_sculpture.get()
+                    artist_name_for_sculpture = artist_for_sculpture.fname + " " + artist_for_sculpture.lname
                 for comment in comments['items']:
                     if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
                         if comment['is_approved']:

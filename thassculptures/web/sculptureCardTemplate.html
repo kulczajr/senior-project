@@ -127,9 +127,10 @@ window.fbAsyncInit = function() {
                         </h3>
 
                         <form role="form" action="/artist" method="post">
-                            <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{sculpture.artist}}</a></h4>
+                            <h4><a href="" id= "artistName" style="font-size:24px" onclick="parentNode.parentNode.submit();return false;">{{artist_name}}</a></h4>
                             
-                            <input type="hidden" name="artistName" id="artistName" value="{{sculpture.artist}}"></input>
+                            <input type="hidden" name="artist_key" id="artist_key" value="{{sculpture.artist_key}}"></input>
+                            <input type="hidden" name="artistName" id="artistName" value="{{artist_name}}"></input>
                             <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
                         </form>
             <p id="sculptureText"> {{sculpture.description|e}}</p>

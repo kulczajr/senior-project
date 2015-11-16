@@ -130,13 +130,12 @@ class ArtistsHandler(webapp2.RequestHandler):
     def post(self):
         artists = service.artist().list().execute()
         template = jinja_env.get_template("web/artists.html")
-        sculpture = self.request.get("sculpture_title")
-        artistName = self.request.get("artistName")
-        artistToFetch = None
-        for artist in artists['items']:
-            if artist['fname'] + " " + artist['lname'] == artistName:
-                artistToFetch = artist
-        self.response.write(template.render({'artist':artistToFetch, 'referringSculpture':sculpture}))
+        sculpture_title = self.request.get("sculpture_title")
+        #artistName = self.request.get("artistName")
+        #artistToFetch = None
+        artist_key = ndb.Key(urlsafe=self.request.get("artist_key"))
+        artist = artist_key.get()
+        self.response.write(template.render({'artist':artist, 'referringSculpture':sculpture_title}))
         
 class AddSculptureHandler(webapp2.RequestHandler):
     def get(self):
@@ -158,8 +157,10 @@ class AddSculptureHandler(webapp2.RequestHandler):
             sculpture_key = ndb.Key(urlsafe=self.request.get("entityKey"))
             sculpture = sculpture_key.get()       
             sculpture.title = self.request.get("title")
-            sculpture.artist = self.request.get("artist")
             sculpture.artist_key = self.request.get("artist_key")
+            artist_key = ndb.Key(urlsafe=self.request.get("artist_key"))
+            artist = artist_key.get()
+            sculpture.artist = artist.fname + " " + artist.lname
             sculpture.location = location
             sculpture.description = self.request.get("description")
             sculpture.image = self.request.get("image")
@@ -167,8 +168,11 @@ class AddSculptureHandler(webapp2.RequestHandler):
             sculpture.do = self.request.get("do")
             sculpture.put()
         else: 
+            artist_key = ndb.Key(urlsafe=self.request.get("artist_key"))
+            artist = artist_key.get()
+            artist_name = artist.fname + " " + artist.lname
             new_sculpture = Sculpture(title = self.request.get("title"),
-                                  artist = self.request.get("artist"),
+                                  artist = artist_name,
                                   artist_key = self.request.get("artist_key"),
                                   location = location,
                                   description = self.request.get("description"),
@@ -407,16 +411,21 @@ class SingleScultpureFinder(webapp2.RequestHandler):
         sculptures = service.sculpture().list(limit=50).execute()
         comments = service.comment().list(limit=50).execute()
         sculpture_for_card = None
+        artist_name_for_sculpture = None
         comments_for_card = []
         for sculpture in sculptures['items']:
             if sculpture['title'] == name:
                 sculpture_for_card = sculpture
+                artist_key_for_sculpture = sculpture.artist_key
+                print "artist key is " + artist_key_for_sculpture
+                artist_for_sculpture = artist_key_for_sculpture.get()
+                artist_name_for_sculpture = artist_for_sculpture.fname + " " + artist_for_sculpture.lname
                 for comment in comments['items']:
                     if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
                         if comment['is_approved']:
                             comments_for_card.append(comment)
                 break
-        self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
+        self.response.write(template.render({'sculpture':sculpture_for_card, 'artist_name':artist_name_for_sculpture, 'comments':comments_for_card}))
     def post(self):
         name = self.request.get("sculpture-title")
         response = "Loading the card for " + name
@@ -424,16 +433,20 @@ class SingleScultpureFinder(webapp2.RequestHandler):
         sculptures = service.sculpture().list(limit=50).execute()
         comments = service.comment().list(limit=50).execute()
         sculpture_for_card = None
+        artist_name_for_sculpture = None
         comments_for_card = []
         for sculpture in sculptures['items']:
             if sculpture['title'] == name:
                 sculpture_for_card = sculpture
+                artist_key_for_sculpture = ndb.Key(urlsafe=sculpture['artist_key'])
+                artist_for_sculpture = artist_key_for_sculpture.get()
+                artist_name_for_sculpture = artist_for_sculpture.fname + " " + artist_for_sculpture.lname
                 for comment in comments['items']:
                     if comment['sculpture_key'] == sculpture_for_card["entityKey"]:
                         if comment['is_approved']:
                             comments_for_card.append(comment)
                 break
-        self.response.write(template.render({'sculpture':sculpture_for_card, 'comments':comments_for_card}))
+        self.response.write(template.render({'sculpture':sculpture_for_card, 'artist_name':artist_name_for_sculpture, 'comments':comments_for_card}))
 
 
 app = webapp2.WSGIApplication([

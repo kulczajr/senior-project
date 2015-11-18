@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>THAS Statues Admin Hub</title>
+<title>THAS Artists Admin Hub</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,15 +39,15 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">THAS Statues Admin Hub</a>
+				<a class="navbar-brand" href="#">THAS Artist Admin Hub</a>
 
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li><a id="add-weatherpic" data-toggle="modal"
-						data-target="#insert-weatherpic-modal">Add Statue</a></li>
+						data-target="#insert-weatherpic-modal">Add Artist</a></li>
 					<li><a href="/ToursAdmin">Manage Tours</a></li>
-					<li><a href="/ArtistAdmin">Manage Artists</a></li>
+					<li><a href="/admin">Manage Sculptures</a></li>
 					<li><a href="/ApproveComments">Comment Review</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -60,79 +60,75 @@
 	<div class="container">
 		<div id="wrapper">
 			<div id="columns">
-				{% for sculpture in sculptures %}
+				{% for artist in artists %}
 				<div class="pin">
 					<div class="hidden pull-right edit-actions">
 						<button data-toggle="modal" data-target="#insert-weatherpic-modal"
 							type="button" class="edit-weatherpic btn btn-xs btn-success">
 							<span class="glyphicon glyphicon-pencil"></span>
-							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
-							<div class="hidden image">{{sculpture.image}}</div>
-							<div class="hidden title">{{sculpture.title}}</div>
-							<div class="hidden artist">{{sculpture.artist}}</div>
-							<div class="hidden description">{{sculpture.description}}</div>
-							<div class="hidden location">{{sculpture.location}}</div>
-							<div class="hidden think">{{sculpture.think}}</div>
-							<div class="hidden do">{{sculpture.do}}</div>
-							<div class="hidden artist_key">{{sculpture.artist_key}}</div>
+							<div class="hidden entityKey">{{artist.entityKey}}</div>
+							<div class="hidden description">{{artist.description}}</div>
+							<div class="hidden fname">{{artist.fname}}</div>
+							<div class="hidden lname">{{artist.lname}}</div>
+							<div class="hidden image">{{artist.image}}</div>
+							<div class="hidden website_url">{{artist.website_url}}</div>
 						</button>
 						<button data-toggle="modal" data-target="#delete-weatherpic-modal"
 							type="button" class="delete-weatherpic btn btn-xs btn-danger">
 							<span class="glyphicon glyphicon-remove"></span>
-							<div class="hidden entityKey">{{sculpture.entityKey}}</div>
+							<div class="hidden entityKey">{{artist.entityKey}}</div>
 						</button>
 					</div>
-					<img src="{{sculpture.image}}" alt="A picture of the statue">
-					<p class="caption">{{sculpture.title}} {{user}}</p>
+					<img src="{{artist.image}}" alt="Art Spaces Logo">
+					<p class="caption">{{artist.fname}} {{artist.lname}}</p>
 				</div>
 				{% endfor %}
 			</div>
 		</div>
-		<form action="/logout" method="GET" class="form-horizontal" role="form">
-		<button type="submit" class="btn btn-primary">Logout</button>
-		</form>
-					
-		
 	</div>
 
 	<!-- Modal -->
 	<div class="modal fade" id="insert-weatherpic-modal" tabindex="-1"
-		role="dialog" aria-labelledby="Insert Statue" aria-hidden="true">
+		role="dialog" aria-labelledby="Insert Artist" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Add a Statue</h4>
+					<h4 class="modal-title" id="myModalLabel">Add an Artist</h4>
 				</div>
-				<form action="/addSculpture" method="POST" class="form-horizontal"
+				<form action="/AddArtist" method="POST" class="form-horizontal"
 					role="form">
 					<input type="text" name="entityKey" class="hidden">
 					<div class="modal-body">
+					
 						<div class="form-group">
-							<label for="image-url-input" class="col-sm-2 control-label">Image
-								URL</label>
+							<label for="caption-input" class="col-sm-2 control-label">First Name</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="fname-input"
+									placeholder="First Name" name="fname">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Last Name</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="lname-input"
+									placeholder="Last Name" name="lname">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Website</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="website-input"
+									placeholder="URL" name="website_url">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Image</label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="image-input"
-									name="image" placeholder="Image URL">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Title</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="title-input"
-									placeholder="Title" name="title">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Artist</label>
-							<div class="col-sm-10">
-							<select name="artist_key" class="form-control" id="artist_key">
-								{% for artist in artists %}
-									<option value="{{artist.entityKey}}" id="{{artist.entityKey}}">{{artist.fname}} {{artist.lname}}</option>
-								{% endfor %}
-								</select>
+									placeholder="URL" name="image">
 							</div>
 						</div>
 						<div class="form-group">
@@ -142,39 +138,11 @@
 									placeholder="Description" name="description">
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Think</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="think-input"
-									placeholder="Think" name="think">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Do</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="do-input"
-									placeholder="Do" name="do">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Longitude</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="longitude-input"
-									placeholder="Longitude" name="longitude">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="caption-input" class="col-sm-2 control-label">Latitude</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="latitude-input"
-									placeholder="Latitude" name="latitude">
-							</div>
-						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 						<button type="submit" class="btn btn-primary">Add
-							Statue</button>
+							Artist</button>
 					</div>
 				</form>
 			</div>
@@ -190,17 +158,17 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Delete a Statue</h4>
+					<h4 class="modal-title" id="myModalLabel">Delete an Artist</h4>
 				</div>
-				<form action="/deleteSculpture" method="POST" class="form-horizontal"
+				<form action="/deleteArtist" method="POST" class="form-horizontal"
 					role="form">
 					<input type="text" name="entityKey" class="hidden">
 					<div class="modal-body">
-						<p>Are you sure you wish to delete this statue?</p>
+						<p>Are you sure you wish to delete this artist?</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-danger">Delete Sculpture</button>
+						<button type="submit" class="btn btn-danger">Delete Artist</button>
 					</div>
 				</form>
 			</div>
@@ -215,7 +183,7 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	<script src="/static/js/adminJS.js"></script>
+	<script src="/static/js/artists.js"></script>
 
 </body>
 </html>

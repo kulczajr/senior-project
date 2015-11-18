@@ -12,15 +12,24 @@
 
 	<script src="http://maps.googleapis.com/maps/api/js"></script>
 
+  <style>
+
+b {
+  font-weight:bold;
+}
+  </style>
+
 	<div class ="row">
 		<div id="googleMap" style="width:90%;height:50%;"></div>
 	</div>
-  <div style = "margin-top:10px">
-  </div>
+  <div id = "div1">{{test}}</div>
+  <div><p>{{test}}</p></div>
+  <div style = "margin-top:10px"></div>
 	<script>
 	
 	var directionsDisplay;
 	var directionsService = new google.maps.DirectionsService();
+  var temp;
 	
 	var currLoc; //found via geolocation; two-element array of [lat, lng]
 
@@ -30,7 +39,7 @@
 			zoom:12,
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		};
-		window.map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		window.map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
 		var browserSupportFlag =  new Boolean();
 		var image = "./static/images/yourLocationIcon.png";
     
@@ -89,12 +98,36 @@
           if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
             console.log("Current location and directions fetched correctly.");
+            var legs = response.routes[0].legs;
+            var i, j;
+            var directionsText = "<ol>";
+            for (i = 0; i < legs.length; i++){
+              var steps = legs[i].steps;
+              for (j = 0; j < steps.length; j++){
+                var step = steps[j];
+                directionsText += "<li>";
+                directionsText += step.instructions;
+                directionsText += "</li>";
+              }
+            }
+            directionsText += "</ol>";
+            $('#div1').html(directionsText);
           } else {
             console.log("Current location detected successfully, but failure in in getting directions.")
           }});
+
+          var lineCoords = [initialLocation, destLocation]
+          var path = new google.maps.Polyline({
+            path: lineCoords,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+          path.setMap(window.map);
         }, 
         function() {
-      		console.log("Location detected sucessfully");
+      		console.log("Error in detecting location");
     		});
     }
   // Browser doesn't support Geolocation

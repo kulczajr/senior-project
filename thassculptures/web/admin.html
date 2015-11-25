@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>THAS Statues Admin Hub</title>
+<title>THAS Sculptures Admin Hub</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,13 +39,13 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">THAS Statues Admin Hub</a>
+				<a class="navbar-brand" href="#">THAS Sculptures Admin Hub</a>
 
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li><a id="add-weatherpic" data-toggle="modal"
-						data-target="#insert-weatherpic-modal">Add Statue</a></li>
+						data-target="#insert-weatherpic-modal">Add Sculpture</a></li>
 					<li><a href="/ToursAdmin">Manage Tours</a></li>
 					<li><a href="/ArtistAdmin">Manage Artists</a></li>
 					<li><a href="/ApproveComments">Comment Review</a></li>
@@ -71,6 +71,7 @@
 							<div class="hidden title">{{sculpture.title}}</div>
 							<div class="hidden artist">{{sculpture.artist}}</div>
 							<div class="hidden description">{{sculpture.description}}</div>
+							<div class="hidden additionalText">{{sculpture.additionalText}}</div>
 							<div class="hidden location">{{sculpture.location}}</div>
 							<div class="hidden think">{{sculpture.think}}</div>
 							<div class="hidden do">{{sculpture.do}}</div>
@@ -104,7 +105,7 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Add a Statue</h4>
+					<h4 class="modal-title" id="myModalLabel">Add a Sculpture</h4>
 				</div>
 				<form action="/addSculpture" method="POST" class="form-horizontal"
 					role="form">
@@ -140,6 +141,13 @@
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="description-input"
 									placeholder="Description" name="description">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="caption-input" class="col-sm-2 control-label">Additional Text</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="description-input"
+									placeholder="Additional Text" name="additionalText">
 							</div>
 						</div>
 						<div class="form-group">
@@ -190,13 +198,13 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Delete a Statue</h4>
+					<h4 class="modal-title" id="myModalLabel">Delete a Sculpture</h4>
 				</div>
 				<form action="/deleteSculpture" method="POST" class="form-horizontal"
 					role="form">
 					<input type="text" name="entityKey" class="hidden">
 					<div class="modal-body">
-						<p>Are you sure you wish to delete this statue?</p>
+						<p>Are you sure you wish to delete this sculpture?</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

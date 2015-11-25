@@ -22,8 +22,8 @@ rh.wp.enableButtons = function() {
 	});
 	
 	$("#add-weatherpic").click(function(){
-		$("#insert-weatherpic-modal .modal-title").html("Add a Statue");
-		$("#insert-weatherpic-modal button[type=submit]").html("Add a Statue");
+		$("#insert-weatherpic-modal .modal-title").html("Add a Sculpture");
+		$("#insert-weatherpic-modal button[type=submit]").html("Add a Sculpture");
 		
 		$("#insert-weatherpic-modal input[name=image]").val("");
 		$("#insert-weatherpic-modal input[name=title]").val("");
@@ -38,26 +38,23 @@ rh.wp.enableButtons = function() {
 	});
 	
 	$(".edit-weatherpic").click(function(){
-		$("#insert-weatherpic-modal .modal-title").html("Edit this Statue");
-		$("#insert-weatherpic-modal button[type=submit]").html("Edit Statue");
+		$("#insert-weatherpic-modal .modal-title").html("Edit this Sculpture");
+		$("#insert-weatherpic-modal button[type=submit]").html("Edit Sculpture");
 		
 		image = $(this).find(".image").html();
 		title = $(this).find(".title").html();
 		//artist = $(this).find(".artist").html();
 		artist_key = $(this).find(".artist_key").html();
 		description = $(this).find(".description").html();
+		additionalText = $(this).find(".additionalText").html();
 		locationCoordinates = $(this).find(".location").html();
 		entityKey = $(this).find(".entityKey").html();
 		think = $(this).find(".think").html();
 		do_text = $(this).find(".do").html();
-		console.log("Text of think is " + think);
-		console.log("Text of do is " + do_text);
 		
 		locationSplit = locationCoordinates.split(",");
 		latitude = locationSplit[0];
 		longitude = locationSplit[1].trim();
-		//console.log(longitude);
-		//console.log(latitude);
 		
 		
 		$("#insert-weatherpic-modal input[name=image]").val(image);
@@ -68,6 +65,7 @@ rh.wp.enableButtons = function() {
 		$("#insert-weatherpic-modal input[name=latitude]").val(latitude);
 		$("#insert-weatherpic-modal input[name=longitude]").val(longitude);
 		$("#insert-weatherpic-modal input[name=description]").val(description);
+		$("#insert-weatherpic-modal input[name=additionalText]").val(additionalText);
 		$("#insert-weatherpic-modal input[name=think]").val(think);
 		$("#insert-weatherpic-modal input[name=do]").val(do_text);
 		$("#insert-weatherpic-modal input[name=entityKey]").val(entityKey).prop("disabled", false);

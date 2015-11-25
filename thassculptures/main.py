@@ -173,6 +173,7 @@ class AddSculptureHandler(webapp2.RequestHandler):
             sculpture.artist = artist.fname + " " + artist.lname
             sculpture.location = location
             sculpture.description = self.request.get("description")
+            sculpture.additionalText = self.request.get("additionalText")
             sculpture.image = self.request.get("image")
             sculpture.think = self.request.get("think")
             sculpture.do = self.request.get("do")
@@ -186,6 +187,7 @@ class AddSculptureHandler(webapp2.RequestHandler):
                                   artist_key = self.request.get("artist_key"),
                                   location = location,
                                   description = self.request.get("description"),
+                                  additionalText = self.request.get("additionalText"),
                                   think = self.request.get("think"),
                                   do = self.request.get("do"),
                                   image = self.request.get("image"))

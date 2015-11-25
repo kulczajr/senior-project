@@ -1,0 +1,160 @@
+{% extends "/web/templates/base.html" %}
+{% block title %} Tour Directions {% endblock %}
+{% block navbar %} {% include "/web/sculptureCardNavbar.html" with context %} {% endblock %}
+{% block content %}
+
+	<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="/static/images/fav-icon-art-space.png" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/css/main.css">
+	<script src="http://maps.googleapis.com/maps/api/js"></script>
+  <style>
+    b {
+      font-weight:bold;
+    }
+    u {
+      text-decoration: underline;
+    }
+    #map {
+      margin-right: 400px;
+      height:100%;
+    }
+    #googleMap {
+      top: 0;
+    }
+    #headerPanel {
+      height: 80;
+      background-color: white;
+    }
+    #locationPanel {
+      left: 5%;
+      top: 10%;
+      bottom: 10%;
+    }
+    #buttonForm {
+      position: relative;
+    }
+    #nextButton {
+      margin-top: 6%;            
+    }
+    #directionsPanel {
+      width: 90%;
+      margin-left: 5%;
+      margin-right: 5%;
+      font-family: 'Roboto','sans-serif';
+    }
+  </style>
+
+	<div class = "row">
+    <div id = "floatingPanel">
+    </div>
+	</div>
+  <div class = "row">
+      <div id = "googleMap"></div>
+  </div>
+  <div id="headerPanel" class="row">
+    <div id="locationPanel" class="col-xs-9">
+      <div id="start-loc" class="short-div"></div>
+      <div id="end-loc" class="short-div"></div>
+    </div>
+    <div id="buttonPanel" class="col-xs-3">
+      <form id="buttonForm" role="form" action="/tourDirections.html" method="post">
+        <input type='text' class="hidden" name="title" value="{{title}}">
+        <input id="tour-list" type='text' class="hidden" name="sculpture-list" value="{{sculpture_list | safe}}">
+        <div id="nextButton" class="btn btn-default" onclick="parentNode.submit()"> 
+          <span class= "glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class = "row">
+    <div id = "directionsPanel"></div>
+  </div>
+  <div style = "margin-top:10px"></div>
+  <div id="newList" style="display: none;">
+	<script>
+	
+	var directionsDisplay;
+	var directionsService = new google.maps.DirectionsService();
+  var markerImg = "./static/images/yourLocationIcon.png";
+  var test;
+
+  function locStringToLatLng(locationString){
+    var locArray = locationString.split(",");
+    return new google.maps.LatLng(locArray[0], locArray[1]);
+  }
+	
+  function addMarker(location, name){
+  // location: either a Google LatLng object, or {lat: x, lng: y}
+    var marker = new google.maps.Marker({
+      position: location,
+      icon: markerImg
+    });
+    var infoWindow = new google.maps.InfoWindow({
+      content: name
+    });
+    // put marker and info window on map
+    marker.setMap(window.map);
+    infoWindow.open(window.map, marker);
+  }
+
+  function rotateArray(array){
+    array.push(array.shift());
+  }
+
+	function initialize() {
+		var mapProp = {
+			center: new google.maps.LatLng(39.465521, -87.413038),
+			zoom:12,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+		window.map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+		var browserSupportFlag =  new Boolean();
+		var image = "./static/images/yourLocationIcon.png";
+
+    var sculptureList = {{sculpture_list | safe}};    
+    // getting sculptures' locations
+    // TODO: get titles, set in floating box
+    var currSculpture = sculptureList[0];
+    var destSculpture = sculptureList[1];
+    var currTitle = currSculpture['title'];
+    var destTitle = destSculpture['title'];
+    var currLocation = locStringToLatLng(currSculpture['location']);
+    var destLocation = locStringToLatLng(destSculpture['location']);
+    $("#start-loc").html("<b>Current Location</b>: <u>" + currTitle + "</u>");
+    $("#end-loc").html("<b>Destination</b>: <u>" + destTitle + "</u>");
+
+    // rotating sculpture list to get to next sculpture
+    rotateArray(sculptureList);
+    $("#tour-list").val(JSON.stringify(sculptureList));
+
+    // initializing directionsDisplay
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById('directionsPanel'));
+
+    // adding markers and info windows
+    // TODO: Decide if we want these
+    // addMarker(currLocation, currTitle);
+    // addMarker(destLocation, destTitle);
+
+    // getting directions
+    var request = {
+      origin: currLocation,
+      destination: destLocation,
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+        console.log("Current location and directions fetched correctly.");
+      }
+    });
+  }
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+	
+{% endblock %}

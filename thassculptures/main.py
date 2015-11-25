@@ -114,8 +114,47 @@ class DirectionsHandler(webapp2.RequestHandler):
         for sculpture in sculptures['items']:
             if sculpture['title'] == sculpture_title:
                 # note: do we need a case where we can't find the sculpture?
-                dest_location = sculpture['location'];
+                dest_location = sculpture['location']
         self.response.write(template.render({'title':sculpture_title, 'location': dest_location}))
+
+class TourDirectionsHandler(webapp2.RequestHandler):
+    def post(self):
+        template = jinja_env.get_template("web/tourDirections.html")
+        tourTitle = self.request.get("title")
+        sculptureList = self.request.get("sculpture-list")
+        logging.info(tourTitle)
+        logging.info(sculptureList)
+        self.response.write(template.render({'title':tourTitle, 'sculpture_list': sculptureList}))
+
+class ToursHandler(webapp2.RequestHandler):
+
+    def get(self):
+        template = jinja_env.get_template("web/tours.html")
+        # WARNING: Need to get around this 50 limit eventually
+        tours = service.tour().list().execute()['items']
+        sculptures = service.sculpture().list(limit=50).execute()['items']
+
+        # dictionary of sculpture entity keys to their locations
+        sculptureDict = dict()
+        for sculpture in sculptures:
+            entityKey = sculpture['entityKey']
+            title = str(sculpture['title'])
+            location = str(sculpture['location'])
+            sculptureDict[entityKey] = {'title': title, 'location': location}
+
+        # list of tour objects: {title, sculpture_list: [{title, location}]}
+        tourList = []
+        logging.info(tours)
+        for tour in tours:
+            title = str(tour['description'])
+            sculptList = tour['sculpture_list']
+            newSculptList = []
+            for sculptureKey in sculptList:
+                sculpture = sculptureDict[sculptureKey]
+                newSculptList.append(sculpture)
+            tourList.append({'title': title, 'sculpture_list': newSculptList})
+
+        self.response.write(template.render({'tours': tourList}))
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):
@@ -486,5 +525,7 @@ app = webapp2.WSGIApplication([
     ('/ArtistAdmin', ArtistAdminHandler),
     ('/deleteArtist', DeleteArtistHandler),
     ('/logout', LogoutHandler),
+    ('/tours.html', ToursHandler),
+    ('/tourDirections.html', TourDirectionsHandler),
     ('/admin', AdminHandler)
 ], debug=True)

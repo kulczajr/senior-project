@@ -17,10 +17,6 @@
     u {
       text-decoration: underline;
     }
-    #map {
-      margin-right: 400px;
-      height:100%;
-    }
     #googleMap {
       top: 0;
     }
@@ -37,23 +33,24 @@
       position: relative;
     }
     #nextButton {
-      margin-top: 6%;            
+      margin-top: 15px;
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
     #directionsPanel {
       width: 90%;
+      height: 30%;
       margin-left: 5%;
       margin-right: 5%;
+      line-height: 30px;
       font-family: 'Roboto','sans-serif';
+      overflow: scroll;
     }
   </style>
-
-	<div class = "row">
-    <div id = "floatingPanel">
-    </div>
-	</div>
-  <div class = "row">
+  <div id = "mapDiv" class = "row">
       <div id = "googleMap"></div>
   </div>
+  
   <div id="headerPanel" class="row">
     <div id="locationPanel" class="col-xs-9">
       <div id="start-loc" class="short-div"></div>
@@ -69,11 +66,8 @@
       </form>
     </div>
   </div>
-  <div class = "row">
-    <div id = "directionsPanel"></div>
-  </div>
-  <div style = "margin-top:10px"></div>
-  <div id="newList" style="display: none;">
+
+  <div id = "directionsPanel"></div>
 	<script>
 	
 	var directionsDisplay;

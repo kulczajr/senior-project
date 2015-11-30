@@ -20,7 +20,7 @@
 	<div id="test"></div>
 	
 	<!-- List of Tours Here -->
-	<ul class = "list-group"style="height: 30%;overflow: scroll;">
+	<ul class = "list-group"style="height: 45%;overflow: scroll;">
 		<li class = "list-group-item">
 			<h4 style = "width:100%; text-align: center"> Tours </h4>
 		</li>
@@ -100,6 +100,7 @@
   		drawAllTours()
 		}
 
+		$(".app").css("overflow", "scroll");
 		google.maps.event.addDomListener(window, 'load', initialize);
 
 	</script>

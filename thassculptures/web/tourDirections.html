@@ -39,12 +39,10 @@
     }
     #directionsPanel {
       width: 90%;
-      height: 30%;
       margin-left: 5%;
       margin-right: 5%;
       line-height: 30px;
       font-family: 'Roboto','sans-serif';
-      overflow: scroll;
     }
   </style>
   <div id = "mapDiv" class = "row">
@@ -148,6 +146,8 @@
     });
   }
 
+  $(".app").css("overflow", "scroll");
+  $(".app-content").css("overflow", "scroll");
 	google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
 	

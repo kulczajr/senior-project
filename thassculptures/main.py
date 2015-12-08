@@ -291,9 +291,22 @@ class AddArtistHandler(webapp2.RequestHandler):
 
 class ArtistAdminHandler(webapp2.RequestHandler):
     def get(self):
-        artists = service.artist().list(limit=50).execute()
-        template = jinja_env.get_template("web/ArtistAdminHub.html")
-        self.response.write(template.render({'artists': artists['items']}))
+        user = users.get_current_user()
+        if user:
+            if user.nickname() == "wabashvalleyartspaces":
+                artists = service.artist().list(limit=50).execute()
+                template = jinja_env.get_template("web/ArtistAdminHub.html")
+                self.response.write(template.render({'artists': artists['items']}))
+            else:
+                greeting = ('You cannot access this page as %s. (<a href="%s">sign out</a>)' % (user.nickname(), users.create_logout_url('/')))
+                self.response.out.write('<html><body>%s</body></html>' % greeting)
+        else:
+            greeting = ('<a href="%s">Sign in to access this page</a>.' %
+                        users.create_login_url('/ArtistAdmin.html'))
+            self.response.write(greeting)
+
+        
+        
 
 class DeleteArtistHandler(webapp2.RequestHandler):
     def post(self):
@@ -399,10 +412,22 @@ class AdminHandler(webapp2.RequestHandler):
 
 class ToursAdminHandler(webapp2.RequestHandler):
     def get(self):
-        sculptures = service.sculpture().list(limit=50).execute()
-        tours = service.tour().list(limit=50).execute()
-        template = jinja_env.get_template("web/ToursAdminHub.html")
-        self.response.write(template.render({'sculptures': sculptures['items'], 'tours': tours['items']}))
+        user = users.get_current_user()
+        if user:
+            if user.nickname() == "wabashvalleyartspaces":
+                sculptures = service.sculpture().list(limit=50).execute()
+                tours = service.tour().list(limit=50).execute()
+                template = jinja_env.get_template("web/ToursAdminHub.html")
+                self.response.write(template.render({'sculptures': sculptures['items'], 'tours': tours['items']}))
+            else:
+                greeting = ('You cannot access this page as %s. (<a href="%s">sign out</a>)' % (user.nickname(), users.create_logout_url('/')))
+                self.response.out.write('<html><body>%s</body></html>' % greeting)
+            
+        else:
+            greeting = ('<a href="%s">Sign in to access this page</a>.' %
+                        users.create_login_url('/ToursAdminHub.html'))
+            self.response.write(greeting)
+
 
 class AddTourHandler(webapp2.RequestHandler):
     def get(self):
@@ -432,15 +457,26 @@ class AddTourHandler(webapp2.RequestHandler):
         
 class ApproveCommentsHandler(webapp2.RequestHandler):
     def get(self):
-        template = jinja_env.get_template("web/ApproveComments.html")
-        comments = service.comment().list().execute()
-        comments_for_card = []
-        for comment in comments['items']:
-            sculpture_key = ndb.Key(urlsafe=comment['sculpture_key'])
-            sculpture = sculpture_key.get()       
-            comment['sculpture'] = sculpture.title
-            comments_for_card.append(comment)
-        self.response.write(template.render({'comments':comments_for_card}))
+        user = users.get_current_user()
+        if user:
+            if user.nickname() == "wabashvalleyartspaces":
+                template = jinja_env.get_template("web/ApproveComments.html")
+                comments = service.comment().list().execute()
+                comments_for_card = []
+                for comment in comments['items']:
+                    sculpture_key = ndb.Key(urlsafe=comment['sculpture_key'])
+                    sculpture = sculpture_key.get()       
+                    comment['sculpture'] = sculpture.title
+                    comments_for_card.append(comment)
+                    self.response.write(template.render({'comments':comments_for_card}))
+            else:
+                greeting = ('You cannot access this page as %s. (<a href="%s">sign out</a>)' % (user.nickname(), users.create_logout_url('/')))
+                self.response.out.write('<html><body>%s</body></html>' % greeting)
+            
+        else:
+            greeting = ('<a href="%s">Sign in to access this page</a>.' %
+                        users.create_login_url('/ApproveComments.html'))
+            self.response.write(greeting)
 
 class DenyCommentHandler(webapp2.RequestHandler):
     def post(self):

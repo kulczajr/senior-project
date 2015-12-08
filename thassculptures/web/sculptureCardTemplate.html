@@ -133,10 +133,20 @@ window.fbAsyncInit = function() {
                             <input type="hidden" name="artistName" id="artistName" value="{{artist_name}}"></input>
                             <input type="hidden" name="sculpture_title" id="sculpture_title" style="display:none" value="{{sculpture.title}}"></input>
                         </form>
-            <p id="sculptureText"> {{sculpture.description|e}}</p>
+            <p id="sculptureText"> 
+            {% for line in sculpture.description.splitlines() %}
+            	{{line |e}} <br />
+            {% endfor %}
+            </p>
             <a id="showMore" onclick="displayMoreText()" style="font-size:14px;">Show More Information
             </a>
-            <p id="additionalText"> {{sculpture.additionalText|e}}</p>
+            <p id="additionalText"> 
+            
+            {% for line in sculpture.additionalText.splitlines() %}
+            	{{line |e}} <br />
+            {% endfor %}
+            
+            </p>
                     </div>
 
                     <div id="thinkTab">

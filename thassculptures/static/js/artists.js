@@ -29,7 +29,7 @@ rh.wp.enableButtons = function() {
 		$("#insert-weatherpic-modal input[name=lname]").val("");
 		$("#insert-weatherpic-modal input[name=image]").val("");
 		$("#insert-weatherpic-modal input[name=website_url]").val("");
-		$("#insert-weatherpic-modal input[name=description]").val("");
+		$("#insert-weatherpic-modal textArea[name=description]").val("");
 		$("#insert-weatherpic-modal input[name=entityKey]").val("").prop("disabled", true);
 	});
 	
@@ -44,7 +44,7 @@ rh.wp.enableButtons = function() {
 		website_url = $(this).find(".website_url").html();
 		image = $(this).find(".image").html();
 		
-		$("#insert-weatherpic-modal input[name=description]").val(description);
+		$("#insert-weatherpic-modal textArea[name=description]").val(description);
 		$("#insert-weatherpic-modal input[name=fname]").val(fname);
 		$("#insert-weatherpic-modal input[name=lname]").val(lname);
 		$("#insert-weatherpic-modal input[name=website_url]").val(website_url);
